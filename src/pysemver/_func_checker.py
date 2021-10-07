@@ -7,7 +7,7 @@ import numpy
 from ._builder import Contract
 
 
-class SemVer(enums.Enum):
+class SemVer(enum.Enum):
     """An enum just to express a release.
 
     Examples:
@@ -115,7 +115,7 @@ class FuncChecker:
         conds = [these < those, these > those, True]
         takes = [major, minor, nones]
 
-        return diffs = numpy.select(conds, takes)
+        return numpy.select(conds, takes)
 
     def diff_name(self) -> numpy.ndarray:
         these = numpy.array([a.name for a in self.this.arguments])

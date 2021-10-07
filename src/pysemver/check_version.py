@@ -1,8 +1,7 @@
 from __future__ import annotations
 
+import enum
 from typing import Optional, Sequence, Set, TypeVar
-
-from openfisca_core.indexed_enums import Enum
 
 from pysemver import SupportsProgress
 
@@ -30,7 +29,7 @@ IGNORE = (
     )
 
 
-class Exit(Enum):
+class Exit(enum.Enum):
     """An enum with exit codes."""
 
     OK = "ok"

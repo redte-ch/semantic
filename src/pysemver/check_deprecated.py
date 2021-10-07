@@ -16,7 +16,7 @@ FILES: Sequence[str]
 FILES = Repo.File.tree(VERSION)
 
 
-class Exit(enums.Enum):
+class Exit(enum.Enum):
     """An enum with exit codes."""
 
     OK = "ok"

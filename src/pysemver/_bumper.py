@@ -7,7 +7,7 @@ from ._repo import Repo
 TO_STR = "-", "+", "~", ""
 
 
-class Version(enums.Enum):
+class Version(enum.Enum):
     """An enum just to determine the required version.
 
     Examples:
