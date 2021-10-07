@@ -1,9 +1,8 @@
 import ast
+import enum
 import pathlib
 import textwrap
 from typing import Sequence
-
-from openfisca_core.indexed_enums import Enum
 
 from . import SupportsProgress
 
@@ -17,7 +16,7 @@ FILES: Sequence[str]
 FILES = Repo.File.tree(VERSION)
 
 
-class Exit(Enum):
+class Exit(enums.Enum):
     """An enum with exit codes."""
 
     OK = "ok"

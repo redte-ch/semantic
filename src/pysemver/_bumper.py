@@ -1,14 +1,13 @@
+import enum
 import re
 from typing import Sequence, Tuple, Type
-
-from openfisca_core.indexed_enums import Enum
 
 from ._repo import Repo
 
 TO_STR = "-", "+", "~", ""
 
 
-class Version(Enum):
+class Version(enums.Enum):
     """An enum just to determine the required version.
 
     Examples:

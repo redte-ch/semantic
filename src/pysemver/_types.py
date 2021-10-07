@@ -1,8 +1,7 @@
 from __future__ import annotations
 
 import abc
-
-from typing_extensions import Literal, Protocol
+from typing import Literal, Protocol
 
 What = Literal["this", "that"]
 

@@ -4,7 +4,7 @@ from typing import Optional, Sequence, Set, TypeVar
 
 from openfisca_core.indexed_enums import Enum
 
-from openfisca_tasks import SupportsProgress
+from pysemver import SupportsProgress
 
 from ._builder import Contract
 from ._bumper import Bumper

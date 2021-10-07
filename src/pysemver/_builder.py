@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import ast
 import dataclasses
+import enum
 import functools
 import pathlib
 from typing import (
@@ -14,8 +15,6 @@ from typing import (
     Tuple,
     Union,
     )
-
-from openfisca_core.indexed_enums import Enum
 
 
 @dataclasses.dataclass(frozen = True)
@@ -51,7 +50,7 @@ class Contract:
     returns: Optional[Sequence[RetType]] = None
 
 
-class Suffix(Enum):
+class Suffix(enum.Enum):
     """An enum to find unique contract names."""
 
     SEMEL = ""

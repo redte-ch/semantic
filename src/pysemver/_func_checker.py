@@ -1,14 +1,13 @@
 import dataclasses
+import enum
 from typing import Optional
 
 import numpy
 
-from openfisca_core.indexed_enums import Enum, EnumArray
-
 from ._builder import Contract
 
 
-class SemVer(Enum):
+class SemVer(enums.Enum):
     """An enum just to express a release.
 
     Examples:
@@ -96,18 +95,16 @@ class FuncChecker:
             max(self.diff_defs()),
             )
 
-    def diff_hash(self) -> EnumArray:
+    def diff_hash(self) -> numpy.ndarray:
         these = numpy.array([self.this] * self.size_max)
         those = numpy.array([self.that] * self.size_max)
 
         patch = [*self.patch, *self.filler(self.patch)]
         nones = [*self.nones, *self.filler(self.nones)]
 
-        diffs = numpy.where(these != those, patch, nones)
+        return numpy.where(these != those, patch, nones)
 
-        return SemVer.encode(diffs)
-
-    def diff_args(self) -> EnumArray:
+    def diff_args(self) -> numpy.ndarray:
         these = numpy.array([self.this_len] * self.size_max)
         those = numpy.array([self.that_len] * self.size_max)
 
@@ -118,11 +115,9 @@ class FuncChecker:
         conds = [these < those, these > those, True]
         takes = [major, minor, nones]
 
-        diffs = numpy.select(conds, takes)
+        return diffs = numpy.select(conds, takes)
 
-        return SemVer.encode(diffs)
-
-    def diff_name(self) -> EnumArray:
+    def diff_name(self) -> numpy.ndarray:
         these = numpy.array([a.name for a in self.this.arguments])
         those = numpy.array([a.name for a in self.that.arguments])
         glued = tuple(zip(these, those))
@@ -130,11 +125,9 @@ class FuncChecker:
         conds = [[this != that for this, that in glued], True]
         takes = [self.major, self.nones]
 
-        diffs = [*numpy.select(conds, takes), *self.filler(self.minor)]
+        return [*numpy.select(conds, takes), *self.filler(self.minor)]
 
-        return SemVer.encode(diffs)
-
-    def diff_type(self) -> EnumArray:
+    def diff_type(self) -> numpy.ndarray:
         these = numpy.array([a.types is None for a in self.this.arguments])
         those = numpy.array([a.types is None for a in self.that.arguments])
         glued = tuple(zip(these, those))
@@ -142,11 +135,9 @@ class FuncChecker:
         conds = [[this != that for this, that in glued], True]
         takes = [self.patch, self.nones]
 
-        diffs = [*numpy.select(conds, takes), *self.filler(self.nones)]
+        return [*numpy.select(conds, takes), *self.filler(self.nones)]
 
-        return SemVer.encode(diffs)
-
-    def diff_defs(self) -> EnumArray:
+    def diff_defs(self) -> numpy.ndarray:
         major = [*self.major, *self.filler(self.major)]
         minor = [*self.minor, *self.filler(self.minor)]
         nones = [*self.nones, *self.filler(self.nones)]
@@ -178,6 +169,4 @@ class FuncChecker:
             nones,
             ]
 
-        diffs = numpy.select(conds, takes)
-
-        return SemVer.encode(diffs)
+        return numpy.select(conds, takes)

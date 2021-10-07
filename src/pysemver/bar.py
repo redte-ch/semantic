@@ -2,10 +2,9 @@ from __future__ import annotations
 
 import abc
 import sys
-from typing import Sequence
+from typing import Protocol, Sequence
 
 import termcolor
-from typing_extensions import Protocol
 
 WORK_ICON: str = termcolor.colored("[/]", "cyan")
 INFO_ICON: str = termcolor.colored("[i]", "cyan")

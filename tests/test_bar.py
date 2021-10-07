@@ -2,7 +2,7 @@ import re
 
 import pytest
 
-from openfisca_tasks import Bar
+from pysemver import Bar
 
 COLORS = re.compile(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])")
 
