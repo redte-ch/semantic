@@ -39,7 +39,7 @@ def test_find_deprecated(bar):
         checker(bar)
 
     with pytest.raises(SystemExit) as exit:
-        sys.exit(checker.exit.index)
+        sys.exit(checker.exit.value)
 
     assert exit.value.code == os.EX_OK
     assert bar.called[-2].name == "warn"
@@ -56,7 +56,7 @@ def test_find_deprecated_when_expired(bar):
         checker(bar)
 
     with pytest.raises(SystemExit) as exit:
-        sys.exit(checker.exit.index)
+        sys.exit(checker.exit.value)
 
     assert exit.value.code != os.EX_OK
     assert bar.called[-2].name == "fail"

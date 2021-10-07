@@ -24,7 +24,7 @@ def test_check_version(checker):
     infos = (call.args for call in checker.bar.called if call.name == "info")
 
     with pytest.raises(SystemExit) as exit:
-        sys.exit(checker.exit.index)
+        sys.exit(checker.exit.value)
 
     assert next(infos) == "Parsing files from 34.0.0…\n"
     assert next(infos) == "Parsing files from 34.0.0…\n"
@@ -42,7 +42,7 @@ def test_files_when_no_diff(checker):
     calls = [call.args for call in checker.bar.called]
 
     with pytest.raises(SystemExit) as exit:
-        sys.exit(checker.exit.index)
+        sys.exit(checker.exit.value)
 
     assert not any(call for call in checker.bar.called if call.name == "warn")
     assert "Version bump required: NONE!\n" in calls
@@ -57,7 +57,7 @@ def test_files_when_diff_is_not_functional(checker):
     calls = [call.args for call in checker.bar.called]
 
     with pytest.raises(SystemExit) as exit:
-        sys.exit(checker.exit.index)
+        sys.exit(checker.exit.value)
 
     assert "Version bump required: NONE!\n" in calls
     assert exit.value.code == os.EX_OK
@@ -71,7 +71,7 @@ def test_files_when_diff_is_functional(checker):
     calls = [call.args for call in checker.bar.called]
 
     with pytest.raises(SystemExit) as exit:
-        sys.exit(checker.exit.index)
+        sys.exit(checker.exit.value)
 
     assert "~ file.py\n" in calls
     assert "Version bump required: PATCH!\n" in calls
@@ -93,7 +93,7 @@ def test_files_when_diff_only_parse_changed(checker):
     assert "+ tools.__init__.assert_datetime_equals => added\n" not in calls
 
     with pytest.raises(SystemExit) as exit:
-        sys.exit(checker.exit.index)
+        sys.exit(checker.exit.value)
 
     assert "Version bump required: MINOR!\n" in calls
     assert exit.value.code != os.EX_OK
@@ -107,7 +107,7 @@ def test_funcs_when_no_diff(checker):
     calls = [call.args for call in bar.called if isinstance(call.args, str)]
 
     with pytest.raises(SystemExit) as exit:
-        sys.exit(checker.exit.index)
+        sys.exit(checker.exit.value)
 
     assert len("".join(calls).split("~")) == 1
     assert len("".join(calls).split("+")) == 1
@@ -125,7 +125,7 @@ def test_funcs_when_added(checker):
     calls = [call.args for call in bar.called if isinstance(call.args, str)]
 
     with pytest.raises(SystemExit) as exit:
-        sys.exit(checker.exit.index)
+        sys.exit(checker.exit.value)
 
     assert len("".join(calls).split("+")) > 1
     assert len("".join(calls).split("-")) == 1
@@ -142,7 +142,7 @@ def test_funcs_when_removed(checker):
     calls = [call.args for call in bar.called if isinstance(call.args, str)]
 
     with pytest.raises(SystemExit) as exit:
-        sys.exit(checker.exit.index)
+        sys.exit(checker.exit.value)
 
     assert len("".join(calls).split("-")) > 1
     assert "Version bump required: MAJOR!\n" in calls
@@ -158,7 +158,7 @@ def test_funcs_when_duplicates(checker):
     calls = [call.args for call in bar.called if isinstance(call.args, str)]
 
     with pytest.raises(SystemExit) as exit:
-        sys.exit(checker.exit.index)
+        sys.exit(checker.exit.value)
 
     assert "+ openfisca_tasks._builder.total#getter => added\n" in calls
     assert "+ openfisca_tasks.bar.init(bis) => added\n" in calls

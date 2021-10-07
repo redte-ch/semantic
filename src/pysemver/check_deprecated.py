@@ -19,8 +19,8 @@ FILES = Repo.File.tree(VERSION)
 class Exit(enum.Enum):
     """An enum with exit codes."""
 
-    OK = "ok"
-    KO = "ko"
+    OK = 0
+    KO = 1
 
 
 class CheckDeprecated(ast.NodeVisitor):
