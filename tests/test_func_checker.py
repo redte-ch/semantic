@@ -3,8 +3,8 @@ import inspect
 import pytest
 from numpy.testing import assert_equal
 
-from .._builder import ContractBuilder
-from .._func_checker import FuncChecker
+from pysemver._builder import ContractBuilder
+from pysemver._func_checker import FuncChecker
 
 from . import fixtures
 

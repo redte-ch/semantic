@@ -4,7 +4,7 @@ import tempfile
 
 import pytest
 
-from openfisca_tasks import CheckDeprecated
+from pysemver import CheckDeprecated
 
 
 class Module:

@@ -3,7 +3,7 @@ import sys
 
 import pytest
 
-from openfisca_tasks import CheckVersion
+from pysemver import CheckVersion
 
 
 @pytest.fixture

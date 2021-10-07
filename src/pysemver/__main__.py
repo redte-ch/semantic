@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import sys
 
-import openfisca_tasks as tasks
+import pysemver as tasks
 
-from openfisca_tasks import Bar, SupportsProgress
+from pysemver import Bar, SupportsProgress
 
 from ._types import HasExit
 

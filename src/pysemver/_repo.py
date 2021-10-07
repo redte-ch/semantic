@@ -104,9 +104,11 @@ class _Version:
 
         """
 
+        # TODO: This needs to go to a config, or something.
+
         return (
             pkg_resources
-            .get_distribution("openfisca_core")
+            .get_distribution("pysemver")
             .version
             )
 
