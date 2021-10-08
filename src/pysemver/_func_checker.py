@@ -15,9 +15,6 @@ class SemVer(enum.Enum):
         ['NONES', 'PATCH', 'MINOR', 'MAJOR']
 
         >>> [version.value for version in SemVer]
-        ['nones', 'patch', 'minor', 'major']
-
-        >>> [version.index for version in SemVer]
         [0, 1, 2, 3]
 
     """
