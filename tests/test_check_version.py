@@ -29,8 +29,8 @@ def test_check_version(checker):
     assert next(infos) == "Parsing files from 0.2.0…\n"
     assert next(infos) == "Parsing files from 0.2.0…\n"
     assert next(infos) == "Checking for functional changes…\n"
-    assert next(infos) == "Checking for 1 functions…\n"
-    assert next(infos) == "Checking for 0 functions…\n"
+    assert next(infos) == "Checking for 2 functions…\n"
+    assert next(infos) == "Checking for 3 functions…\n"
     assert next(infos) == "Version bump required: NONE!\n"
     assert exit.value.code == os.EX_OK
 
@@ -84,13 +84,13 @@ def test_files_when_diff_only_parse_changed(checker):
     checker.parser = type(checker.parser)(this = "0.2.5", that = "0.2.6")
     checker()
     calls = [call.args for call in checker.bar.called]
-    assert "+ pysemver._func_checker.function => 1\n" in calls
+    assert "+ pysemver._func_checker.function => 2\n" in calls
 
     checker.parser.diff = []
     checker.bar.called = []
     checker()
     calls = [call.args for call in checker.bar.called]
-    assert "+ pysemver._func_checker.function => 1\n" not in calls
+    assert "+ pysemver._func_checker.function => 2\n" not in calls
 
     with pytest.raises(SystemExit) as exit:
         sys.exit(checker.exit.value)
@@ -160,11 +160,11 @@ def test_funcs_when_duplicates(checker):
     with pytest.raises(SystemExit) as exit:
         sys.exit(checker.exit.value)
 
-    assert "- pysemver._func_checker.score(bis) => 0\n" in calls
-    assert "- pysemver._func_checker.score(ter) => 0\n" in calls
-    assert "- pysemver._func_checker.score(quater) => 0\n" in calls
-    assert "- pysemver._func_checker.score(quinquies) => 0\n" in calls
-    assert "- pysemver._func_checker.score(sexies) => 0\n" in calls
-    assert "- pysemver._func_checker.score(septies) => 0\n" not in calls
+    assert "- pysemver._func_checker.score(bis) => 3\n" in calls
+    assert "- pysemver._func_checker.score(ter) => 3\n" in calls
+    assert "- pysemver._func_checker.score(quater) => 3\n" in calls
+    assert "- pysemver._func_checker.score(quinquies) => 3\n" in calls
+    assert "- pysemver._func_checker.score(sexies) => 3\n" in calls
+    assert "- pysemver._func_checker.score(septies) => 3\n" not in calls
     assert "Version bump required: MAJOR!\n" in calls
     assert exit.value.code != os.EX_OK

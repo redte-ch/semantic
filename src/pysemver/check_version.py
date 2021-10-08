@@ -70,8 +70,8 @@ class CheckVersion:
         (
             self
             ._check_files(self.bumper, diff)
-            ._check_funcs(self.bumper, 1, this, that)
-            ._check_funcs(self.bumper, 0, that, this)
+            ._check_funcs(self.bumper, 2, this, that)
+            ._check_funcs(self.bumper, 3, that, this)
             ._check_version_acceptable(self.bumper)
             .bar.then()
             )
@@ -93,7 +93,7 @@ class CheckVersion:
     def _check_files(self: T, bumper: Bumper, files: Set[str]) -> T:
         """Requires a bump if there's a diff in files."""
 
-        what: int = 2
+        what: int = 1
         total: int = len(files)
 
         self.bar.info("Checking for functional changes…\n")
@@ -104,7 +104,7 @@ class CheckVersion:
                 continue
 
             bumper(what)
-            self.exit = Exit.KO
+            self.exit = bumper.what(what)
             self.bar.wipe()
             self.bar.warn(f"{str(bumper.what(what))} {file}\n")
             self.bar.push(count, total)
@@ -153,15 +153,17 @@ class CheckVersion:
                 bumper(what)
                 self.bar.wipe()
                 self.bar.warn(f"{str(bumper.what(what))} {name} => {what}\n")
+                self.exit = bumper.what(what)
                 continue
 
             # Now we do a ``small-print`` comparison between contracts.
             f = FuncChecker(this, that)
 
-            if f.score() == (3 - bumper.what(what).index):
+            if f.score() == bumper.what(what).value:
                 bumper(what)
                 self.bar.wipe()
-                self.bar.warn(f"{str(bumper.what(what))} {name} => {f.reason}\n")
+                self.bar.warn(f"{str(bumper.what(what))} {name}: {f.reason}\n")
+                self.exit = bumper.what(what)
                 continue
 
         self.bar.wipe()
