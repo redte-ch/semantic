@@ -104,7 +104,7 @@ class CheckVersion:
                 continue
 
             bumper(what)
-            self.exit = bumper.what(what)
+            self.exit = bumper.required
             self.bar.wipe()
             self.bar.warn(f"{str(bumper.what(what))} {file}\n")
             self.bar.push(count, total)
@@ -141,7 +141,7 @@ class CheckVersion:
 
             # We know we will fail already, but we still need to determine
             # the needed version bump.
-            self.exit = Exit.KO
+            self.exit = bumper.required
 
             # We will try to find a match between before/after contracts.
             name = this.name
@@ -153,7 +153,7 @@ class CheckVersion:
                 bumper(what)
                 self.bar.wipe()
                 self.bar.warn(f"{str(bumper.what(what))} {name} => {what}\n")
-                self.exit = bumper.what(what)
+                self.exit = bumper.required
                 continue
 
             # Now we do a ``small-print`` comparison between contracts.
@@ -163,7 +163,7 @@ class CheckVersion:
                 bumper(what)
                 self.bar.wipe()
                 self.bar.warn(f"{str(bumper.what(what))} {name}: {f.reason}\n")
-                self.exit = bumper.what(what)
+                self.exit = bumper.required
                 continue
 
         self.bar.wipe()
