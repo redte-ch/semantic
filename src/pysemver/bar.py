@@ -2,7 +2,13 @@ from __future__ import annotations
 
 import abc
 import sys
-from typing import Protocol, Sequence
+from typing import Sequence
+
+if sys.version_info >= (3, 8):
+    from typing import Protocol
+
+else:
+    from typing_extensions import Protocol
 
 import termcolor
 

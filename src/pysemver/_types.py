@@ -1,7 +1,13 @@
 from __future__ import annotations
 
 import abc
-from typing import Literal, Protocol
+import sys
+
+if sys.version_info >= (3, 8):
+    from typing import Literal, Protocol
+
+else:
+    from typing_extensions import Literal, Protocol
 
 What = Literal["this", "that"]
 
