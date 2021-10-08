@@ -15,13 +15,15 @@ test: compile clean
 
 release:
 	@poetry run nox -s test
-	@poetry run python -m pysemver CheckVersion \
-		&& exit_code=$$? \
-		|| exit_code=$$? \
-		&& version=( "" "patch" "minor" "major" ) \
-		&& poetry version $${version[$${exit_code}]} -q
+	@poetry run pip uninstall pysemver -y -q
 	@poetry install -q
-	@git add -A
-	@git commit -m "Bump version to $(shell poetry version --short)"
-	@git tag $(shell poetry version --short)
-	@git push --tags
+	@poetry run python -m pysemver CheckVersion \
+		&& exit_code=$${?} \
+		|| exit_code=$${?} \
+		&& version=( "" "patch" "minor" "major" ) \
+		&& poetry version $${version[$${exit_code}]} -q \
+		&& poetry install -q \
+		&& git add -A \
+		&& poetry version --short | xargs -I \{\} git commit -m "Bump version to {}" \
+		&& poetry version --short | xargs -I \{\} git tag \{\} \
+		&& git push --tags

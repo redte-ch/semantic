@@ -4,6 +4,7 @@ import shutil
 from typing import Any, Pattern
 
 import nox
+import nox_poetry
 
 nox.options.reuse_existing_virtualenvs = True
 python_versions = ("3.7.12", "3.8.12", "3.9.7")
@@ -50,13 +51,13 @@ class SessionCache:
         self.back_toml.unlink()
 
 
-@nox.session
+@nox_poetry.session
 @nox.parametrize("python, numpy", matrix, ids = ids)
 def test(session, numpy):
     session.run("make", "install", external = True, silent = True)
 
     with SessionCache(session.name, session.cache_dir):
         session.run("poetry", "add", f"numpy@{numpy}", silent = True)
-        session.run("poetry", "install", silent = True)
 
-    session.run("poetry", "run", "pytest", "-qx")
+    session.install(".", silent = True)
+    session.run("pytest", "-qx")
