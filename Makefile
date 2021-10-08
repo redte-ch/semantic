@@ -1,5 +1,3 @@
-default_session = "test(3.9.7/1.21.2)"
-
 .DEFAULT_GOAL := test
 
 install:
@@ -13,13 +11,17 @@ clean: src
 	@rm -rf $(shell find $? -name "*.pyc")
 
 test: compile clean
-	@poetry run python -m pysemver CheckVersion
-	@poetry run nox -s ${default_session}
+	@poetry run pytest -qx
 
 release:
-	@poetry version ${version}
-	@git add -A
 	@poetry run nox -s test
-	@git commit -m "Bump version to ${version}"
-	@git tag ${version}
+	@poetry run python -m pysemver CheckVersion \
+		&& exit_code=$$? \
+		|| exit_code=$$? \
+		&& version=( "" "patch" "minor" "major" ) \
+		&& poetry version $${version[$${exit_code}]} -q
+	@poetry install -q
+	@git add -A
+	@git commit -m "Bump version to $(shell poetry version --short)"
+	@git tag $(shell poetry version --short)
 	@git push --tags
