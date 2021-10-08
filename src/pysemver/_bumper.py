@@ -25,13 +25,13 @@ class Version(enum.Enum):
 
     """
 
-    MAJOR = "removed"
-    MINOR = "added"
-    PATCH = "diff"
-    NONE = "none"
+    MAJOR = 0
+    MINOR = 1
+    PATCH = 2
+    NONE = 3
 
     def __str__(self) -> str:
-        return TO_STR[self.index]
+        return TO_STR[self.value]
 
 
 class Bumper:
@@ -72,7 +72,7 @@ class Bumper:
         self.required = Version.NONE
 
     def __call__(self, bump: str) -> None:
-        index = min(self.required.index, Version(bump).index)
+        index = min(self.required.value, Version(bump).value)
         self.required = tuple(Version)[index]
 
     def is_acceptable(self) -> bool:
@@ -143,7 +143,7 @@ class Bumper:
         release, *rest = re.split("\\+|\\-", version)
 
         # We get the major/minor/patch number based on the required bump.
-        number: str = release.split(".")[self.required.index]
+        number: str = release.split(".")[self.required.value]
 
         # Finally we determine if this is a release or not.
         is_release = len(rest) == 0
