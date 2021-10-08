@@ -152,7 +152,7 @@ def test_funcs_when_removed(checker):
 def test_funcs_when_duplicates(checker):
     """Gives a unique name to all contracts in the same module."""
 
-    checker.parser = type(checker.parser)(this = "HEAD", that = "35.5.1")
+    checker.parser = type(checker.parser)(this = "0.2.8", that = "0.2.7")
     checker()
     bar = checker.bar
     calls = [call.args for call in bar.called if isinstance(call.args, str)]
@@ -160,8 +160,11 @@ def test_funcs_when_duplicates(checker):
     with pytest.raises(SystemExit) as exit:
         sys.exit(checker.exit.value)
 
-    assert "+ openfisca_tasks._builder.total#getter => added\n" in calls
-    assert "+ openfisca_tasks.bar.init(bis) => added\n" in calls
-    assert "+ openfisca_tasks.bar.init => added\n" in calls
+    assert "- pysemver._func_checker.score(bis) => 0\n" in calls
+    assert "- pysemver._func_checker.score(ter) => 0\n" in calls
+    assert "- pysemver._func_checker.score(quater) => 0\n" in calls
+    assert "- pysemver._func_checker.score(quinquies) => 0\n" in calls
+    assert "- pysemver._func_checker.score(sexies) => 0\n" in calls
+    assert "- pysemver._func_checker.score(septies) => 0\n" not in calls
     assert "Version bump required: MAJOR!\n" in calls
     assert exit.value.code != os.EX_OK
