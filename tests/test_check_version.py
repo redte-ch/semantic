@@ -119,7 +119,7 @@ def test_funcs_when_no_diff(checker):
 def test_funcs_when_added(checker):
     """Requires a minor bump when a function is added."""
 
-    checker.parser = type(checker.parser)(this = "35.1.0", that = "35.0.0")
+    checker.parser = type(checker.parser)(this = "0.2.5", that = "0.2.4")
     checker()
     bar = checker.bar
     calls = [call.args for call in bar.called if isinstance(call.args, str)]
