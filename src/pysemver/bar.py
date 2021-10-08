@@ -135,4 +135,4 @@ class Bar:
         return "".join(message)
 
     def _wipe_message(self) -> str:
-        return f"{' ' * BAR_SIZE * 2}\r"
+        return f"{' ' * BAR_SIZE * 3}\r"
