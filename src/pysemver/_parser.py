@@ -29,22 +29,22 @@ class Parser:
         that: The revision to compare ``this`` with, defaults to last version.
 
     Examples:
-        >>> parser = Parser(this = "35.0.1", that = "35.0.0")
+        >>> parser = Parser(this = "0.4.0", that = "0.2.0")
 
         >>> parser.diff
-        ['CHANGELOG.md', 'openfisca_core/simulation_builder.py', 'setup.py',...
+        ['.gitignore', '.python-version', 'Makefile', 'noxfile.py', 'poetry...
 
         >>> with parser(what = "this") as parsing:
         ...     list(parsing)
         ...
-        [(1, 3), (2, 3), (3, 3)]
+        [(1, 7), (2, 7), (3, 7), (4, 7), (5, 7), (6, 7), (7, 7)]
 
         >>> this = set(parser.contracts)
 
         >>> with parser(what = "that") as parsing:
         ...     list(parsing)
         ...
-        [(1, 3), (2, 3), (3, 3)]
+        [(1, 6), (2, 6), (3, 6), (4, 6), (5, 6), (6, 6)]
 
         >>> that = set(parser.contracts)
 
@@ -55,11 +55,10 @@ class Parser:
         AttributeError: 'Parser' object has no attribute 'thus'
 
         >>> next(iter(this ^ that & this))  # Added functions…
-        Contract(name='core.test_axes.test_add_axis_with_group_int_period', ...
+        Contract(name='...', ...
 
         >>> next(iter(that ^ this & that))  # Removed functions…
-        Traceback (most recent call last):
-        StopIteration
+        Contract(name='...', ...
 
     .. versionadded:: 36.1.0
 
