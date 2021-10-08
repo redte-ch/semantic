@@ -4,7 +4,7 @@ from typing import Sequence, Tuple, Type
 
 from ._repo import Repo
 
-TO_STR = "-", "+", "~", ""
+TO_STR = "", "~", "+", "-"
 
 
 class Version(enum.Enum):
@@ -12,23 +12,20 @@ class Version(enum.Enum):
 
     Examples:
         >>> [str(version) for version in Version]
-        ['-', '+', '~', '']
+        ['', '~', '+', '-']
 
         >>> [version.name for version in Version]
-        ['MAJOR', 'MINOR', 'PATCH', 'NONE']
+        ['NONE', 'PATCH', 'MINOR', 'MAJOR']
 
         >>> [version.value for version in Version]
-        ['removed', 'added', 'diff', 'none']
-
-        >>> [version.index for version in Version]
         [0, 1, 2, 3]
 
     """
 
-    MAJOR = 0
-    MINOR = 1
-    PATCH = 2
-    NONE = 3
+    NONE = 0
+    PATCH = 1
+    MINOR = 2
+    MAJOR = 3
 
     def __str__(self) -> str:
         return TO_STR[self.value]
@@ -47,14 +44,14 @@ class Bumper:
         >>> bumper = Bumper()
 
         >>> bumper.required
-        <Version.NONE: 'none'>
+        <Version.NONE: 0>
 
-        >>> bumper.what("removed")
-        <Version.MAJOR: 'removed'>
+        >>> bumper.what(3)
+        <Version.MAJOR: 3>
 
-        >>> bumper("removed")
+        >>> bumper(3)
         >>> bumper.required
-        <Version.MAJOR: 'removed'>
+        <Version.MAJOR: 3>
 
     .. versionadded:: 36.1.0
 
@@ -71,8 +68,8 @@ class Bumper:
         self.what = Version
         self.required = Version.NONE
 
-    def __call__(self, bump: str) -> None:
-        index = min(self.required.value, Version(bump).value)
+    def __call__(self, bump: int) -> None:
+        index = max(self.required.value, Version(bump).value)
         self.required = tuple(Version)[index]
 
     def is_acceptable(self) -> bool:
@@ -87,7 +84,7 @@ class Bumper:
             >>> bumper.is_acceptable()
             True
 
-            >>> bumper("removed")
+            >>> bumper(3)
             >>> bumper.this = "1.2.3"
             >>> bumper.that = "1.2.3"
             >>> bumper.is_acceptable()
@@ -143,7 +140,7 @@ class Bumper:
         release, *rest = re.split("\\+|\\-", version)
 
         # We get the major/minor/patch number based on the required bump.
-        number: str = release.split(".")[self.required.value]
+        number: str = release.split(".")[3 - self.required.value]
 
         # Finally we determine if this is a release or not.
         is_release = len(rest) == 0
