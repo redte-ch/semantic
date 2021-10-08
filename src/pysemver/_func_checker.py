@@ -65,9 +65,6 @@ class FuncChecker:
 
         return numpy.repeat(index, times)
 
-    def function(self) -> None:
-        return None
-
     def score(self) -> int:
         if max(self.diff_args()) == 2:
             self.reason = "args-diff"
