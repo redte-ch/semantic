@@ -9,18 +9,22 @@ nox.options.reuse_existing_virtualenvs = True
 python_versions = ("3.7.12", "3.8.12", "3.9.7")
 numpy_versions = ("1.17.5", "1.18.5", "1.19.5", "1.20.3", "1.21.2")
 exclude = (("3.9.7", "1.18.5"),)
-matrix = (
+matrix = tuple(
     (python, numpy)
     for python in python_versions
     for numpy in numpy_versions
     if (python, numpy) not in exclude
+    )
+ids = tuple(
+    f"{python}/{numpy}"
+    for python, numpy in matrix
     )
 
 
 class SessionCache:
     sesh_name: str
     sesh_cache: str
-    pattern: Pattern = re.compile(r"\(|\)|\=|\'|\"|\,|\s")
+    pattern: Pattern = re.compile(r"\(|\)|\/|\=|\'|\"|\,|\s")
 
     def __init__(self, sesh_name: str, sesh_cache: str) -> None:
         self.lock_name = self.pattern.sub("-", sesh_name)
@@ -47,7 +51,7 @@ class SessionCache:
 
 
 @nox.session
-@nox.parametrize("python, numpy", matrix)
+@nox.parametrize("python, numpy", matrix, ids = ids)
 def test(session, numpy):
     session.run("make", "install", external = True, silent = True)
 
