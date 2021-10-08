@@ -136,7 +136,7 @@ def test_funcs_when_added(checker):
 def test_funcs_when_removed(checker):
     """Requires a major bump when a function is removed."""
 
-    checker.parser = type(checker.parser)(this = "35.0.0", that = "34.7.0")
+    checker.parser = type(checker.parser)(this = "0.2.6", that = "0.2.5")
     checker()
     bar = checker.bar
     calls = [call.args for call in bar.called if isinstance(call.args, str)]
