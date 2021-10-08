@@ -16,9 +16,10 @@ test: compile clean
 test-nox:
 	@poetry run nox -s test
 
-version: test-nox
+release:
 	@poetry version ${version}
 	@git add -A
+	@${MAKE} test-nox
 	@git commit -m "Bump version to ${version}"
 	@git tag ${version}
 	@git push --tags
