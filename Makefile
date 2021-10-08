@@ -13,6 +13,7 @@ clean: src
 	@rm -rf $(shell find $? -name "*.pyc")
 
 test: compile clean
+	@poetry run python -m pysemver CheckVersion
 	@poetry run nox -s ${default_session}
 
 release:
