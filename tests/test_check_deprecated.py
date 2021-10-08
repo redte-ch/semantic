@@ -43,7 +43,7 @@ def test_find_deprecated(bar):
 
     assert exit.value.code == os.EX_OK
     assert bar.called[-2].name == "warn"
-    assert f"{name}.function:5" in bar.called[-2].args
+    assert f"{name}.function:6" in bar.called[-2].args
 
 
 def test_find_deprecated_when_expired(bar):
