@@ -34,6 +34,11 @@ class Module:
 def test_check_deprecated(bar):
     """Prints out the features marked as deprecated."""
 
+    lineno = 6
+
+    if sys.version_info < (3, 8):
+        lineno -= 1
+
     with Module() as (file, name):
         checker = CheckDeprecated([file.name])
         checker(bar)
@@ -43,7 +48,7 @@ def test_check_deprecated(bar):
 
     assert exit.value.code == os.EX_OK
     assert bar.called[-2].name == "warn"
-    assert f"{name}.function:5" in bar.called[-2].args
+    assert f"{name}.function:{lineno}" in bar.called[-2].args
 
 
 def test_find_deprecated_when_expired(bar):
