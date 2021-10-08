@@ -11,9 +11,9 @@ def checker(bar):
     """A version checker."""
 
     checker = CheckVersion(bar)
-    checker.parser = type(checker.parser)(this = "34.0.0", that = "34.0.0")
-    checker.bumper.this = "34.0.0"
-    checker.bumper.that = "34.0.0"
+    checker.parser = type(checker.parser)(this = "HEAD", that = "0.1.0")
+    checker.bumper.this = "HEAD"
+    checker.bumper.that = "0.1.0"
     return checker
 
 

@@ -22,10 +22,10 @@ class SemVer(enum.Enum):
 
     """
 
-    NONES = "nones"
-    PATCH = "patch"
-    MINOR = "minor"
-    MAJOR = "major"
+    NONES = 0
+    PATCH = 1
+    MINOR = 2
+    MAJOR = 3
 
 
 @dataclasses.dataclass
@@ -45,19 +45,19 @@ class FuncChecker:
 
     @property
     def nones(self) -> numpy.ndarray:
-        return numpy.repeat(SemVer.NONES.index, self.size_min)
+        return numpy.repeat(SemVer.NONES.value, self.size_min)
 
     @property
     def patch(self) -> numpy.ndarray:
-        return numpy.repeat(SemVer.PATCH.index, self.size_min)
+        return numpy.repeat(SemVer.PATCH.value, self.size_min)
 
     @property
     def minor(self) -> numpy.ndarray:
-        return numpy.repeat(SemVer.MINOR.index, self.size_min)
+        return numpy.repeat(SemVer.MINOR.value, self.size_min)
 
     @property
     def major(self) -> numpy.ndarray:
-        return numpy.repeat(SemVer.MAJOR.index, self.size_min)
+        return numpy.repeat(SemVer.MAJOR.value, self.size_min)
 
     def filler(self, array: numpy.ndarray) -> numpy.ndarray:
         index: int = array[0]
