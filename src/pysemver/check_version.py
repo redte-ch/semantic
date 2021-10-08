@@ -70,8 +70,8 @@ class CheckVersion:
         (
             self
             ._check_files(self.bumper, diff)
-            ._check_funcs(self.bumper, "added", this, that)
-            ._check_funcs(self.bumper, "removed", that, this)
+            ._check_funcs(self.bumper, 1, this, that)
+            ._check_funcs(self.bumper, 0, that, this)
             ._check_version_acceptable(self.bumper)
             .bar.then()
             )
@@ -93,7 +93,7 @@ class CheckVersion:
     def _check_files(self: T, bumper: Bumper, files: Set[str]) -> T:
         """Requires a bump if there's a diff in files."""
 
-        what: int = 1
+        what: int = 2
         total: int = len(files)
 
         self.bar.info("Checking for functional changes…\n")

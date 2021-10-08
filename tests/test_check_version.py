@@ -11,8 +11,8 @@ def checker(bar):
     """A version checker."""
 
     checker = CheckVersion(bar)
-    checker.parser = type(checker.parser)(this = "0.2.1", that = "0.2.0")
-    checker.bumper.this = "0.2.1"
+    checker.parser = type(checker.parser)(this = "0.2.0", that = "0.2.0")
+    checker.bumper.this = "0.2.0"
     checker.bumper.that = "0.2.0"
     return checker
 
@@ -26,11 +26,11 @@ def test_check_version(checker):
     with pytest.raises(SystemExit) as exit:
         sys.exit(checker.exit.value)
 
-    assert next(infos) == "Parsing files from HEAD…\n"
+    assert next(infos) == "Parsing files from 0.2.0…\n"
     assert next(infos) == "Parsing files from 0.2.0…\n"
     assert next(infos) == "Checking for functional changes…\n"
-    assert next(infos) == "Checking for added functions…\n"
-    assert next(infos) == "Checking for removed functions…\n"
+    assert next(infos) == "Checking for 1 functions…\n"
+    assert next(infos) == "Checking for 0 functions…\n"
     assert next(infos) == "Version bump required: NONE!\n"
     assert exit.value.code == os.EX_OK
 
