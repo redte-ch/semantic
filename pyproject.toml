@@ -6,11 +6,12 @@ authors = ["Mauko Quiroga <mauko@pm.me>"]
 packages = [{include = "pysemver", from = "src"}]
 
 [tool.poetry.dependencies]
-python = ">=3.7,<3.11"
+python = ">= 3.7, < 3.11"
+numpy = ">= 1.18, < 1.22"
 termcolor = "^1.1.0"
-numpy = "^1.21.2"
 
 [tool.poetry.dev-dependencies]
+nox-poetry = "^0.8.6"
 pytest = "^6.2.5"
 wemake-python-styleguide = "^0.15.3"
 
