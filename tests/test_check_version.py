@@ -81,16 +81,16 @@ def test_files_when_diff_is_functional(checker):
 def test_files_when_diff_only_parse_changed(checker):
     """Only go inspect changed files."""
 
-    checker.parser = type(checker.parser)(this = "35.1.0", that = "35.0.0")
+    checker.parser = type(checker.parser)(this = "0.2.5", that = "0.2.6")
     checker()
     calls = [call.args for call in checker.bar.called]
-    assert "+ tools.__init__.assert_datetime_equals => added\n" in calls
+    assert "+ pysemver._func_checker.function => 1\n" in calls
 
     checker.parser.diff = []
     checker.bar.called = []
     checker()
     calls = [call.args for call in checker.bar.called]
-    assert "+ tools.__init__.assert_datetime_equals => added\n" not in calls
+    assert "+ pysemver._func_checker.function => 1\n" not in calls
 
     with pytest.raises(SystemExit) as exit:
         sys.exit(checker.exit.value)
