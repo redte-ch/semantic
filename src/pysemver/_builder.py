@@ -121,10 +121,10 @@ class ContractBuilder(ast.NodeVisitor):
             >>> argument = next(iter(contract.arguments))
 
             >>> builder.contracts
-            (Contract(name='openfisca-core.file.function', file='file.py', a...
+            (Contract(name='pysemver.file.function', file='file.py', a...
 
             >>> contract.name
-            'openfisca-core.file.function'
+            'pysemver.file.function'
 
             >>> contract.file
             'file.py'
