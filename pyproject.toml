@@ -9,6 +9,7 @@ packages = [{include = "pysemver", from = "src"}]
 python = "~3.7 || ~3.8 || ~3.9"
 invoke = "<2"
 numpy = ">=1.7, <1.22"
+rich = "<11"
 termcolor = "<2"
 typing_extensions = { version = "<4", python = "~3.7" }
 
