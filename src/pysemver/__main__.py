@@ -11,7 +11,6 @@ from pysemver import CheckDeprecated, CheckVersion
 from ._types import HasExit
 
 bar: SupportsProgress = Bar()
-tasks = Collection()
 
 
 @invoke.task
@@ -34,6 +33,23 @@ def check_version(context):
     sys.exit(context.task.exit.value)
 
 
-tasks.add_task(check_deprecated)
-tasks.add_task(check_version)
-console = Program(namespace = tasks)
+class Console(Program):
+
+    tasks = Collection()
+
+    def __init__(self) -> None:
+        self.tasks.add_task(check_deprecated)
+        self.tasks.add_task(check_version)
+        super().__init__(namespace = self.tasks)
+
+    def print_help(self) -> None:
+        usage = "<command> [--command-opts] ..."
+        sys.stdout.write(f"Usage: {self.binary} {usage}\n")
+        sys.stdout.write("\n")
+        self.list_tasks()
+
+    def task_list_opener(self, extra: str = "") -> str:
+        return "Commands"
+
+
+console = Console()
