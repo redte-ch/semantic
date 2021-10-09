@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import enum
 import functools
 import sys
 
@@ -7,6 +8,7 @@ import invoke
 from invoke import Collection, Program
 from rich.console import Console
 from rich.panel import Panel
+# from rich.pretty import Pretty
 from rich.table import Table
 
 from pysemver import Bar, SupportsProgress
@@ -37,6 +39,18 @@ def check_version(_context):
     sys.exit(task.exit.value)
 
 
+class Theme(str, enum.Enum):
+    FAIL = "red"
+    INFO = "cyan"
+    OKAY = "green"
+    WARN = "yellow"
+    WORK = "magenta"
+
+    BORDER = "dim magenta"
+    COLUMN = "green"
+    ROW = "cyan"
+
+
 class CLI(Program):
 
     console = Console()
@@ -57,11 +71,19 @@ class CLI(Program):
 
     def _build_panel(self) -> Panel:
         title = (f"Usage: {self.binary} <command> [--command-opts] …\n")
-        panel = functools.partial(Panel, title = title, border_style = "info")
+        panel = functools.partial(Panel, title = title)
+        panel = functools.partial(panel, expand = False)
+        panel = functools.partial(panel, border_style = Theme.BORDER)
+        panel = functools.partial(panel, padding = 1)
         return panel
 
     def _build_content(self) -> Table:
-        table = Table(box = None)
+        table = functools.partial(Table)
+        table = functools.partial(table, box = None)
+        table = functools.partial(table, padding = (0,5))
+        table = functools.partial(table, row_styles = [Theme.ROW])
+        table = functools.partial(table, style = Theme.COLUMN)
+        table = table()
         table.add_column("Command")
         table.add_column("Description")
 
