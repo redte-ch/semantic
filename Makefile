@@ -17,7 +17,7 @@ release:
 	@poetry run nox -s test
 	@poetry run pip uninstall pysemver -y -q
 	@poetry install -q
-	@poetry run python -m pysemver CheckVersion \
+	@poetry run pysemver check-version \
 		&& exit_code=$${?} \
 		|| exit_code=$${?} \
 		&& version=( "" "patch" "minor" "major" ) \

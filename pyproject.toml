@@ -18,7 +18,7 @@ pytest = "<7"
 wemake-python-styleguide = "<1"
 
 [tool.poetry.scripts]
-pysemver = 'pysemver:program.run'
+pysemver = 'pysemver.__main__:console.run'
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
