@@ -10,6 +10,7 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
+from rich.layout import Layout
 
 from pysemver import Bar, SupportsProgress
 from pysemver import CheckDeprecated, CheckVersion
@@ -47,15 +48,19 @@ class Theme(str, enum.Enum):
     FAIL = "red"
 
     BORDER = "cyan"
-    TITLE = "bold green"
     COLUMN = "magenta"
     ROW = "cyan"
+    TITLE = "bold green"
 
 
 class CLI(Program):
 
-    console = Console()
+    layout = Layout()
+    rows = Layout()
+    grid = functools.partial(Layout, " ", ratio = 2)
+    box = functools.partial(Layout, ratio = 5)
     tasks = Collection()
+    console = Console()
 
     def __init__(self) -> None:
         self.tasks.add_task(check_deprecated)
@@ -63,28 +68,42 @@ class CLI(Program):
         super().__init__(namespace = self.tasks)
 
     def print_help(self) -> None:
-        panel = self._build_panel()
-        content = self._build_content()
-        self.console.print(panel(content))
+        panel = self._panel()
+        content = self._content()
+        self.console.print(self._layout(panel(content)))
 
     def task_list_opener(self, extra: str = "") -> str:
         return "Commands"
 
-    def _build_panel(self) -> Panel:
-        title = self._build_title()
+    def _layout(self, panel: Panel) -> Layout:
+        self.rows.split_column(
+            self.grid(),
+            self.box(panel),
+            self.grid(),
+            )
+
+        self.layout.split_row(
+            self.grid(),
+            self.box(self.rows),
+            self.grid(),
+            )
+
+        return self.layout
+
+    def _panel(self) -> Panel:
+        title = self._title()
         panel = functools.partial(Panel, title = title)
-        panel = functools.partial(panel, expand = False)
         panel = functools.partial(panel, border_style = Theme.BORDER)
         panel = functools.partial(panel, padding = 1)
         return panel
 
-    def _build_title(self) -> Text:
+    def _title(self) -> Text:
         title = (f"Usage: {self.binary} <command> [--command-opts] …\n")
         text = Text(title)
         text.stylize(Theme.TITLE)
         return text
 
-    def _build_content(self) -> Table:
+    def _content(self) -> Table:
         table = functools.partial(Table)
         table = functools.partial(table, box = None)
         table = functools.partial(table, padding = (0,5))
