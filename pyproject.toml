@@ -10,6 +10,7 @@ python = "~3.7 || ~3.8 || ~3.9"
 funcy = "<2"
 invoke = "<2"
 numpy = ">=1.7, <1.22"
+pipeop = "<1"
 rich = "<11"
 termcolor = "<2"
 typing_extensions = { version = "<4", python = "~3.7" }
@@ -20,7 +21,7 @@ pytest = "<7"
 wemake-python-styleguide = "<1"
 
 [tool.poetry.scripts]
-pysemver = 'pysemver.__main__:cli.run'
+pysemver = 'pysemver:main.run'
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

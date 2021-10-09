@@ -484,6 +484,14 @@ python-versions = "*"
 flake8-polyfill = ">=1.0.2,<2"
 
 [[package]]
+name = "pipeop"
+version = "0.3.0"
+description = "A decorator that changes the >> and << operators to mimic Elixir-style function pipes"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "platformdirs"
 version = "2.4.0"
 description = "A small Python module for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
@@ -768,7 +776,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "~3.7 || ~3.8 || ~3.9"
-content-hash = "45555b8bbc1c1e5245354d56f05c516065865a14f4eec46d398e0459b0184e1b"
+content-hash = "7f18a60814f442fce6ac877c36d9f47f7c2914fc9364e6113f97add262da58b2"
 
 [metadata.files]
 argcomplete = [
@@ -964,6 +972,9 @@ pbr = [
 pep8-naming = [
     {file = "pep8-naming-0.11.1.tar.gz", hash = "sha256:a1dd47dd243adfe8a83616e27cf03164960b507530f155db94e10b36a6cd6724"},
     {file = "pep8_naming-0.11.1-py2.py3-none-any.whl", hash = "sha256:f43bfe3eea7e0d73e8b5d07d6407ab47f2476ccaeff6937c84275cd30b016738"},
+]
+pipeop = [
+    {file = "pipeop-0.3.0.tar.gz", hash = "sha256:d41664f141eb17dbe0c52fdb49252cd2d640b953dbb706caa8412617a513301e"},
 ]
 platformdirs = [
     {file = "platformdirs-2.4.0-py3-none-any.whl", hash = "sha256:8868bbe3c3c80d42f20156f22e7131d2fb321f5bc86a2a345375c6481a67021d"},

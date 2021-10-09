@@ -9,24 +9,30 @@ from ._check_version import CheckVersion
 from ._types import HasExit
 from ._bar import Bar, SupportsProgress
 
-bar: SupportsProgress = Bar()
 
+class Tasks(invoke.Collection):
 
-@invoke.task
-def check_deprecated(_context):
-    """Check if there are features to deprecate."""
+    bar: SupportsProgress = Bar()
 
-    task: HasExit
-    task = CheckDeprecated(bar)
-    task()
-    sys.exit(task.exit.value)
+    def __init__(self) -> None:
+        super().__init__()
+        self.add_task(self.check_deprecated)
+        self.add_task(self.check_version)
 
+    @invoke.task
+    def check_deprecated(_context):
+        """Check if there are features to deprecate."""
 
-@invoke.task
-def check_version(_context):
-    """Check if the actual version is valid."""
+        task: HasExit
+        task = CheckDeprecated(Tasks.bar)
+        task()
+        sys.exit(task.exit.value)
 
-    task: HasExit
-    task = CheckVersion(bar)
-    task()
-    sys.exit(task.exit.value)
+    @invoke.task
+    def check_version(_context):
+        """Check if the actual version is valid."""
+
+        task: HasExit
+        task = CheckVersion(Tasks.bar)
+        task()
+        sys.exit(task.exit.value)
