@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import functools
 import sys
 
 import invoke
@@ -47,12 +48,17 @@ class CLI(Program):
         super().__init__(namespace = self.tasks)
 
     def print_help(self) -> None:
-        title = (f"Usage: {self.binary} <command> [--command-opts] …\n")
+        panel = self._build_panel()
         content = self._build_content()
-        self.console.print(Panel.fit(content, title = title))
+        self.console.print(panel(content))
 
     def task_list_opener(self, extra: str = "") -> str:
         return "Commands"
+
+    def _build_panel(self) -> Panel:
+        title = (f"Usage: {self.binary} <command> [--command-opts] …\n")
+        panel = functools.partial(Panel, title = title, border_style = "info")
+        return panel
 
     def _build_content(self) -> Table:
         table = Table(box = None)
