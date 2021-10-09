@@ -3,7 +3,7 @@ from __future__ import annotations
 import enum
 from typing import Optional, Sequence, Set, TypeVar
 
-from pysemver import SupportsProgress
+from ._bar import SupportsProgress
 
 from ._builder import Contract
 from ._bumper import Bumper

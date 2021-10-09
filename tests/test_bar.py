@@ -2,7 +2,7 @@ import re
 
 import pytest
 
-from pysemver import Bar
+from pysemver._bar import Bar
 
 COLORS = re.compile(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])")
 

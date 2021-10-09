@@ -2,9 +2,7 @@ from __future__ import annotations
 
 import enum
 import functools
-import sys
 
-import invoke
 from invoke import Collection, Program
 from rich.console import Console
 from rich.panel import Panel
@@ -12,32 +10,7 @@ from rich.table import Table
 from rich.text import Text
 from rich.layout import Layout
 
-from pysemver import Bar, SupportsProgress
-from pysemver import CheckDeprecated, CheckVersion
-
-from ._types import HasExit
-
-bar: SupportsProgress = Bar()
-
-
-@invoke.task
-def check_deprecated(_context):
-    """Check if there are features to deprecate."""
-
-    task: HasExit
-    task = CheckDeprecated(bar)
-    task()
-    sys.exit(task.exit.value)
-
-
-@invoke.task
-def check_version(_context):
-    """Check if the actual version is valid."""
-
-    task: HasExit
-    task = CheckVersion(bar)
-    task()
-    sys.exit(task.exit.value)
+from ._tasks import check_deprecated, check_version
 
 
 class Theme(str, enum.Enum):

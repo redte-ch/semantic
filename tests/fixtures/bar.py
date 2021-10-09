@@ -3,7 +3,7 @@ from typing import NamedTuple
 
 import pytest
 
-from pysemver import SupportsProgress
+from pysemver._bar import SupportsProgress
 
 
 @pytest.fixture

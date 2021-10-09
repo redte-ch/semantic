@@ -4,7 +4,7 @@ import tempfile
 
 import pytest
 
-from pysemver import CheckDeprecated
+from pysemver._check_deprecated import CheckDeprecated
 
 
 class Module:

@@ -3,7 +3,7 @@ import sys
 
 import pytest
 
-from pysemver import CheckVersion
+from pysemver._check_version import CheckVersion
 
 
 @pytest.fixture

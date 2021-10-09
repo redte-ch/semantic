@@ -4,7 +4,7 @@ import pathlib
 import textwrap
 from typing import Sequence
 
-from . import SupportsProgress
+from ._bar import SupportsProgress
 
 from ._repo import Repo
 from ._types import HasIndex
