@@ -7,6 +7,7 @@ packages = [{include = "pysemver", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "~3.7 || ~3.8 || ~3.9"
+funcy = "<2"
 invoke = "<2"
 numpy = ">=1.7, <1.22"
 rich = "<11"
