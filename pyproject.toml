@@ -7,6 +7,7 @@ packages = [{include = "pysemver", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "~3.7 || ~3.8 || ~3.9"
+invoke = "<2"
 numpy = ">=1.7, <1.22"
 termcolor = "<2"
 typing_extensions = { version = "<4", python = "~3.7" }
@@ -15,6 +16,9 @@ typing_extensions = { version = "<4", python = "~3.7" }
 nox-poetry = "<1"
 pytest = "<7"
 wemake-python-styleguide = "<1"
+
+[tool.poetry.scripts]
+pysemver = 'pysemver:program.run'
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
