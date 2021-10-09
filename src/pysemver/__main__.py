@@ -8,8 +8,8 @@ import invoke
 from invoke import Collection, Program
 from rich.console import Console
 from rich.panel import Panel
-# from rich.pretty import Pretty
 from rich.table import Table
+from rich.text import Text
 
 from pysemver import Bar, SupportsProgress
 from pysemver import CheckDeprecated, CheckVersion
@@ -40,14 +40,15 @@ def check_version(_context):
 
 
 class Theme(str, enum.Enum):
-    FAIL = "red"
-    INFO = "cyan"
-    OKAY = "green"
-    WARN = "yellow"
     WORK = "magenta"
+    INFO = "cyan"
+    WARN = "yellow"
+    OKAY = "green"
+    FAIL = "red"
 
-    BORDER = "dim magenta"
-    COLUMN = "green"
+    BORDER = "cyan"
+    TITLE = "bold green"
+    COLUMN = "magenta"
     ROW = "cyan"
 
 
@@ -70,12 +71,18 @@ class CLI(Program):
         return "Commands"
 
     def _build_panel(self) -> Panel:
-        title = (f"Usage: {self.binary} <command> [--command-opts] …\n")
+        title = self._build_title()
         panel = functools.partial(Panel, title = title)
         panel = functools.partial(panel, expand = False)
         panel = functools.partial(panel, border_style = Theme.BORDER)
         panel = functools.partial(panel, padding = 1)
         return panel
+
+    def _build_title(self) -> Text:
+        title = (f"Usage: {self.binary} <command> [--command-opts] …\n")
+        text = Text(title)
+        text.stylize(Theme.TITLE)
+        return text
 
     def _build_content(self) -> Table:
         table = functools.partial(Table)
