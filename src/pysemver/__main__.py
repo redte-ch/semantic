@@ -47,10 +47,10 @@ class Theme(str, enum.Enum):
     OKAY = "green"
     FAIL = "red"
 
-    BORDER = "cyan"
-    COLUMN = "magenta"
-    ROW = "cyan"
     TITLE = "bold green"
+    BORDER = "cyan"
+    HEADER = "magenta"
+    ROW = "cyan"
 
 
 class CLI(Program):
@@ -94,11 +94,11 @@ class CLI(Program):
         title = self._title()
         panel = functools.partial(Panel, title = title)
         panel = functools.partial(panel, border_style = Theme.BORDER)
-        panel = functools.partial(panel, padding = 1)
+        panel = functools.partial(panel, padding = 5)
         return panel
 
     def _title(self) -> Text:
-        title = (f"Usage: {self.binary} <command> [--command-opts] …\n")
+        title = (f"Usage: {self.binary} <command> [--help] …\n")
         text = Text(title)
         text.stylize(Theme.TITLE)
         return text
@@ -106,9 +106,9 @@ class CLI(Program):
     def _content(self) -> Table:
         table = functools.partial(Table)
         table = functools.partial(table, box = None)
-        table = functools.partial(table, padding = (0,5))
+        table = functools.partial(table, padding = (0, 5, 1, 10))
         table = functools.partial(table, row_styles = [Theme.ROW])
-        table = functools.partial(table, style = Theme.COLUMN)
+        table = functools.partial(table, style = Theme.HEADER)
         table = table()
         table.add_column("Command")
         table.add_column("Description")
