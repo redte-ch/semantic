@@ -14,23 +14,23 @@ bar: SupportsProgress = Bar()
 
 
 @invoke.task
-def check_deprecated(context):
+def check_deprecated(_context):
     """Check if there are features to deprecate."""
 
-    context.task: HasExit
-    context.task = CheckDeprecated(bar)
-    context.task()
-    sys.exit(context.task.exit.value)
+    task: HasExit
+    task = CheckDeprecated(bar)
+    task()
+    sys.exit(task.exit.value)
 
 
 @invoke.task
-def check_version(context):
+def check_version(_context):
     """Check if the actual version is valid."""
 
-    context.task: HasExit
-    context.task = CheckVersion(bar)
-    context.task()
-    sys.exit(context.task.exit.value)
+    task: HasExit
+    task = CheckVersion(bar)
+    task()
+    sys.exit(task.exit.value)
 
 
 class Console(Program):
