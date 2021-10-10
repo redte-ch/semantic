@@ -17,6 +17,7 @@ test: compile clean
 	@poetry run pytest --cov
 
 release:
+	@poetry run nox -s lint
 	@poetry run nox -s test
 	@poetry run pip uninstall pysemver -y -q
 	@poetry install -q

@@ -52,6 +52,14 @@ class SessionCache:
 
 
 @nox_poetry.session
+@nox.parametrize("python", python_versions, ids = python_versions)
+def lint(session):
+    session.run("make", "install", external = True, silent = True)
+    session.install(".", silent = True)
+    session.run("poetry", "run", "flake8")
+
+
+@nox_poetry.session
 @nox.parametrize("python, numpy", matrix, ids = ids)
 def test(session, numpy):
     session.run("make", "install", external = True, silent = True)
@@ -60,4 +68,4 @@ def test(session, numpy):
         session.run("poetry", "add", f"numpy@{numpy}", silent = True)
 
     session.install(".", silent = True)
-    session.run("pytest")
+    session.run("poetry", "run", "pytest")
