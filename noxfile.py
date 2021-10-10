@@ -60,4 +60,4 @@ def test(session, numpy):
         session.run("poetry", "add", f"numpy@{numpy}", silent = True)
 
     session.install(".", silent = True)
-    session.run("pytest", "-qx")
+    session.run("pytest")

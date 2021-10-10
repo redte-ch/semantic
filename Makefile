@@ -11,7 +11,7 @@ clean: src
 	@rm -rf $(shell find $? -name "*.pyc")
 
 test: compile clean
-	@poetry run pytest -qx
+	@poetry run pytest --cov
 
 release:
 	@poetry run nox -s test
