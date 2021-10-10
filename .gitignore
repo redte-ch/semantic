@@ -6,3 +6,4 @@
 .pytest_cache
 .pytype
 dist
+docs/_build
