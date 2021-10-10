@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import ast
 import dataclasses
-import enum
 import functools
 import pathlib
 from typing import (
@@ -16,8 +15,12 @@ from typing import (
     Union,
     )
 
+from aenum import Enum
 
-class Suffix(enum.Enum):
+from ._models import Argument, ArgType, RetType, Signature
+
+
+class Suffix(str, Enum):
     """An enum to find unique signature names."""
 
     SEMEL = ""

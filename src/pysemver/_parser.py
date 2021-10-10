@@ -3,7 +3,8 @@ from __future__ import annotations
 import textwrap
 from typing import Any, Generator, Sequence, Set, Tuple
 
-from ._builder import Signature, SignatureBuilder
+from ._builder import SignatureBuilder
+from ._models import Signature
 from ._repo import Repo
 from ._types import What
 

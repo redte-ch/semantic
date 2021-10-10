@@ -4,9 +4,9 @@ import enum
 from typing import Optional, Sequence, Set, TypeVar
 
 from ._bar import Bar
-from ._builder import Signature
 from ._bumper import Bumper
 from ._func_checker import FuncChecker
+from ._models import Signature
 from ._parser import Parser
 from ._types import HasIndex, What
 

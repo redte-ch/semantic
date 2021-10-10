@@ -1,28 +1,9 @@
 import dataclasses
-import enum
 from typing import Optional
 
 import numpy
 
-from ._builder import Signature
-
-
-class SemVer(enum.Enum):
-    """An enum just to express a release.
-
-    Examples:
-        >>> [version.name for version in SemVer]
-        ['NONES', 'PATCH', 'MINOR', 'MAJOR']
-
-        >>> [version.value for version in SemVer]
-        [0, 1, 2, 3]
-
-    """
-
-    NONES = 0
-    PATCH = 1
-    MINOR = 2
-    MAJOR = 3
+from ._models import Signature
 
 
 @dataclasses.dataclass

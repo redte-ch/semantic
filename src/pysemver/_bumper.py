@@ -1,34 +1,8 @@
-import enum
 import re
 from typing import Sequence, Tuple, Type
 
+from ._models import Version
 from ._repo import Repo
-
-TO_STR = "", "~", "+", "-"
-
-
-class Version(enum.Enum):
-    """An enum just to determine the required version.
-
-    Examples:
-        >>> [str(version) for version in Version]
-        ['', '~', '+', '-']
-
-        >>> [version.name for version in Version]
-        ['NONE', 'PATCH', 'MINOR', 'MAJOR']
-
-        >>> [version.value for version in Version]
-        [0, 1, 2, 3]
-
-    """
-
-    NONE = 0
-    PATCH = 1
-    MINOR = 2
-    MAJOR = 3
-
-    def __str__(self) -> str:
-        return TO_STR[self.value]
 
 
 class Bumper:
@@ -59,14 +33,14 @@ class Bumper:
 
     this: str
     that: str
-    what: Type[Version]
-    required: Version
+    what: Type[Version.Int]
+    required: Version.Int
 
     def __init__(self) -> None:
         self.this = Repo.Version.this()
         self.that = Repo.Version.last()
-        self.what = Version
-        self.required = Version.NONE
+        self.what = Version.Int
+        self.required = Version.Int.NONE
 
     def __call__(self, bump: int) -> None:
         index = max(self.required.value, Version(bump).value)
@@ -112,7 +86,7 @@ class Bumper:
         before_is_rel: bool
 
         # If there's no required bump, we just do not check.
-        if self.required == Version.NONE:
+        if self.required == Version.Int.NONE:
             return True
 
         # We get the actual number and whether it is a release or not.

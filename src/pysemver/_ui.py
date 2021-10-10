@@ -1,4 +1,9 @@
+from __future__ import annotations
+
+from typing import List, Tuple
+
 import funcy
+import typic
 from pipeop import pipes
 from rich.layout import Layout
 from rich.panel import Panel
@@ -12,7 +17,8 @@ grid = funcy.partial(Layout, " ", ratio = 2)
 main = funcy.partial(Layout, ratio = 5)
 
 
-def table(tasks: tuple) -> Table:
+@typic.al(strict = True)
+def table(tasks: List[Tuple[str, str]]) -> Table:
     """
     Examples:
 
@@ -37,6 +43,8 @@ def table(tasks: tuple) -> Table:
     return table
 
 
+#  @typic.al(strict = True)
+#  https://github.com/seandstewart/typical/issues/183
 def panel(table: Table) -> Panel:
     return Panel(
         table,
@@ -48,6 +56,8 @@ def panel(table: Table) -> Panel:
 
 
 @pipes
+#  @typic.al(strict = True)
+#  https://github.com/seandstewart/typical/issues/183
 def layout(panel: Panel) -> Layout:
     return panel >> _rows >> _columns
 

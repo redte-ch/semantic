@@ -1,4 +1,12 @@
 [[package]]
+name = "aenum"
+version = "3.1.0"
+description = "Advanced Enumerations (compatible with Python's stdlib Enum), NamedTuples, and NamedConstants"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "appnope"
 version = "0.1.2"
 description = "Disable App Nap on macOS >= 10.9"
@@ -1211,9 +1219,14 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "~3.7 || ~3.8 || ~3.9"
-content-hash = "74469820885d2cb3c2142a23014d9286328387c6477231ca41c8caf02d9a8370"
+content-hash = "bdd10d48f7da94031f656a5b1de66620d38f72936af785158671302b8af94b29"
 
 [metadata.files]
+aenum = [
+    {file = "aenum-3.1.0-py2-none-any.whl", hash = "sha256:1f92fb906e3d745064e85f9a1937006ee341e00a35ecd8b7f899041b8e1d67d7"},
+    {file = "aenum-3.1.0-py3-none-any.whl", hash = "sha256:f8401f1a258436719ed013444ab37ff22a72517e0e3097058dd1511cf284447c"},
+    {file = "aenum-3.1.0.tar.gz", hash = "sha256:87f0e9ef4f828578ab06af30e4d7944043bf4ecd3f4b7bd1cbe37e2173cde94a"},
+]
 appnope = [
     {file = "appnope-0.1.2-py2.py3-none-any.whl", hash = "sha256:93aa393e9d6c54c5cd570ccadd8edad61ea0c4b9ea7a01409020c9aa019eb442"},
     {file = "appnope-0.1.2.tar.gz", hash = "sha256:dd83cd4b5b460958838f6eb3000c660b1f9caf2a5b1de4264e941512f603258a"},
