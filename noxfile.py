@@ -69,6 +69,7 @@ def type(session, numpy):
 
     session.install(".", silent = True)
     session.run("poetry", "run", "mypy", "src", "noxfile.py")
+    session.run("poetry", "run", "pytype", "src", "noxfile.py")
 
 
 @nox_poetry.session

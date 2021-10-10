@@ -1,5 +1,8 @@
 *.pyc
 .coverage
-.pytest_cache
+.mypy_cache
 .nox
+.nox
+.pytest_cache
+.pytype
 dist

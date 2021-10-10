@@ -21,6 +21,7 @@ lint: compile clean
 
 type: compile clean
 	@poetry run mypy src noxfile.py
+	@poetry run pytype src noxfile.py
 
 test: compile clean
 	@poetry run pytest --cov
