@@ -7,12 +7,12 @@ import invoke
 from ._check_deprecated import CheckDeprecated
 from ._check_version import CheckVersion
 from ._types import HasExit
-from ._bar import Bar, SupportsProgress
+from ._bar import Bar
 
 
 class Tasks(invoke.Collection):
 
-    bar: SupportsProgress = Bar()
+    bar = Bar()
 
     def __init__(self) -> None:
         super().__init__()

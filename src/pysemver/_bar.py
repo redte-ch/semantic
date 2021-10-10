@@ -1,14 +1,8 @@
 from __future__ import annotations
 
-import abc
 import sys
 from typing import Sequence
 
-if sys.version_info >= (3, 8):
-    from typing import Protocol
-
-else:
-    from typing_extensions import Protocol
 
 import termcolor
 
@@ -23,41 +17,6 @@ ACC_ICON: str = termcolor.colored("✓", "green")
 ETA_ICON: str = termcolor.colored("·", "green")
 
 BAR_SIZE: int = 50
-
-
-class SupportsProgress(Protocol):
-
-    @abc.abstractmethod
-    def init(self) -> None:
-        ...
-
-    @abc.abstractmethod
-    def push(self, __count: int, __total: int) -> None:
-        ...
-
-    @abc.abstractmethod
-    def okay(self, __message: str) -> None:
-        ...
-
-    @abc.abstractmethod
-    def info(self, __message: str) -> None:
-        ...
-
-    @abc.abstractmethod
-    def warn(self, __message: str) -> None:
-        ...
-
-    @abc.abstractmethod
-    def fail(self) -> None:
-        ...
-
-    @abc.abstractmethod
-    def then(self) -> None:
-        ...
-
-    @abc.abstractmethod
-    def wipe(self) -> None:
-        ...
 
 
 class Bar:

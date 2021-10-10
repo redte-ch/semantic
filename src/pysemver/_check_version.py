@@ -3,8 +3,7 @@ from __future__ import annotations
 import enum
 from typing import Optional, Sequence, Set, TypeVar
 
-from ._bar import SupportsProgress
-
+from ._bar import Bar
 from ._builder import Contract
 from ._bumper import Bumper
 from ._func_checker import FuncChecker
@@ -49,12 +48,12 @@ class CheckVersion:
 
     """
 
-    bar: SupportsProgress
+    bar: Bar
     exit: HasIndex
     parser: Parser
     bumper: Bumper
 
-    def __init__(self, bar: SupportsProgress, parser: Parser = PARSER) -> None:
+    def __init__(self, bar: Bar, parser: Parser = PARSER) -> None:
         self.bar = bar
         self.exit = Exit.OK
         self.parser = parser

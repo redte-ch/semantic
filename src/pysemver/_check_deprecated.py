@@ -4,8 +4,7 @@ import pathlib
 import textwrap
 from typing import Sequence
 
-from ._bar import SupportsProgress
-
+from ._bar import Bar
 from ._repo import Repo
 from ._types import HasIndex
 
@@ -54,7 +53,7 @@ class CheckDeprecated(ast.NodeVisitor):
     exit: HasIndex
     files: Sequence[str]
     nodes: Sequence[ast.Module]
-    progress: SupportsProgress
+    progress: Bar
     total: int
     version: str
 
@@ -69,7 +68,7 @@ class CheckDeprecated(ast.NodeVisitor):
         self.total = len(self.nodes)
         self.version = version
 
-    def __call__(self, progress: SupportsProgress) -> None:
+    def __call__(self, progress: Bar) -> None:
         self.progress = progress
         self.progress.init()
 
