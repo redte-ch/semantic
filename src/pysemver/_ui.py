@@ -47,11 +47,7 @@ def panel(table: Table) -> Panel:
 
 @pipes
 def layout(panel: Panel) -> Layout:
-    return (
-        panel
-        >> _rows(grid, main)
-        >> _columns(grid, main)
-        )
+    return panel >> _rows >> _columns
 
 
 @pipes
@@ -77,7 +73,7 @@ def _title() -> Text:
     return text
 
 
-def _rows(panel: Panel, grid: Layout, main: Layout) -> Layout:
+def _rows(panel: Panel) -> Layout:
     layout = Layout()
 
     layout.split_column(grid(), main(panel), grid())
@@ -85,7 +81,7 @@ def _rows(panel: Panel, grid: Layout, main: Layout) -> Layout:
     return layout
 
 
-def _columns(panel: Layout, grid: Layout, main: Layout) -> Layout:
+def _columns(panel: Layout) -> Layout:
     layout = Layout()
 
     layout.split_row(grid(), main(panel), grid())
