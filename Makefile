@@ -12,6 +12,7 @@ clean: src
 
 format: $(shell git ls-files "*.py")
 	@poetry run autopep8 $?
+	@poetry run pyupgrade $? --py36-plus --keep-runtime-typing
 
 lint: compile clean
 	@poetry run flake8 src

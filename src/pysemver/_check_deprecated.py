@@ -174,6 +174,6 @@ class CheckDeprecated(ast.NodeVisitor):
     def _node(self, file: str) -> ast.Module:
         source: str
 
-        with open(file, "r") as f:
+        with open(file) as f:
             source = textwrap.dedent(f.read())
             return ast.parse(source, file, "exec")

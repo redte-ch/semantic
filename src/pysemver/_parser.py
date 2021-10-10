@@ -85,11 +85,11 @@ class Parser:
 
     def __enter__(self) -> Generator[Tuple[int, ...], None, None]:
         # We recover the python files corresponding to ``revison``.
-        files: Set[str] = set(
+        files: Set[str] = {
             file
             for file in Repo.File.tree(self.current)
             if file.endswith(".py")
-            )
+            }
 
         # We only keep the files changed between ``this`` and ``that``.
         to_parse: Set[str] = files & set(self.diff)
