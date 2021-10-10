@@ -10,6 +10,9 @@ compile: src
 clean: src
 	@rm -rf $(shell find $? -name "*.pyc")
 
+format: $(shell git ls-files "*.py")
+	@poetry run autopep8 $?
+
 lint: compile clean
 	@poetry run flake8 src
 
