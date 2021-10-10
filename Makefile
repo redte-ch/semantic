@@ -1,4 +1,6 @@
-.DEFAULT_GOAL := test
+.DEFAULT_GOAL := all
+
+all: format lint type test ;
 
 install:
 	@pip install --upgrade pip wheel setuptools
@@ -15,13 +17,17 @@ format: $(shell git ls-files "*.py")
 	@poetry run pyupgrade $? --py36-plus --keep-runtime-typing
 
 lint: compile clean
-	@poetry run flake8 src
+	@poetry run flake8 src tests noxfile.py
+
+type: compile clean
+	@poetry run mypy src noxfile.py
 
 test: compile clean
 	@poetry run pytest --cov
 
 release:
 	@poetry run nox -s lint
+	@poetry run nox -s type
 	@poetry run nox -s test
 	@poetry run pip uninstall pysemver -y -q
 	@poetry install -q

@@ -19,6 +19,7 @@ typing_extensions = { version = "<4", python = "~3.7" }
 autopep8 = "<2"
 coverage = { extras = ["toml"], version = "<7" }
 ipython = "<8"
+mypy = "<1"
 nox-poetry = "<1"
 pytest = "<7"
 pytest-cov = "<4"
@@ -53,6 +54,11 @@ doctest_optionflags = [
     "NORMALIZE_WHITESPACE",
     "NUMBER",
     ]
+
+[tool.mypy]
+install_types = true
+non_interactive = true
+strict = true
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
