@@ -1,6 +1,5 @@
 import functools
 import rich
 
-
 inspect = functools.partial(rich.inspect, help = True, methods = True)
 print = functools.partial(rich.pretty.pprint, expand_all = True)

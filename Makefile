@@ -10,6 +10,9 @@ compile: src
 clean: src
 	@rm -rf $(shell find $? -name "*.pyc")
 
+lint: compile clean
+	@poetry run flake8 src
+
 test: compile clean
 	@poetry run pytest --cov
 
