@@ -5,6 +5,7 @@ from pipeop import pipes
 from rich.console import Console
 
 from . import _ui as ui
+from ._repo import Repo
 from ._tasks import Tasks
 
 
@@ -14,7 +15,7 @@ class Main(Program):
     write = Console().print
 
     def __init__(self) -> None:
-        super().__init__(namespace = self.tasks)
+        super().__init__(namespace = self.tasks, version = Repo.Version.this())
 
     @pipes
     def print_help(self) -> None:

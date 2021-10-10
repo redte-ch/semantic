@@ -5,6 +5,7 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 
+from ._repo import Repo
 from ._theme import Theme
 
 grid = funcy.partial(Layout, " ", ratio = 2)
@@ -42,6 +43,7 @@ def panel(table: Table) -> Panel:
         border_style = Theme.Console.BORDER,
         padding = 5,
         title = _title(),
+        subtitle = Repo.Version.this(),
         )
 
 
