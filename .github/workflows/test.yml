@@ -1,4 +1,4 @@
-name: Python Semantic Versioning
+name: test
 
 on: [ push ]
 
@@ -11,6 +11,8 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
 
     runs-on: ${{ matrix.os }}
+
+    name: pysemver-${{ matrix.python }}-${{ matrix.numpy }}-${{ matrix.os }}
 
     steps:
       - name: Checkout
