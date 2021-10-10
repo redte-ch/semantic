@@ -61,19 +61,20 @@ class SessionCache:
 
 
 @nox_poetry.session(python = python_versions[-1:])
-@nox.parametrize("step", doc_steps, ids = doc_steps)
-def doc(session, step):
+def doc(session):
     session.run("make", "install", external = True, silent = True)
-    session.install(".", silent = True)
-    session.run("poetry", "run", "sphinx-build", "-b", step, *doc_build)
+    session.install("sphinx", "sphinx-autodoc-typehints", ".", silent = True)
+
+    for step in doc_steps:
+        session.run("sphinx-build", "-b", step, *doc_build)
 
 
 @nox_poetry.session
 @nox.parametrize("python", python_versions, ids = python_versions)
 def lint(session):
     session.run("make", "install", external = True, silent = True)
-    session.install(".", silent = True)
-    session.run("poetry", "run", "flake8", *(*rel_build, "tests"))
+    session.install("wemake-python-styleguide", ".", silent = True)
+    session.run("flake8", *(*rel_build, "tests"))
 
 
 @nox_poetry.session
@@ -84,9 +85,9 @@ def type(session, numpy):
     with SessionCache(session.name, session.cache_dir):
         session.run("poetry", "add", f"numpy@{numpy}", silent = True)
 
-    session.install(".", silent = True)
-    session.run("poetry", "run", "mypy", *rel_build)
-    session.run("poetry", "run", "pytype", *rel_build)
+    session.install("mypy", "pytype", ".", silent = True)
+    session.run("mypy", *rel_build)
+    session.run("pytype", *rel_build)
 
 
 @nox_poetry.session
@@ -97,5 +98,5 @@ def test(session, numpy):
     with SessionCache(session.name, session.cache_dir):
         session.run("poetry", "add", f"numpy@{numpy}", silent = True)
 
-    session.install(".", silent = True)
-    session.run("poetry", "run", "pytest", *(*rel_build, "tests"))
+    session.install("pytest-mock", "typeguard", "xdoctest", ".", silent = True)
+    session.run("pytest", *(*rel_build, "tests"))

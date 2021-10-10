@@ -1,22 +1,18 @@
-name: test
+name: type
 
 on: [ push ]
 
 jobs:
-  test:
+  type:
     strategy:
       fail-fast: true
       matrix:
         python: [3.7.12, 3.8.12, 3.9.7]
         numpy: [1.17.5, 1.18.5, 1.19.5, 1.20.3, 1.21.2]
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        exclude:
-          - os: windows-latest
-            python: 3.7.12
 
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
 
-    name: test-${{ matrix.python }}-${{ matrix.numpy }}-${{ matrix.os }}
+    name: type-${{ matrix.python }}-${{ matrix.numpy }}
 
     steps:
       - name: Checkout
@@ -31,5 +27,5 @@ jobs:
       - name: Install dependencies
         run: make install
 
-      - name: Run tests
-        run: nox -s "test(${{ matrix.python }}/${{ matrix.numpy }})"
+      - name: Run type-checks
+        run: nox -s "type(${{ matrix.python }}/${{ matrix.numpy }})"

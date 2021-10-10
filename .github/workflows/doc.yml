@@ -1,0 +1,25 @@
+name: doc
+
+on: [ push ]
+
+jobs:
+  doc:
+    runs-on: ubuntu-latest
+
+    name: doc
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Python setup
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9.7
+          architecture: x64
+
+      - name: Install dependencies
+        run: make install
+
+      - name: Run doc tasks
+        run: nox -s "doc-3.9.7"

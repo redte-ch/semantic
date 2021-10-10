@@ -1,0 +1,30 @@
+name: lint
+
+on: [ push ]
+
+jobs:
+  lint:
+    strategy:
+      fail-fast: true
+      matrix:
+        python: [3.7.12, 3.8.12, 3.9.7]
+
+    runs-on: ubuntu-latest
+
+    name: lint-${{ matrix.python }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Python setup
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+          architecture: x64
+
+      - name: Install dependencies
+        run: make install
+
+      - name: Run linters
+        run: nox -s "lint(${{ matrix.python }})"
