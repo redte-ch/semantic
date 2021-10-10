@@ -1,4 +1,8 @@
-Copyleft (ɔ) 2021 Mauko Quiroga <mauko@pm.me>
+The Python Semantic Versioning Project
+======================================
 
-Licensed under the EUPL-1.2-or-later
-For details: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+.. toctree::
+    :hidden:
+    :maxdepth: 1
+
+    license
