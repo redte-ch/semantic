@@ -1,170 +1,208 @@
 import os
 import sys
 
+import funcy
 import pytest
+from pipeop import pipes
 
+from pysemver._bar import Bar
 from pysemver._check_version import CheckVersion
 
 
 @pytest.fixture
-def checker(bar):
+def checker():
     """A version checker."""
 
-    checker = CheckVersion(bar)
+    checker = CheckVersion(Bar())
     checker.parser = type(checker.parser)(this = "0.2.0", that = "0.2.0")
     checker.bumper.this = "0.2.0"
     checker.bumper.that = "0.2.0"
     return checker
 
 
-def test_check_version(checker):
+@pytest.fixture
+def info(mocker, checker):
+    return mocker.spy(checker.bar, "info")
+
+
+@pytest.fixture
+def warn(mocker, checker):
+    return mocker.spy(checker.bar, "warn")
+
+
+@pytest.fixture
+def fail(mocker, checker):
+    return mocker.spy(checker.bar, "fail")
+
+
+@pytest.fixture
+def okay(mocker, checker):
+    return mocker.spy(checker.bar, "okay")
+
+
+@pytest.fixture
+@pipes
+def calls(warn):
+    def _calls():
+        return (
+            warn.call_args_list
+            >> funcy.flatten
+            << funcy.map(funcy.first)
+            >> funcy.compact
+            >> tuple
+            )
+
+    return _calls
+
+
+def test_check_version(info, okay, checker):
     """Prints status updates to the user."""
 
     checker()
-    infos = (call.args for call in checker.bar.called if call.name == "info")
 
     with pytest.raises(SystemExit) as exit:
         sys.exit(checker.exit.value)
 
-    assert next(infos) == "Parsing files from 0.2.0…\n"
-    assert next(infos) == "Parsing files from 0.2.0…\n"
-    assert next(infos) == "Checking for functional changes…\n"
-    assert next(infos) == "Checking for 2 functions…\n"
-    assert next(infos) == "Checking for 3 functions…\n"
-    assert next(infos) == "Version bump required: NONE!\n"
+    info.assert_any_call(f"Parsing files from {checker.parser.this}…\n")
+    info.assert_any_call(f"Parsing files from {checker.parser.that}…\n"),
+    info.assert_any_call("Checking for functional changes…\n"),
+    info.assert_any_call("Checking for 2 functions…\n"),
+    info.assert_any_call("Checking for 3 functions…\n"),
+    info.assert_any_call("Version bump required: NONE!\n"),
+    okay.assert_called_once_with(f"Current version: {checker.parser.this}")
     assert exit.value.code == os.EX_OK
 
 
-def test_files_when_no_diff(checker):
+def test_files_when_no_diff(info, warn, fail, okay, checker):
     """Passes when there are no file diffs."""
 
     checker()
-    calls = [call.args for call in checker.bar.called]
 
     with pytest.raises(SystemExit) as exit:
         sys.exit(checker.exit.value)
 
-    assert not any(call for call in checker.bar.called if call.name == "warn")
-    assert "Version bump required: NONE!\n" in calls
+    info.assert_called_with("Version bump required: NONE!\n")
+    warn.assert_not_called()
+    fail.assert_not_called()
+    okay.assert_called()
     assert exit.value.code == os.EX_OK
 
 
-def test_files_when_diff_is_not_functional(checker):
+def test_files_when_diff_is_not_functional(info, warn, fail, okay, checker):
     """Does not require a version bump files are not functional."""
 
     checker.parser.diff = ["README.md"]
     checker()
-    calls = [call.args for call in checker.bar.called]
 
     with pytest.raises(SystemExit) as exit:
         sys.exit(checker.exit.value)
 
-    assert "Version bump required: NONE!\n" in calls
+    info.assert_called_with("Version bump required: NONE!\n")
+    warn.assert_not_called()
+    fail.assert_not_called()
+    okay.assert_called()
     assert exit.value.code == os.EX_OK
 
 
-def test_files_when_diff_is_functional(checker):
+def test_files_when_diff_is_functional(info, warn, fail, checker):
     """Requires a patch bump when there are file diffs."""
 
     checker.parser.diff = ["file.py"]
     checker()
-    calls = [call.args for call in checker.bar.called]
 
     with pytest.raises(SystemExit) as exit:
         sys.exit(checker.exit.value)
 
-    assert "~ file.py\n" in calls
-    assert "Version bump required: PATCH!\n" in calls
+    info.assert_called_with("Version bump required: PATCH!\n")
+    warn.assert_called_once_with("~ file.py\n")
+    fail.assert_called()
     assert exit.value.code != os.EX_OK
 
 
-def test_files_when_diff_only_parse_changed(checker):
+def test_files_when_diff_only_parse_changed(info, warn, fail, checker):
     """Only go inspect changed files."""
 
     checker.parser = type(checker.parser)(this = "0.2.5", that = "0.2.6")
     checker()
-    calls = [call.args for call in checker.bar.called]
-    assert "+ pysemver._func_checker.function => 2\n" in calls
+    warn.assert_called_with("+ pysemver._func_checker.function => 2\n")
+    assert warn.call_count == 2
 
     checker.parser.diff = []
     checker.bar.called = []
     checker()
-    calls = [call.args for call in checker.bar.called]
-    assert "+ pysemver._func_checker.function => 2\n" not in calls
+    assert warn.call_count == 2
 
     with pytest.raises(SystemExit) as exit:
         sys.exit(checker.exit.value)
 
-    assert "Version bump required: MINOR!\n" in calls
+    info.assert_called_with("Version bump required: MINOR!\n")
+    fail.assert_called()
     assert exit.value.code != os.EX_OK
 
 
-def test_funcs_when_no_diff(checker):
+def test_funcs_when_no_diff(info, warn, fail, okay, checker):
     """Does not warn if there are no diffs."""
 
     checker()
-    bar = checker.bar
-    calls = [call.args for call in bar.called if isinstance(call.args, str)]
 
     with pytest.raises(SystemExit) as exit:
         sys.exit(checker.exit.value)
 
-    assert len("".join(calls).split("~")) == 1
-    assert len("".join(calls).split("+")) == 1
-    assert len("".join(calls).split("-")) == 1
-    assert "Version bump required: NONE!\n" in calls
+    info.assert_called_with("Version bump required: NONE!\n")
+    warn.assert_not_called()
+    fail.assert_not_called()
+    okay.assert_called()
     assert exit.value.code == os.EX_OK
 
 
-def test_funcs_when_added(checker):
+@pipes
+def test_funcs_when_added(info, warn, fail, calls, checker):
     """Requires a minor bump when a function is added."""
 
     checker.parser = type(checker.parser)(this = "0.2.5", that = "0.2.4")
     checker()
-    bar = checker.bar
-    calls = [call.args for call in bar.called if isinstance(call.args, str)]
 
     with pytest.raises(SystemExit) as exit:
         sys.exit(checker.exit.value)
 
-    assert len("".join(calls).split("+")) > 1
-    assert len("".join(calls).split("-")) == 1
-    assert "Version bump required: MINOR!\n" in calls
+    info.assert_called_with("Version bump required: MINOR!\n")
+    assert calls() << funcy.select(r"\+") >> len == 1
+    assert calls() << funcy.select(r"\-") >> len == 0
+    fail.assert_called()
     assert exit.value.code != os.EX_OK
 
 
-def test_funcs_when_removed(checker):
+@pipes
+def test_funcs_when_removed(info, warn, fail, calls, checker):
     """Requires a major bump when a function is removed."""
 
     checker.parser = type(checker.parser)(this = "0.2.6", that = "0.2.5")
     checker()
-    bar = checker.bar
-    calls = [call.args for call in bar.called if isinstance(call.args, str)]
 
     with pytest.raises(SystemExit) as exit:
         sys.exit(checker.exit.value)
 
-    assert len("".join(calls).split("-")) > 1
-    assert "Version bump required: MAJOR!\n" in calls
+    info.assert_called_with("Version bump required: MAJOR!\n")
+    assert calls() << funcy.select(r"\+") >> len == 0
+    assert calls() << funcy.select(r"\-") >> len == 1
+    fail.assert_called()
     assert exit.value.code != os.EX_OK
 
 
-def test_funcs_when_duplicates(checker):
+def test_funcs_when_duplicates(info, warn, fail, checker):
     """Gives a unique name to all contracts in the same module."""
 
     checker.parser = type(checker.parser)(this = "0.2.8", that = "0.2.7")
     checker()
-    bar = checker.bar
-    calls = [call.args for call in bar.called if isinstance(call.args, str)]
 
     with pytest.raises(SystemExit) as exit:
         sys.exit(checker.exit.value)
 
-    assert "- pysemver._func_checker.score(bis) => 3\n" in calls
-    assert "- pysemver._func_checker.score(ter) => 3\n" in calls
-    assert "- pysemver._func_checker.score(quater) => 3\n" in calls
-    assert "- pysemver._func_checker.score(quinquies) => 3\n" in calls
-    assert "- pysemver._func_checker.score(sexies) => 3\n" in calls
-    assert "- pysemver._func_checker.score(septies) => 3\n" not in calls
-    assert "Version bump required: MAJOR!\n" in calls
+    info.assert_called_with("Version bump required: MAJOR!\n")
+    warn.assert_any_call("- pysemver._func_checker.score(bis) => 3\n")
+    warn.assert_any_call("- pysemver._func_checker.score(ter) => 3\n")
+    warn.assert_any_call("- pysemver._func_checker.score(quater) => 3\n")
+    warn.assert_any_call("- pysemver._func_checker.score(quinquies) => 3\n")
+    warn.assert_any_call("- pysemver._func_checker.score(sexies) => 3\n")
+    fail.assert_called()
     assert exit.value.code != os.EX_OK

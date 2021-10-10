@@ -17,9 +17,11 @@ typing_extensions = { version = "<4", python = "~3.7" }
 
 [tool.poetry.dev-dependencies]
 coverage = { extras = ["toml"], version = "<7" }
+ipython = "<8"
 nox-poetry = "<1"
 pytest = "<7"
 pytest-cov = "<4"
+pytest-mock = "<4"
 wemake-python-styleguide = "<1"
 
 [tool.poetry.scripts]
@@ -37,7 +39,7 @@ show_missing = true
 fail_under = 100
 
 [tool.pytest.ini_options]
-addopts = "-qx --disable-pytest-warnings --doctest-modules"
+addopts = "-qx --disable-pytest-warnings --doctest-modules --pdbcls=IPython.terminal.debugger:TerminalPdb"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
