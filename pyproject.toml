@@ -1,8 +1,16 @@
 [tool.poetry]
 name = "pysemver"
 version = "0.3.0"
-description = ""
+description = "Command-line tools to facilitate semantic versioning."
+license = "EUPL-1.2-or-later"
 authors = ["Mauko Quiroga <mauko@pm.me>"]
+maintainers = ["Mauko Quiroga <mauko@pm.me>"]
+readme = "README.md"
+homepage = ""
+repository = "https://github.com/maukoquiroga/pysemver"
+documentation = ""
+keywords = []
+classifiers = []
 packages = [{include = "pysemver", from = "src"}]
 
 [tool.poetry.dependencies]
@@ -15,11 +23,11 @@ pipeop = "<1"
 rich = "<11"
 termcolor = "<2"
 typical = "<3"
-typing_extensions = { version = "<4", python = "~3.7" }
+typing_extensions = {version = "<4", python = "~3.7"}
 
 [tool.poetry.dev-dependencies]
 autopep8 = "<2"
-coverage = { extras = ["toml"], version = "<7" }
+coverage = {extras = ["toml"], version = "<7"}
 ipython = "<8"
 mypy = "<1"
 nox-poetry = "<1"
