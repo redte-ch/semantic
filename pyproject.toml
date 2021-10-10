@@ -13,6 +13,7 @@ numpy = ">=1.7, <1.22"
 pipeop = "<1"
 rich = "<11"
 termcolor = "<2"
+typical = "<3"
 typing_extensions = { version = "<4", python = "~3.7" }
 
 [tool.poetry.dev-dependencies]
@@ -59,6 +60,7 @@ doctest_optionflags = [
 [tool.mypy]
 install_types = true
 non_interactive = true
+plugins = ["typic.mypy"]
 strict = true
 
 [build-system]
