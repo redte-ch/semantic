@@ -7,6 +7,9 @@ import nox
 import nox_poetry
 
 nox.options.reuse_existing_virtualenvs = True
+doc_steps = ("dummy", "doctest", "linkcheck", "html", "changes")
+doc_build = ("-anqTW", "docs", "docs/_build")
+rel_build = ("docs/conf.py", "src", "noxfile.py")
 python_versions = ("3.7.12", "3.8.12", "3.9.7")
 numpy_versions = ("1.17.5", "1.18.5", "1.19.5", "1.20.3", "1.21.2")
 exclude = (("3.9.7", "1.18.5"),)
@@ -51,12 +54,20 @@ class SessionCache:
         self.back_toml.unlink()
 
 
+@nox_poetry.session(python = python_versions[-1:])
+@nox.parametrize("step", doc_steps, ids = doc_steps)
+def doc(session, step):
+    session.run("make", "install", external = True, silent = True)
+    session.install(".", silent = True)
+    session.run("poetry", "run", "sphinx-build", "-b", step, *doc_build)
+
+
 @nox_poetry.session
 @nox.parametrize("python", python_versions, ids = python_versions)
 def lint(session):
     session.run("make", "install", external = True, silent = True)
     session.install(".", silent = True)
-    session.run("poetry", "run", "flake8", "src", "tests", "noxfile.py")
+    session.run("poetry", "run", "flake8", *(*rel_build, "tests"))
 
 
 @nox_poetry.session
@@ -68,8 +79,8 @@ def type(session, numpy):
         session.run("poetry", "add", f"numpy@{numpy}", silent = True)
 
     session.install(".", silent = True)
-    session.run("poetry", "run", "mypy", "src", "noxfile.py")
-    session.run("poetry", "run", "pytype", "src", "noxfile.py")
+    session.run("poetry", "run", "mypy", *rel_build)
+    session.run("poetry", "run", "pytype", *rel_build)
 
 
 @nox_poetry.session
@@ -81,4 +92,4 @@ def test(session, numpy):
         session.run("poetry", "add", f"numpy@{numpy}", silent = True)
 
     session.install(".", silent = True)
-    session.run("poetry", "run", "pytest")
+    session.run("poetry", "run", "pytest", *(*rel_build, "tests"))

@@ -18,6 +18,7 @@ format: $(shell git ls-files "*.py")
 
 lint: compile clean
 	@poetry run flake8 docs/conf.py src tests noxfile.py
+	@poetry run sphinx-build -b dummy -anqTW docs docs/_build
 
 type: compile clean
 	@poetry run mypy docs/conf.py src noxfile.py
@@ -25,6 +26,7 @@ type: compile clean
 
 test: compile clean
 	@poetry run pytest --cov
+	@poetry run sphinx-build -b doctest -anqTW docs docs/_build
 
 release:
 	@poetry run nox

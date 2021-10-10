@@ -1,4 +1,5 @@
 """Sphinx configuration."""
 
-project = "pysemver"
 author = "Mauko Quiroga"
+project = "pysemver"
+extensions = ["sphinx.ext.doctest"]
