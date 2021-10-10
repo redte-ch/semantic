@@ -36,10 +36,11 @@ pytest-cov = "<4"
 pytest-mock = "<4"
 pytype = "^2021.10.4"
 pyupgrade = "<3"
+Sphinx = "<5"
+sphinx-autodoc-typehints = "<2"
 typeguard = "<3"
 wemake-python-styleguide = "<1"
 xdoctest = "<1"
-Sphinx = "<"
 
 [tool.poetry.scripts]
 pysemver = 'pysemver:main.run'
