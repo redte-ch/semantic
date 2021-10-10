@@ -4,7 +4,6 @@ import sys
 from typing import Sequence
 
 import termcolor
-import typic
 
 WORK_ICON: str = termcolor.colored("[/]", "cyan")
 INFO_ICON: str = termcolor.colored("[i]", "cyan")
@@ -19,7 +18,6 @@ ETA_ICON: str = termcolor.colored("·", "green")
 BAR_SIZE: int = 50
 
 
-@typic.klass(frozen = True, strict = True)
 class Bar:
     """Provides a progress bar for tasks.
 

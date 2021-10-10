@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import typic
 from invoke import Program
 from pipeop import pipes
 from rich.console import Console
@@ -10,7 +9,6 @@ from ._repo import Repo
 from ._tasks import Tasks
 
 
-@typic.klass(always = True, strict = True)
 class Main(Program):
 
     tasks = Tasks()

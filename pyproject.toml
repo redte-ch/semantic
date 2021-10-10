@@ -29,6 +29,7 @@ pytest-mock = "<4"
 pytype = "^2021.10.4"
 pyupgrade = "<3"
 wemake-python-styleguide = "<1"
+xdoctest = "<1"
 
 [tool.poetry.scripts]
 pysemver = 'pysemver:main.run'
@@ -50,6 +51,7 @@ addopts = [
     "--disable-pytest-warnings",
     "--doctest-modules",
     "--pdbcls=IPython.terminal.debugger:TerminalPdb",
+    "--xdoctest",
     ]
 doctest_optionflags = [
     "ELLIPSIS",
