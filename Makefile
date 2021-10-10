@@ -10,7 +10,9 @@ all: format lint type test ;
 
 install:
 	@pip install --upgrade pip wheel setuptools
+	@pip install --upgrade nox-poetry
 	@pip install --upgrade poetry
+	@pip install --upgrade nox
 
 compile: src
 	@poetry run python -m compileall -q $?
@@ -35,7 +37,7 @@ test: compile clean
 	@poetry run sphinx-build -b doctest -anqTW docs docs/_build
 
 release:
-	@poetry run nox
+	@nox
 	@poetry run pip uninstall pysemver -y -q
 	@poetry install -q
 	@poetry run pysemver check-version \

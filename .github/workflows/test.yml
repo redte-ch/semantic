@@ -5,7 +5,7 @@ on: [ push ]
 jobs:
   test:
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         python: [3.7.12, 3.8.12, 3.9.7]
         numpy: [1.17.5, 1.18.5, 1.19.5, 1.20.3, 1.21.2]
@@ -29,9 +29,7 @@ jobs:
           architecture: x64
 
       - name: Install dependencies
-        run: |
-          make install
-          poetry install
+        run: make install
 
       - name: Run tests
-        run: poetry run nox -s "test(${{ matrix.python }}/${{ matrix.numpy }})"
+        run: nox -s "test(${{ matrix.python }}/${{ matrix.numpy }})"
