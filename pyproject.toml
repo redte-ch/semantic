@@ -16,12 +16,14 @@ termcolor = "<2"
 typing_extensions = { version = "<4", python = "~3.7" }
 
 [tool.poetry.dev-dependencies]
+autopep8 = "<2"
 coverage = { extras = ["toml"], version = "<7" }
 ipython = "<8"
 nox-poetry = "<1"
 pytest = "<7"
 pytest-cov = "<4"
 pytest-mock = "<4"
+pyupgrade = "<3"
 wemake-python-styleguide = "<1"
 
 [tool.poetry.scripts]
@@ -39,7 +41,18 @@ show_missing = true
 fail_under = 100
 
 [tool.pytest.ini_options]
-addopts = "-qx --disable-pytest-warnings --doctest-modules --pdbcls=IPython.terminal.debugger:TerminalPdb"
+addopts = [
+    "-qx",
+    "--disable-pytest-warnings",
+    "--doctest-modules",
+    "--pdbcls=IPython.terminal.debugger:TerminalPdb",
+    ]
+doctest_optionflags = [
+    "ELLIPSIS",
+    "IGNORE_EXCEPTION_DETAIL",
+    "NORMALIZE_WHITESPACE",
+    "NUMBER",
+    ]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
