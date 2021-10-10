@@ -188,3 +188,22 @@ def test_when_added_args_and_defs(this_builder, that_builder):
     assert_equal(checker.diff_defs(), [0, 0, 0, 0, 0, 0])
     assert checker.score() == 2
     assert checker.reason == "args/defaults-diff"
+
+
+def test_when_removed_args_and_defs(this_builder, that_builder):
+
+    this_builder(inspect.getsource(fixtures.func))
+    that_builder(inspect.getsource(fixtures.func_with_more_defaults))
+
+    this, = this_builder.contracts
+    that, = that_builder.contracts
+
+    checker = FuncChecker(this, that)
+
+    assert_equal(checker.diff_hash(), [1, 1, 1, 1, 1, 1])
+    assert_equal(checker.diff_args(), [3, 3, 3, 3, 3, 3])
+    assert_equal(checker.diff_name(), [0, 0, 0, 0, 2, 2])
+    assert_equal(checker.diff_type(), [0, 0, 0, 0, 0, 0])
+    assert_equal(checker.diff_defs(), [0, 0, 0, 0, 0, 0])
+    assert checker.score() == 3
+    assert checker.reason == "args-diff"
