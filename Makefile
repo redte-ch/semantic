@@ -17,19 +17,17 @@ format: $(shell git ls-files "*.py")
 	@poetry run pyupgrade $? --py36-plus --keep-runtime-typing
 
 lint: compile clean
-	@poetry run flake8 src tests noxfile.py
+	@poetry run flake8 docs/conf.py src tests noxfile.py
 
 type: compile clean
-	@poetry run mypy src noxfile.py
-	@poetry run pytype src noxfile.py
+	@poetry run mypy docs/conf.py src noxfile.py
+	@poetry run pytype docs/conf.py src noxfile.py
 
 test: compile clean
 	@poetry run pytest --cov
 
 release:
-	@poetry run nox -s lint
-	@poetry run nox -s type
-	@poetry run nox -s test
+	@poetry run nox
 	@poetry run pip uninstall pysemver -y -q
 	@poetry install -q
 	@poetry run pysemver check-version \
