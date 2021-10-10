@@ -4,7 +4,7 @@ import enum
 from typing import Optional, Sequence, Set, TypeVar
 
 from ._bar import Bar
-from ._builder import Contract
+from ._builder import Signature
 from ._bumper import Bumper
 from ._func_checker import FuncChecker
 from ._parser import Parser
@@ -62,8 +62,8 @@ class CheckVersion:
     def __call__(self) -> None:
         """Runs all the checks."""
 
-        this: Set[Contract] = set(self._parse(self.parser, "this"))
-        that: Set[Contract] = set(self._parse(self.parser, "that"))
+        this: Set[Signature] = set(self._parse(self.parser, "this"))
+        that: Set[Signature] = set(self._parse(self.parser, "that"))
         diff: Set[str] = set(self.parser.diff)
 
         (
@@ -75,8 +75,8 @@ class CheckVersion:
             .bar.then()
             )
 
-    def _parse(self, parser: Parser, what: What) -> Sequence[Contract]:
-        """Updates status while the parser builds contracts."""
+    def _parse(self, parser: Parser, what: What) -> Sequence[Signature]:
+        """Updates status while the parser builds signatures."""
 
         with parser(what = what) as parsing:
             self.bar.info(f"Parsing files from {parser.current}…\n")
@@ -87,7 +87,7 @@ class CheckVersion:
 
             self.bar.wipe()
 
-        return parser.contracts
+        return parser.signatures
 
     def _check_files(self: T, bumper: Bumper, files: Set[str]) -> T:
         """Requires a bump if there's a diff in files."""
@@ -116,12 +116,12 @@ class CheckVersion:
             self: T,
             bumper: Bumper,
             what: str,
-            *files: Set[Contract],
+            *files: Set[Signature],
             ) -> T:
         """Requires a bump if there's a diff in functions."""
 
         # We first do a ``hash`` comparison, so it is still grosso modo.
-        diff: Set[Contract] = files[0] ^ files[1] & files[0]
+        diff: Set[Signature] = files[0] ^ files[1] & files[0]
         total: int = len(diff)
 
         self.bar.info(f"Checking for {what} functions…\n")
@@ -129,7 +129,7 @@ class CheckVersion:
 
         for count, this in enumerate(diff):
             name: str
-            that: Optional[Contract]
+            that: Optional[Signature]
             checker: FuncChecker
 
             self.bar.push(count, total)
@@ -142,11 +142,11 @@ class CheckVersion:
             # the needed version bump.
             self.exit = bumper.required
 
-            # We will try to find a match between before/after contracts.
+            # We will try to find a match between before/after signatures.
             name = this.name
             that = next((that for that in files[1] if that.name == name), None)
 
-            # If we can't find a base contract with the same name, we can just
+            # If we can't find a base signature with the same name, we can just
             # assume the function was added/removed, so minor/major.
             if that is None:
                 bumper(what)
@@ -155,7 +155,7 @@ class CheckVersion:
                 self.exit = bumper.required
                 continue
 
-            # Now we do a ``small-print`` comparison between contracts.
+            # Now we do a ``small-print`` comparison between signatures.
             f = FuncChecker(this, that)
 
             if f.score() == bumper.what(what).value:

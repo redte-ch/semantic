@@ -4,7 +4,7 @@ from typing import Optional
 
 import numpy
 
-from ._builder import Contract
+from ._builder import Signature
 
 
 class SemVer(enum.Enum):
@@ -28,8 +28,8 @@ class SemVer(enum.Enum):
 @dataclasses.dataclass
 class FuncChecker:
 
-    this: Contract
-    that: Contract
+    this: Signature
+    that: Signature
     reason: Optional[str] = None
 
     def __post_init__(self):

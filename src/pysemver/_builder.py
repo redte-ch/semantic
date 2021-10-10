@@ -17,41 +17,8 @@ from typing import (
     )
 
 
-@dataclasses.dataclass(frozen = True)
-class ArgType:
-    """An argument type."""
-
-    name: str
-
-
-@dataclasses.dataclass(frozen = True)
-class RetType:
-    """A return type."""
-
-    name: str
-
-
-@dataclasses.dataclass(frozen = True)
-class Argument:
-    """An argument."""
-
-    name: str
-    types: Optional[Tuple[ArgType, ...]] = None
-    default: Optional[str] = None
-
-
-@dataclasses.dataclass(frozen = True)
-class Contract:
-    """A contract, that is arguments and returns."""
-
-    name: str
-    file: str
-    arguments: Sequence[Argument] = ()
-    returns: Optional[Sequence[RetType]] = None
-
-
 class Suffix(enum.Enum):
-    """An enum to find unique contract names."""
+    """An enum to find unique signature names."""
 
     SEMEL = ""
     BIS = "(bis)"
@@ -66,17 +33,17 @@ class Suffix(enum.Enum):
 
 
 @dataclasses.dataclass
-class ContractBuilder(ast.NodeVisitor):
-    """Builds contracts from the abstract syntax-tree of a revision.
+class SignatureBuilder(ast.NodeVisitor):
+    """Builds signatures from the abstract syntax-tree of a revision.
 
     Attributes:
-        files: The files to build contracts from.
+        files: The files to build signatures from.
         count: An iteration counter.
-        contracts: The built contracts.
+        signatures: The built signatures.
 
     Examples:
-        >>> ContractBuilder(["file.py"])
-        ContractBuilder(files=['file.py'], count=0, contracts=())
+        >>> SignatureBuilder(["file.py"])
+        SignatureBuilder(files=['file.py'], count=0, signatures=())
 
     .. versionadded:: 36.1.0
 
@@ -84,17 +51,17 @@ class ContractBuilder(ast.NodeVisitor):
 
     files: Sequence[str]
     count: int = 0
-    contracts: Tuple[Contract, ...] = ()
+    signatures: Tuple[Signature, ...] = ()
 
     @property
     def total(self) -> int:
-        """The total number of files to build contracts from.
+        """The total number of files to build signatures from.
 
         Returns:
             int: The number of files.
 
         Examples:
-            >>> builder = ContractBuilder(["file.py"])
+            >>> builder = SignatureBuilder(["file.py"])
             >>> builder.total
             1
 
@@ -105,31 +72,31 @@ class ContractBuilder(ast.NodeVisitor):
         return len(self.files)
 
     def __call__(self, source: str) -> None:
-        """Builds all contracts from the passed source code.
+        """Builds all signatures from the passed source code.
 
         Arguments:
-            source: The source code to build contracts from.
+            source: The source code to build signatures from.
 
         Examples:
-            >>> builder = ContractBuilder(["file.py"])
+            >>> builder = SignatureBuilder(["file.py"])
             >>> source = [
             ...     "def function(n: List[int] = [1]) -> int:",
             ...     "    return next(iter(n))",
             ...     ]
             >>> builder("\\n".join(source))
-            >>> contract = next(iter(builder.contracts))
-            >>> argument = next(iter(contract.arguments))
+            >>> signature = next(iter(builder.signatures))
+            >>> argument = next(iter(signature.arguments))
 
-            >>> builder.contracts
-            (Contract(name='pysemver.file.function', file='file.py', a...
+            >>> builder.signatures
+            (Signature(name='pysemver.file.function', file='file.py', a...
 
-            >>> contract.name
+            >>> signature.name
             'pysemver.file.function'
 
-            >>> contract.file
+            >>> signature.file
             'file.py'
 
-            >>> contract.arguments
+            >>> signature.arguments
             (Argument(name='n', types=(ArgType(name='List'), ArgType(name='i...
 
             >>> argument.name
@@ -141,7 +108,7 @@ class ContractBuilder(ast.NodeVisitor):
             >>> argument.default
             ('1',)
 
-            >>> contract.returns
+            >>> signature.returns
             (RetType(name='int'),)
 
             >>> builder.count
@@ -166,7 +133,7 @@ class ContractBuilder(ast.NodeVisitor):
         posargs: Tuple[Argument, ...]
         keyargs: Tuple[Argument, ...]
         returns: Tuple[RetType, ...]
-        contract: Contract
+        signature: Signature
 
         # We look for the corresponding ``file``.
         file = self.files[self.count]
@@ -185,7 +152,7 @@ class ContractBuilder(ast.NodeVisitor):
         if name.startswith("__") and name not in ("__init__", "__call__"):
             return
 
-        # We find a unique name for each contract.
+        # We find a unique name for each signature.
         name = self._build_unique_name(path, node, iter(Suffix))
 
         # We build all positional arguments.
@@ -199,11 +166,11 @@ class ContractBuilder(ast.NodeVisitor):
         # We build the return types.
         returns = self._build_returns(node)
 
-        # We build the contract.
-        contract = Contract(name, file, posargs + keyargs, returns)
+        # We build the signature.
+        signature = Signature(name, file, posargs + keyargs, returns)
 
-        # And we add it to the list of contracts.
-        self.contracts = self.contracts + (contract,)
+        # And we add it to the list of signatures.
+        self.signatures = self.signatures + (signature,)
 
     def _build_unique_name(
             self,
@@ -211,7 +178,7 @@ class ContractBuilder(ast.NodeVisitor):
             node: ast.FunctionDef,
             suffixes: Iterator[Suffix],
             ) -> str:
-        """Builds an unique contract name."""
+        """Builds an unique signature name."""
 
         module: str
         name: str
@@ -388,7 +355,7 @@ class ContractBuilder(ast.NodeVisitor):
         raise TypeError(ast.dump(node))
 
     def _is_unique(self, name: str) -> bool:
-        """Check if a contract's name is unique or not."""
+        """Check if a signature's name is unique or not."""
 
         # We add a default value to avoid a StopIteration.
         is_unique: bool = not next(self._find(name), False)
@@ -396,6 +363,6 @@ class ContractBuilder(ast.NodeVisitor):
         return is_unique
 
     def _find(self, name: str) -> Generator[bool, None, None]:
-        """Check if there is a contract with ``name``."""
+        """Check if there is a signature with ``name``."""
 
-        return (True for contract in self.contracts if contract.name == name)
+        return (True for signature in self.signatures if signature.name == name)

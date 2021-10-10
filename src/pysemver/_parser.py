@@ -3,7 +3,7 @@ from __future__ import annotations
 import textwrap
 from typing import Any, Generator, Sequence, Set, Tuple
 
-from ._builder import Contract, ContractBuilder
+from ._builder import Signature, SignatureBuilder
 from ._repo import Repo
 from ._types import What
 
@@ -12,7 +12,7 @@ THAT: str = Repo.Version.last()
 
 
 class Parser:
-    """Wrapper around the repo and the contract builder.
+    """Wrapper around the repo and the signature builder.
 
     Attributes:
         repo: To query files and changes from.
@@ -20,8 +20,8 @@ class Parser:
         that: The revision to compare with.
         diff: The list of files changed between ``this`` and ``that``.
         current: ``this`` or ``that``.
-        builder: A contract builder.
-        contracts: The list of built contracts.
+        builder: A signature builder.
+        signatures: The list of built signatures.
 
     Args:
         repo: The repo to use, defaults to :class:`.Repo`.
@@ -39,14 +39,14 @@ class Parser:
         ...
         [(1, 7), (2, 7), (3, 7), (4, 7), (5, 7), (6, 7), (7, 7)]
 
-        >>> this = set(parser.contracts)
+        >>> this = set(parser.signatures)
 
         >>> with parser(what = "that") as parsing:
         ...     list(parsing)
         ...
         [(1, 6), (2, 6), (3, 6), (4, 6), (5, 6), (6, 6)]
 
-        >>> that = set(parser.contracts)
+        >>> that = set(parser.signatures)
 
         >>> with parser(what = "thus") as parsing:
         ...     print("wut!")
@@ -55,10 +55,10 @@ class Parser:
         AttributeError: 'Parser' object has no attribute 'thus'
 
         >>> next(iter(this ^ that & this))  # Added functions…
-        Contract(name='...', ...
+        Signature(name='...', ...
 
         >>> next(iter(that ^ this & that))  # Removed functions…
-        Contract(name='...', ...
+        Signature(name='...', ...
 
     .. versionadded:: 36.1.0
 
@@ -68,8 +68,8 @@ class Parser:
     that: str
     diff: Sequence[str]
     current: str
-    builder: ContractBuilder
-    contracts: Sequence[Contract]
+    builder: SignatureBuilder
+    signatures: Sequence[Signature]
 
     def __init__(self, *, this: str = THIS, that: str = THAT) -> None:
         self.this = this
@@ -95,7 +95,7 @@ class Parser:
         to_parse: Set[str] = files & set(self.diff)
 
         # We create a builder with the selected files.
-        self.builder: ContractBuilder = ContractBuilder(tuple(to_parse))
+        self.builder: SignatureBuilder = SignatureBuilder(tuple(to_parse))
 
         # And finally we iterate over the files…
         for file in self.builder.files:
@@ -106,12 +106,12 @@ class Parser:
             # We sanitize the source code.
             source: str = textwrap.dedent(content)
 
-            # Then pass it on to the contract builder.
+            # Then pass it on to the signature builder.
             self.builder(source)
 
             # And we yield a counter to keep the user updated.
             yield self.builder.count, self.builder.total
 
     def __exit__(self, *__: Any) -> None:
-        # We save the contracts for upstream recovery.
-        self.contracts = self.builder.contracts
+        # We save the signatures for upstream recovery.
+        self.signatures = self.builder.signatures

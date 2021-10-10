@@ -190,7 +190,7 @@ def test_funcs_when_removed(info, warn, fail, calls, checker):
 
 
 def test_funcs_when_duplicates(info, warn, fail, checker):
-    """Gives a unique name to all contracts in the same module."""
+    """Gives a unique name to all signatures in the same module."""
 
     checker.parser = type(checker.parser)(this = "0.2.8", that = "0.2.7")
     checker()

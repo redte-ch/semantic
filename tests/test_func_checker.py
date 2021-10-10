@@ -3,7 +3,7 @@ import inspect
 import pytest
 from numpy.testing import assert_equal
 
-from pysemver._builder import ContractBuilder
+from pysemver._builder import SignatureBuilder
 from pysemver._func_checker import FuncChecker
 
 from . import fixtures
@@ -11,12 +11,12 @@ from . import fixtures
 
 @pytest.fixture
 def this_builder():
-    return ContractBuilder(["file.py"])
+    return SignatureBuilder(["file.py"])
 
 
 @pytest.fixture
 def that_builder():
-    return ContractBuilder(["file.py"])
+    return SignatureBuilder(["file.py"])
 
 
 def test(this_builder, that_builder):
@@ -24,8 +24,8 @@ def test(this_builder, that_builder):
     this_builder(inspect.getsource(fixtures.func))
     that_builder(inspect.getsource(fixtures.func))
 
-    this, = this_builder.contracts
-    that, = that_builder.contracts
+    this, = this_builder.signatures
+    that, = that_builder.signatures
 
     checker = FuncChecker(this, that)
 
@@ -43,8 +43,8 @@ def test_when_added_args(this_builder, that_builder):
     this_builder(inspect.getsource(fixtures.func_with_more_args))
     that_builder(inspect.getsource(fixtures.func))
 
-    this, = this_builder.contracts
-    that, = that_builder.contracts
+    this, = this_builder.signatures
+    that, = that_builder.signatures
 
     checker = FuncChecker(this, that)
 
@@ -62,8 +62,8 @@ def test_when_removed_args(this_builder, that_builder):
     this_builder(inspect.getsource(fixtures.func))
     that_builder(inspect.getsource(fixtures.func_with_more_args))
 
-    this, = this_builder.contracts
-    that, = that_builder.contracts
+    this, = this_builder.signatures
+    that, = that_builder.signatures
 
     checker = FuncChecker(this, that)
 
@@ -81,8 +81,8 @@ def test_when_changed_arg_names(this_builder, that_builder):
     this_builder(inspect.getsource(fixtures.func_with_changed_args))
     that_builder(inspect.getsource(fixtures.func))
 
-    this, = this_builder.contracts
-    that, = that_builder.contracts
+    this, = this_builder.signatures
+    that, = that_builder.signatures
 
     checker = FuncChecker(this, that)
 
@@ -100,8 +100,8 @@ def test_when_added_types(this_builder, that_builder):
     this_builder(inspect.getsource(fixtures.func_with_types))
     that_builder(inspect.getsource(fixtures.func))
 
-    this, = this_builder.contracts
-    that, = that_builder.contracts
+    this, = this_builder.signatures
+    that, = that_builder.signatures
 
     checker = FuncChecker(this, that)
 
@@ -119,8 +119,8 @@ def test_when_removed_types(this_builder, that_builder):
     this_builder(inspect.getsource(fixtures.func))
     that_builder(inspect.getsource(fixtures.func_with_types))
 
-    this, = this_builder.contracts
-    that, = that_builder.contracts
+    this, = this_builder.signatures
+    that, = that_builder.signatures
 
     checker = FuncChecker(this, that)
 
@@ -138,8 +138,8 @@ def test_when_added_defaults(this_builder, that_builder):
     this_builder(inspect.getsource(fixtures.func_with_defaults))
     that_builder(inspect.getsource(fixtures.func))
 
-    this, = this_builder.contracts
-    that, = that_builder.contracts
+    this, = this_builder.signatures
+    that, = that_builder.signatures
 
     checker = FuncChecker(this, that)
 
@@ -157,8 +157,8 @@ def test_when_removed_defaults(this_builder, that_builder):
     this_builder(inspect.getsource(fixtures.func))
     that_builder(inspect.getsource(fixtures.func_with_defaults))
 
-    this, = this_builder.contracts
-    that, = that_builder.contracts
+    this, = this_builder.signatures
+    that, = that_builder.signatures
 
     checker = FuncChecker(this, that)
 
@@ -176,8 +176,8 @@ def test_when_added_args_and_defs(this_builder, that_builder):
     this_builder(inspect.getsource(fixtures.func_with_more_defaults))
     that_builder(inspect.getsource(fixtures.func))
 
-    this, = this_builder.contracts
-    that, = that_builder.contracts
+    this, = this_builder.signatures
+    that, = that_builder.signatures
 
     checker = FuncChecker(this, that)
 
@@ -195,8 +195,8 @@ def test_when_removed_args_and_defs(this_builder, that_builder):
     this_builder(inspect.getsource(fixtures.func))
     that_builder(inspect.getsource(fixtures.func_with_more_defaults))
 
-    this, = this_builder.contracts
-    that, = that_builder.contracts
+    this, = this_builder.signatures
+    that, = that_builder.signatures
 
     checker = FuncChecker(this, that)
 
