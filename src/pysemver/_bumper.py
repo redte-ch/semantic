@@ -43,8 +43,8 @@ class Bumper:
         self.required = Version.Int.NONE
 
     def __call__(self, bump: int) -> None:
-        index = max(self.required.value, Version(bump).value)
-        self.required = tuple(Version)[index]
+        index = max(self.required.value, Version.Int(bump).value)
+        self.required = Version.Int(index)
 
     def is_acceptable(self) -> bool:
         """Determines if the current version is acceptable or not.
