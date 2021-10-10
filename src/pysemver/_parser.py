@@ -4,7 +4,6 @@ import textwrap
 from typing import Any, Generator, Optional, Sequence, Set, Tuple
 
 import typic
-from typic import klass
 
 from ._builder import SignatureBuilder
 from ._models import Signature
@@ -15,7 +14,7 @@ THIS: str = Repo.Version.this()
 THAT: str = Repo.Version.last()
 
 
-@klass(always = True, slots = True, strict = True)
+@typic.klass(always = True, slots = True, strict = True)
 class Parser:
     """Wrapper around the repo and the signature builder.
 

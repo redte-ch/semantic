@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import ast
-import dataclasses
 import functools
 import pathlib
 from typing import (
@@ -15,27 +14,12 @@ from typing import (
     Union,
     )
 
-from aenum import Enum
+import typic
 
 from ._models import Argument, ArgType, RetType, Signature
 
 
-class Suffix(str, Enum):
-    """An enum to find unique signature names."""
-
-    SEMEL = ""
-    BIS = "(bis)"
-    TER = "(ter)"
-    QUATER = "(quater)"
-    QUINQUIES = "(quinquies)"
-    SEXIES = "(sexies)"
-    SEPTIES = "(septies)"
-    OCTIES = "(octies)"
-    NONIES = "(nonies)"
-    DECIES = "(decies)"
-
-
-@dataclasses.dataclass
+@typic.klass(always = True, strict = True)
 class SignatureBuilder(ast.NodeVisitor):
     """Builds signatures from the abstract syntax-tree of a revision.
 
@@ -74,6 +58,7 @@ class SignatureBuilder(ast.NodeVisitor):
 
         return len(self.files)
 
+    @typic.al(strict = True)
     def __call__(self, source: str) -> None:
         """Builds all signatures from the passed source code.
 
@@ -175,6 +160,7 @@ class SignatureBuilder(ast.NodeVisitor):
         # And we add it to the list of signatures.
         self.signatures = self.signatures + (signature,)
 
+    @typic.al(strict = True)
     def _build_unique_name(
             self,
             path: pathlib.Path,
@@ -212,6 +198,7 @@ class SignatureBuilder(ast.NodeVisitor):
         # Otherwise, we retry…
         return self._build_unique_name(path, node, suffixes)
 
+    @typic.al(strict = True)
     def _build_posarg(self, node: ast.FunctionDef) -> Callable[..., Any]:
         """Curryfies the positional arguments builder."""
 
@@ -221,6 +208,7 @@ class SignatureBuilder(ast.NodeVisitor):
             defaults = node.args.defaults,
             )
 
+    @typic.al(strict = True)
     def _build_keyarg(self, node: ast.FunctionDef) -> Callable[..., Any]:
         """Curryfies the keyword arguments builder."""
 
@@ -230,6 +218,7 @@ class SignatureBuilder(ast.NodeVisitor):
             defaults = node.args.kw_defaults,
             )
 
+    @typic.al(strict = True)
     def _build_argument(
             self,
             acc: Sequence[Argument],
@@ -249,6 +238,7 @@ class SignatureBuilder(ast.NodeVisitor):
 
         return (*acc, argument)
 
+    @typic.al(strict = True)
     def _build_arg_types(self, node: ast.arg) -> Optional[Tuple[ArgType, ...]]:
         """Builds the types of an argument."""
 
@@ -261,6 +251,7 @@ class SignatureBuilder(ast.NodeVisitor):
 
         return types
 
+    @typic.al(strict = True)
     def _build_arg_default(
             self,
             n_acc: int,
@@ -285,6 +276,7 @@ class SignatureBuilder(ast.NodeVisitor):
 
         return self._build(defaults[index])
 
+    @typic.al(strict = True)
     def _build_returns(self, node: ast.FunctionDef) -> Tuple[RetType, ...]:
         """Builds a return type."""
 
@@ -297,6 +289,7 @@ class SignatureBuilder(ast.NodeVisitor):
 
         return returns
 
+    @typic.al(strict = True)
     def _build(
             self,
             node: Optional[Union[ast.expr, ast.slice]],
@@ -357,6 +350,7 @@ class SignatureBuilder(ast.NodeVisitor):
 
         raise TypeError(ast.dump(node))
 
+    @typic.al(strict = True)
     def _is_unique(self, name: str) -> bool:
         """Check if a signature's name is unique or not."""
 

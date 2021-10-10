@@ -1,10 +1,13 @@
 import re
 from typing import Sequence, Tuple, Type
 
+import typic
+
 from ._models import Version
 from ._repo import Repo
 
 
+@typic.klass(always = True, slots = True, strict = True)
 class Bumper:
     """Determines the required version bump.
 
@@ -42,10 +45,12 @@ class Bumper:
         self.what = Version.Int
         self.required = Version.Int.NONE
 
+    @typic.al(strict = True)
     def __call__(self, bump: int) -> None:
         index = max(self.required.value, Version.Int(bump).value)
         self.required = Version.Int(index)
 
+    @typic.al(strict = True)
     def is_acceptable(self) -> bool:
         """Determines if the current version is acceptable or not.
 
@@ -103,6 +108,7 @@ class Bumper:
         # It is way too anecdotic for the complexity that the check requires.
         return actual_number >= before_number
 
+    @typic.al(strict = True)
     def _extract(self, version: str) -> Tuple[int, bool]:
         """Extract a major/minor/patch number from a version string."""
 

@@ -4,24 +4,30 @@ from typing import Optional, Sequence, Tuple
 
 import typic
 from aenum import Enum, IntEnum, skip
-from typic import klass
 
 
-@klass(frozen = True, slots = True, strict = True)
+class Exit(IntEnum):
+    """An enum with exit codes."""
+
+    OK = 0
+    KO = 1
+
+
+@typic.klass(frozen = True, slots = True, strict = True)
 class ArgType:
     """An argument type."""
 
     name: str
 
 
-@klass(frozen = True, slots = True, strict = True)
+@typic.klass(frozen = True, slots = True, strict = True)
 class RetType:
     """A return type."""
 
     name: str
 
 
-@klass(frozen = True, slots = True, strict = True)
+@typic.klass(frozen = True, slots = True, strict = True)
 class Argument:
     """An argument."""
 
@@ -30,7 +36,7 @@ class Argument:
     default: Optional[str] = None
 
 
-@klass(frozen = True, slots = True, strict = True)
+@typic.klass(frozen = True, slots = True, strict = True)
 class Signature:
     """A signature, that is arguments and returns."""
 
@@ -38,6 +44,21 @@ class Signature:
     file: str
     arguments: Sequence[Argument] = ()
     returns: Optional[Sequence[RetType]] = None
+
+
+class Suffix(str, Enum):
+    """An enum to find unique signature names."""
+
+    SEMEL = ""
+    BIS = "(bis)"
+    TER = "(ter)"
+    QUATER = "(quater)"
+    QUINQUIES = "(quinquies)"
+    SEXIES = "(sexies)"
+    SEPTIES = "(septies)"
+    OCTIES = "(octies)"
+    NONIES = "(nonies)"
+    DECIES = "(decies)"
 
 
 class Version(Enum):

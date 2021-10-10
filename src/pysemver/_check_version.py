@@ -3,13 +3,11 @@ from __future__ import annotations
 from typing import Optional, Sequence, Set, TypeVar
 
 import typic
-from aenum import IntEnum
-from typic import klass
 
 from ._bar import Bar
 from ._bumper import Bumper
 from ._func_checker import FuncChecker
-from ._models import Signature
+from ._models import Exit, Signature
 from ._parser import Parser
 from ._types import HasIndex, What
 
@@ -31,14 +29,7 @@ IGNORE = (
     )
 
 
-class Exit(IntEnum):
-    """An enum with exit codes."""
-
-    OK = 0
-    KO = 1
-
-
-@klass(always = True, slots = True, strict = True)
+@typic.klass(always = True, slots = True, strict = True)
 class CheckVersion:
     """Checks if the current version is acceptable.
 

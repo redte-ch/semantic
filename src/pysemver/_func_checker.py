@@ -2,12 +2,11 @@ from typing import Optional
 
 import numpy
 import typic
-from typic import klass
 
 from ._models import Signature
 
 
-@klass(always = True, slots = True, strict = True)
+@typic.klass(always = True, slots = True, strict = True)
 class FuncChecker:
 
     this: Signature

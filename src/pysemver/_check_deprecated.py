@@ -1,10 +1,12 @@
 import ast
-import enum
 import pathlib
 import textwrap
 from typing import Sequence
 
+import typic
+
 from ._bar import Bar
+from ._models import Exit
 from ._repo import Repo
 from ._types import HasIndex
 
@@ -15,13 +17,7 @@ FILES: Sequence[str]
 FILES = Repo.File.tree(VERSION)
 
 
-class Exit(enum.Enum):
-    """An enum with exit codes."""
-
-    OK = 0
-    KO = 1
-
-
+@typic.klass(always = True, strict = True)
 class CheckDeprecated(ast.NodeVisitor):
     """Prints the list of features marked as deprecated.
 
@@ -49,37 +45,39 @@ class CheckDeprecated(ast.NodeVisitor):
 
     """
 
+    bar: Bar
     count: int
     exit: HasIndex
     files: Sequence[str]
     nodes: Sequence[ast.Module]
-    progress: Bar
     total: int
     version: str
 
+    @typic.al(strict = True)
     def __init__(
             self,
+            bar: Bar,
             files: Sequence[str] = FILES,
             version: str = VERSION,
             ) -> None:
+        self.bar = bar
         self.exit = Exit.OK
         self.files = files
         self.nodes = [self._node(file) for file in self.files]
         self.total = len(self.nodes)
         self.version = version
 
-    def __call__(self, progress: Bar) -> None:
-        self.progress = progress
-        self.progress.init()
+    def __call__(self) -> None:
+        self.bar.init()
 
         # We use ``count`` to link each ``node`` with the corresponding
         # ``file``.
         for count, node in enumerate(self.nodes):
             self.count = count
             self.visit(node)
-            self.progress.push(self.count, self.total)
+            self.bar.push(self.count, self.total)
 
-        self.progress.wipe()
+        self.bar.wipe()
 
     def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
         """Defines the ``visit()`` function to inspect the ``node``.
@@ -158,19 +156,21 @@ class CheckDeprecated(ast.NodeVisitor):
                 f"(current: {self.version}).",
                 ]
 
-            self.progress.warn(f"{' '.join(message)}")
+            self.bar.warn(f"{' '.join(message)}")
 
             # If there is at least one expired deprecation, the handler
             # will exit with an error.
             if self._isthis(expires):
                 self.exit = Exit.KO
-                self.progress.fail()
+                self.bar.fail()
 
-            self.progress.then()
+            self.bar.then()
 
+    @typic.al(strict = True)
     def _isthis(self, version: str) -> bool:
         return self.version == version
 
+    @typic.al(strict = True)
     def _node(self, file: str) -> ast.Module:
         source: str
 
