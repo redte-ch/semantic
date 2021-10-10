@@ -3,6 +3,7 @@ from __future__ import annotations
 import sys
 
 import invoke
+from invoke import Collection
 
 from ._check_deprecated import CheckDeprecated
 from ._check_version import CheckVersion
@@ -10,7 +11,7 @@ from ._types import HasExit
 from ._bar import Bar
 
 
-class Tasks(invoke.Collection):
+class Tasks(Collection):
 
     bar = Bar()
 

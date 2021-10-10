@@ -1,7 +1,10 @@
 from __future__ import annotations
 
-import enum
 from typing import Optional, Sequence, Set, TypeVar
+
+import typic
+from aenum import IntEnum
+from typic import klass
 
 from ._bar import Bar
 from ._bumper import Bumper
@@ -28,13 +31,14 @@ IGNORE = (
     )
 
 
-class Exit(enum.Enum):
+class Exit(IntEnum):
     """An enum with exit codes."""
 
     OK = 0
     KO = 1
 
 
+@klass(always = True, slots = True, strict = True)
 class CheckVersion:
     """Checks if the current version is acceptable.
 
@@ -53,6 +57,7 @@ class CheckVersion:
     parser: Parser
     bumper: Bumper
 
+    @typic.al(strict = True)
     def __init__(self, bar: Bar, parser: Parser = PARSER) -> None:
         self.bar = bar
         self.exit = Exit.OK
@@ -75,6 +80,7 @@ class CheckVersion:
             .bar.then()
             )
 
+    @typic.al(strict = True)
     def _parse(self, parser: Parser, what: What) -> Sequence[Signature]:
         """Updates status while the parser builds signatures."""
 
@@ -183,6 +189,7 @@ class CheckVersion:
 
         return self
 
+    @typic.al(strict = True)
     def _is_functional(self, file: str) -> bool:
         """Checks if a given ``file`` is whitelisted as functional."""
 

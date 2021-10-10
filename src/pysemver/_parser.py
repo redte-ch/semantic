@@ -1,7 +1,10 @@
 from __future__ import annotations
 
 import textwrap
-from typing import Any, Generator, Sequence, Set, Tuple
+from typing import Any, Generator, Optional, Sequence, Set, Tuple
+
+import typic
+from typic import klass
 
 from ._builder import SignatureBuilder
 from ._models import Signature
@@ -12,6 +15,7 @@ THIS: str = Repo.Version.this()
 THAT: str = Repo.Version.last()
 
 
+@klass(always = True, slots = True, strict = True)
 class Parser:
     """Wrapper around the repo and the signature builder.
 
@@ -67,16 +71,21 @@ class Parser:
 
     this: str
     that: str
+    current: Optional[str]
     diff: Sequence[str]
-    current: str
-    builder: SignatureBuilder
-    signatures: Sequence[Signature]
+    builder: Optional[SignatureBuilder]
+    signatures: Optional[Sequence[Signature]]
 
+    @typic.al(strict = True)
     def __init__(self, *, this: str = THIS, that: str = THAT) -> None:
         self.this = this
         self.that = that
         self.diff = Repo.File.diff(this, that)
+        self.current = None
+        self.builder = None
+        self.signatures = None
 
+    @typic.al(strict = True)
     def __call__(self, *, what: What) -> Parser:
         # We try recover the revision (``this`` or ``that``). Fails otherwise.
         self.current: str = self.__getattribute__(what)
@@ -96,7 +105,7 @@ class Parser:
         to_parse: Set[str] = files & set(self.diff)
 
         # We create a builder with the selected files.
-        self.builder: SignatureBuilder = SignatureBuilder(tuple(to_parse))
+        self.builder: SignatureBuilder(tuple(to_parse))
 
         # And finally we iterate over the files…
         for file in self.builder.files:
