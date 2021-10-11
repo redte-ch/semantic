@@ -63,7 +63,9 @@ class SessionCache:
 @nox_poetry.session(python = python_versions[-1:])
 def coverage(session) -> None:
     session.run("make", "install", external = True, silent = True)
-    session.install("coverage[toml]", "codecov", ".", silent = True)
+    session.install("coverage[toml]", silent = True)
+    session.install("codecov", silent = True)
+    session.install(".", silent = True)
     session.run("coverage", "xml", "--fail-under=0")
     session.run("codecov", *session.posargs)
 
@@ -72,7 +74,9 @@ def coverage(session) -> None:
 def docs(session):
     session.run("make", "install", external = True, silent = True)
     session.install("interrogate", silent = True)
-    session.install("sphinx", "sphinx-autodoc-typehints", ".", silent = True)
+    session.install("sphinx", silent = True)
+    session.install("sphinx-autodoc-typehints", silent = True)
+    session.install(".", silent = True)
     session.run("interrogate", "src")
 
     for step in doc_steps:
@@ -83,7 +87,8 @@ def docs(session):
 @nox.parametrize("python", python_versions, ids = python_versions)
 def lint(session):
     session.run("make", "install", external = True, silent = True)
-    session.install("wemake-python-styleguide", ".", silent = True)
+    session.install("wemake-python-styleguide", silent = True)
+    session.install(".", silent = True)
     session.run("flake8", *(*rel_build, "tests"))
 
 
@@ -95,7 +100,9 @@ def type(session, numpy):
     with SessionCache(session.name, session.cache_dir):
         session.run("poetry", "add", f"numpy@{numpy}", silent = True)
 
-    session.install("mypy", "pytype", ".", silent = True)
+    session.install("mypy", silent = True)
+    session.install("pytype", silent = True)
+    session.install(".", silent = True)
     session.run("mypy", *rel_build)
     session.run("pytype", *rel_build)
 
@@ -108,5 +115,10 @@ def test(session, numpy):
     with SessionCache(session.name, session.cache_dir):
         session.run("poetry", "add", f"numpy@{numpy}", silent = True)
 
-    session.install("pytest-mock", "typeguard", "xdoctest", ".", silent = True)
+    session.install("coverage[toml]", silent = True)
+    session.install("pytest", silent = True)
+    session.install("pytest-mock", silent = True)
+    session.install("typeguard", silent = True)
+    session.install("xdoctest", silent = True)
+    session.install(".", silent = True)
     session.run("pytest", *(*rel_build, "tests"))
