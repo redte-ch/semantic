@@ -6,6 +6,7 @@
 
 """Somme handy functions to parse data."""
 
+import pipeop
 import functools
 import itertools
 from typing import Any, Callable, Sequence, TypeVar
@@ -16,40 +17,53 @@ T = TypeVar("T")
 F = Callable[..., Any]
 
 partial = functools.partial
+"""Just a shortcut for `.functools.partial`."""
 
 
 @deal.pure
-def apply(func: F, seqs: Any) -> Any:
-    """Applies a function to a sequence of sequences.
-
-    Args:
-        func: Any callable.
-        sequences: Any sequence of sequences.
+def _(identity: T) -> T:
+    """Identity useful for noop.
 
     Examples:
-        >>> func = lambda *x: sum(x)
-        >>> list(apply(func, [(1, 2), (3, 4)]))
-        [3, 7]
+        >>> _(1)
+        1
 
     """
 
-    return (func(*seq) for seq in seqs)
+    return identity
 
 
 @deal.pure
-def cons(seqs: Any) -> Any:
-    """Like the original cons but for sequences of sequences.
+def dfc(seqs: Any) -> Any:
+    """Like the original cons but for cons of cons.
 
         Args:
-            seqs: Infinite sequences of infinite sequences.
+            seqs: Any sequences of sequences.
 
         Examples:
-            >>> list(cons([(1, [2, 3]), (4, [5, 6]), (7, [8, 9])]))
+            >>> list(dc[(1, [2, 3]), (4, [5, 6])]))
             [(1, 2, 3), (4, 5, 6), (7, 8, 9)]
 
     """
 
     return (tuple(itertools.chain([el], seq)) for el, seq in seqs)
+
+
+@deal.pure
+def dfp(func: F, seqs: Any) -> Any:
+    """Applies a function to a sequence of sequences.
+
+    Args:
+        func: Any callable.
+        seqs: Any sequence of sequences.
+
+    Examples:
+        >>> list(dp(float.__add__, [(.1, .2), (.3, .4)]))
+        [0.3..., 0.7]
+
+    """
+
+    return (func(*seq) for seq in seqs)
 
 
 @deal.pure
@@ -66,3 +80,38 @@ def first(seq: Sequence[T]) -> T:
     """
 
     return next(iter(seq))
+
+
+@deal.pure
+def compact(seq: Any) -> Any:
+    """ Filters falsy values.
+
+    Args:
+        seq: Any sequence.
+
+    Examples:
+        >>> list(compact(["1", 0, "a", None, {}]))
+        ['1', 'a']
+
+    """
+
+    return filter(bool, seq)
+
+
+@deal.pure
+def flatten(seqs: Any) -> Sequence[Any]:
+    """Flattens a sequences of sequences.
+
+    Args:
+        seqs: Any sequence of sequences.
+
+    Examples:
+        >>> list(flatten([(1, 2), (3, 4)]))
+        [1, 2, 3, 4]
+
+        >>> list(flatten(["ab", "cd"]))
+        ['a', 'b', 'c', 'd']
+
+    """
+
+    return itertools.chain.from_iterable(seqs)

@@ -8,7 +8,6 @@ from typing import Any, Callable, MutableMapping, Type, TypeVar
 
 import pipeop
 import toml
-from lambdas import _
 
 from ._models import Config
 
@@ -21,8 +20,8 @@ def build_config(loader: F, config: Type[Config]) -> Config[T]:
     return (
         "pyproject.toml"
         >> loader.load
-        >> _["tool"]
-        >> _["pysemver"]
+        >> dict.get("tool")
+        >> dict.get("pysemver")
         >> config.transmute
         )
 

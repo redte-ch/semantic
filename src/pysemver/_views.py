@@ -82,7 +82,7 @@ class Home:
 
         Home.columns << map(table.add_column) >> tuple
 
-        tasks << _fn.apply(table.add_row) >> tuple
+        tasks << _fn.dfp(table.add_row) >> tuple
 
         return table
 

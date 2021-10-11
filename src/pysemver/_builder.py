@@ -22,8 +22,8 @@ from typing import (
 
 import deal
 import typic
-from lambdas import _
 
+from ._fn import _
 from ._models import Argument, ArgType, RetType, Signature
 
 

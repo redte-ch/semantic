@@ -680,17 +680,6 @@ MarkupSafe = ">=2.0"
 i18n = ["Babel (>=2.7)"]
 
 [[package]]
-name = "lambdas"
-version = "0.1.0"
-description = "Typed lambdas that are short and readable"
-category = "main"
-optional = false
-python-versions = ">=3.6,<4.0"
-
-[package.dependencies]
-typing-extensions = ">=3.7,<4.0"
-
-[[package]]
 name = "lazy-object-proxy"
 version = "1.6.0"
 description = "A fast and thorough lazy object proxy."
@@ -1534,7 +1523,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "~3.7 || ~3.8 || ~3.9"
-content-hash = "de3124beb7a368ecec6cf1013bb7843545660f3662471d55cb39a6a93e2afe06"
+content-hash = "d7aabedee415b86723217354db2a258e36c2a960d03ecc25b3cb1366970fc7bc"
 
 [metadata.files]
 aenum = [
@@ -1786,10 +1775,6 @@ jedi = [
 jinja2 = [
     {file = "Jinja2-3.0.2-py3-none-any.whl", hash = "sha256:8569982d3f0889eed11dd620c706d39b60c36d6d25843961f33f77fb6bc6b20c"},
     {file = "Jinja2-3.0.2.tar.gz", hash = "sha256:827a0e32839ab1600d4eb1c4c33ec5a8edfbc5cb42dafa13b81f182f97784b45"},
-]
-lambdas = [
-    {file = "lambdas-0.1.0-py3-none-any.whl", hash = "sha256:b197d7cf464b9733944cf9b9cf73d05d934b19eaf0c32fc04a9e7dd25b5ce321"},
-    {file = "lambdas-0.1.0.tar.gz", hash = "sha256:a595cfbcea23bf7295a821563044785d0dc843b39d21ccaee5c3a79afe79e140"},
 ]
 lazy-object-proxy = [
     {file = "lazy-object-proxy-1.6.0.tar.gz", hash = "sha256:489000d368377571c6f982fba6497f2aa13c6d1facc40660963da62f5c379726"},
