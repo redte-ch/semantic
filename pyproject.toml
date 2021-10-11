@@ -16,8 +16,11 @@ packages = [{include = "pysemver", from = "src"}]
 [tool.poetry.dependencies]
 python = "~3.7 || ~3.8 || ~3.9"
 aenum = "<4"
+crosshair-tool = "<1"
+deal = "<5"
 funcy = "<2"
 invoke = "<2"
+lambdas = "<1"
 numpy = ">=1.7, <1.22"
 pipeop = "<1"
 rich = "<11"
@@ -86,7 +89,10 @@ doctest_optionflags = [
 [tool.mypy]
 install_types = true
 non_interactive = true
-plugins = ["typic.mypy"]
+plugins = [
+    "lambdas.contrib.mypy.lambdas_plugin",
+    "typic.mypy",
+    ]
 strict = true
 
 [build-system]

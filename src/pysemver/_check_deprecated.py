@@ -9,6 +9,7 @@ import pathlib
 import textwrap
 from typing import Sequence
 
+import deal
 import typic
 
 from ._bar import Bar
@@ -59,6 +60,7 @@ class CheckDeprecated(ast.NodeVisitor):
     total: int
     version: str
 
+    @deal.pure
     @typic.al(strict = True)
     def __init__(
             self,
@@ -73,6 +75,7 @@ class CheckDeprecated(ast.NodeVisitor):
         self.total = len(self.nodes)
         self.version = version
 
+    @deal.pure
     def __call__(self) -> None:
         self.bar.init()
 
@@ -85,6 +88,7 @@ class CheckDeprecated(ast.NodeVisitor):
 
         self.bar.wipe()
 
+    @deal.pure
     def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
         """Defines the ``visit()`` function to inspect the ``node``.
 
@@ -172,10 +176,12 @@ class CheckDeprecated(ast.NodeVisitor):
 
             self.bar.then()
 
+    @deal.pure
     @typic.al(strict = True)
     def _isthis(self, version: str) -> bool:
         return self.version == version
 
+    @deal.pure
     @typic.al(strict = True)
     def _node(self, file: str) -> ast.Module:
         source: str

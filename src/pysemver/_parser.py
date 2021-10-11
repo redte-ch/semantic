@@ -9,6 +9,7 @@ from __future__ import annotations
 import textwrap
 from typing import Any, Generator, Optional, Sequence, Set, Tuple
 
+import deal
 import typic
 
 from ._builder import SignatureBuilder
@@ -81,6 +82,7 @@ class Parser:
     builder: Optional[SignatureBuilder]
     signatures: Optional[Sequence[Signature]]
 
+    @deal.pure
     @typic.al(strict = True)
     def __init__(self, *, this: str = THIS, that: str = THAT) -> None:
         self.this = this
@@ -90,6 +92,7 @@ class Parser:
         self.builder = None
         self.signatures = None
 
+    @deal.pure
     @typic.al(strict = True)
     def __call__(self, *, what: What) -> Parser:
         # We try recover the revision (``this`` or ``that``). Fails otherwise.
@@ -98,6 +101,7 @@ class Parser:
         # And we return ourselves.
         return self
 
+    @deal.pure
     def __enter__(self) -> Generator[Tuple[int, ...], None, None]:
         # We recover the python files corresponding to ``revison``.
         files: Set[str] = {
@@ -127,6 +131,7 @@ class Parser:
             # And we yield a counter to keep the user updated.
             yield self.builder.count, self.builder.total
 
+    @deal.pure
     def __exit__(self, *__: Any) -> None:
         # We save the signatures for upstream recovery.
         self.signatures = self.builder.signatures

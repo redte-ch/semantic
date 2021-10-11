@@ -6,7 +6,7 @@
 
 .DEFAULT_GOAL := all
 
-all: format lint type test ;
+all: format deal lint type test ;
 
 install:
 	@pip install --upgrade pip wheel setuptools
@@ -23,6 +23,12 @@ clean: src
 format: $(shell git ls-files "*.py")
 	@poetry run autopep8 $?
 	@poetry run pyupgrade $? --py36-plus --keep-runtime-typing
+
+bind: compile clean
+	@poetry run python -m deal lint src
+	@poetry run python -m deal test src
+	@poetry run python -m deal prove src
+	@poetry run crosshair check src
 
 lint: compile clean
 	@poetry run flake8 docs/conf.py src tests noxfile.py

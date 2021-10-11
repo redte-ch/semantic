@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from typing import Optional, Sequence, Set, TypeVar
 
+import deal
 import typic
 
 from ._bar import Bar
@@ -54,6 +55,7 @@ class CheckVersion:
     parser: Parser
     bumper: Bumper
 
+    @deal.pure
     @typic.al(strict = True)
     def __init__(self, bar: Bar, parser: Parser = PARSER) -> None:
         self.bar = bar
@@ -61,6 +63,7 @@ class CheckVersion:
         self.parser = parser
         self.bumper = Bumper()
 
+    @deal.pure
     def __call__(self) -> None:
         """Runs all the checks."""
 
@@ -77,6 +80,7 @@ class CheckVersion:
             .bar.then()
             )
 
+    @deal.pure
     @typic.al(strict = True)
     def _parse(self, parser: Parser, what: What) -> Sequence[Signature]:
         """Updates status while the parser builds signatures."""
@@ -92,6 +96,7 @@ class CheckVersion:
 
         return parser.signatures
 
+    @deal.pure
     def _check_files(self: T, bumper: Bumper, files: Set[str]) -> T:
         """Requires a bump if there's a diff in files."""
 
@@ -115,6 +120,7 @@ class CheckVersion:
 
         return self
 
+    @deal.pure
     def _check_funcs(
             self: T,
             bumper: Bumper,
@@ -172,6 +178,7 @@ class CheckVersion:
 
         return self
 
+    @deal.pure
     def _check_version_acceptable(self: T, bumper: Bumper) -> T:
         """Requires a bump if there current version is not acceptable."""
 
@@ -186,6 +193,7 @@ class CheckVersion:
 
         return self
 
+    @deal.pure
     @typic.al(strict = True)
     def _is_functional(self, file: str) -> bool:
         """Checks if a given ``file`` is whitelisted as functional."""

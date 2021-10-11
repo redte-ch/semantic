@@ -7,6 +7,7 @@
 import re
 from typing import Sequence, Tuple, Type
 
+import deal
 import typic
 
 from ._models import Version
@@ -45,17 +46,20 @@ class Bumper:
     what: Type[Version.Int]
     required: Version.Int
 
+    @deal.pure
     def __init__(self) -> None:
         self.this = Repo.Version.this()
         self.that = Repo.Version.last()
         self.what = Version.Int
         self.required = Version.Int.NONE
 
+    @deal.pure
     @typic.al(strict = True)
     def __call__(self, bump: int) -> None:
         index = max(self.required.value, Version.Int(bump).value)
         self.required = Version.Int(index)
 
+    @deal.pure
     @typic.al(strict = True)
     def is_acceptable(self) -> bool:
         """Determines if the current version is acceptable or not.
@@ -114,6 +118,7 @@ class Bumper:
         # It is way too anecdotic for the complexity that the check requires.
         return actual_number >= before_number
 
+    @deal.pure
     @typic.al(strict = True)
     def _extract(self, version: str) -> Tuple[int, bool]:
         """Extract a major/minor/patch number from a version string."""

@@ -9,6 +9,7 @@ from __future__ import annotations
 import sys
 from typing import Sequence
 
+import deal
 import termcolor
 
 WORK_ICON: str = termcolor.colored("[/]", "cyan")
@@ -31,47 +32,56 @@ class Bar:
 
     """
 
+    @deal.pure
     def init(self) -> None:
         """Initialises the progress bar."""
 
         sys.stdout.write(self._init_message())
 
+    @deal.pure
     def push(self, count: int, total: int) -> None:
         """Pushes progress to the ``stdout``."""
 
         done: int = (count + 1) * 100 // total
         sys.stdout.write(self._push_message(done))
 
+    @deal.pure
     def okay(self, message: str) -> None:
         """Prints an okay ``message``."""
 
         sys.stdout.write(f"{OKAY_ICON} {message}")
 
+    @deal.pure
     def info(self, message: str) -> None:
         """Prints an info ``message``."""
 
         sys.stdout.write(f"{INFO_ICON} {message}")
 
+    @deal.pure
     def warn(self, message: str) -> None:
         """Prints a warn ``message``."""
 
         sys.stdout.write(f"{WARN_ICON} {message}")
 
+    @deal.pure
     def fail(self) -> None:
         """Marks last printed message as failing."""
 
         sys.stdout.write(f"\r{FAIL_ICON}")
 
+    @deal.pure
     def then(self) -> None:
         """Prints a new line and resets the cursor position."""
 
         sys.stdout.write("\n\r")
 
+    @deal.pure
     def wipe(self) -> None:
         """Cleans last printed message."""
 
         sys.stdout.write(self._wipe_message())
 
+    @deal.pure
     def _init_message(self) -> str:
         message: Sequence[str]
         message = [
@@ -81,6 +91,7 @@ class Bar:
 
         return "".join(message)
 
+    @deal.pure
     def _push_message(self, done: int) -> str:
         message: Sequence[str]
         spaces: str
@@ -98,5 +109,6 @@ class Bar:
 
         return "".join(message)
 
+    @deal.pure
     def _wipe_message(self) -> str:
         return f"{' ' * BAR_SIZE * 3}\r"

@@ -6,6 +6,7 @@
 
 from typing import Optional
 
+import deal
 import numpy
 import typic
 
@@ -28,21 +29,26 @@ class FuncChecker:
         self.size_min: int = min(self.this_len, self.that_len)
 
     @property
+    @deal.pure
     def nones(self) -> numpy.ndarray:
         return numpy.repeat(SemVer.NONES.value, self.size_min)
 
     @property
+    @deal.pure
     def patch(self) -> numpy.ndarray:
         return numpy.repeat(SemVer.PATCH.value, self.size_min)
 
     @property
+    @deal.pure
     def minor(self) -> numpy.ndarray:
         return numpy.repeat(SemVer.MINOR.value, self.size_min)
 
     @property
+    @deal.pure
     def major(self) -> numpy.ndarray:
         return numpy.repeat(SemVer.MAJOR.value, self.size_min)
 
+    @deal.pure
     @typic.al(strict = True)
     def filler(self, array: numpy.ndarray) -> numpy.ndarray:
         index: int = array[0]
@@ -50,6 +56,7 @@ class FuncChecker:
 
         return numpy.repeat(index, times)
 
+    @deal.pure
     @typic.al(strict = True)
     def score(self) -> int:
         if max(self.diff_args()) == 2:
@@ -81,6 +88,7 @@ class FuncChecker:
             max(self.diff_defs()),
             )
 
+    @deal.pure
     @typic.al(strict = True)
     def diff_hash(self) -> numpy.ndarray:
         these = numpy.array([self.this] * self.size_max)
@@ -91,6 +99,7 @@ class FuncChecker:
 
         return numpy.where(these != those, patch, nones)
 
+    @deal.pure
     @typic.al(strict = True)
     def diff_args(self) -> numpy.ndarray:
         these = numpy.array([self.this_len] * self.size_max)
@@ -105,6 +114,7 @@ class FuncChecker:
 
         return numpy.select(conds, takes)
 
+    @deal.pure
     @typic.al(strict = True)
     def diff_name(self) -> numpy.ndarray:
         these = numpy.array([a.name for a in self.this.arguments])
@@ -116,6 +126,7 @@ class FuncChecker:
 
         return [*numpy.select(conds, takes), *self.filler(self.minor)]
 
+    @deal.pure
     @typic.al(strict = True)
     def diff_type(self) -> numpy.ndarray:
         these = numpy.array([a.types is None for a in self.this.arguments])
@@ -127,6 +138,7 @@ class FuncChecker:
 
         return [*numpy.select(conds, takes), *self.filler(self.nones)]
 
+    @deal.pure
     @typic.al(strict = True)
     def diff_defs(self) -> numpy.ndarray:
         major = [*self.major, *self.filler(self.major)]

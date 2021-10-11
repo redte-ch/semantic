@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from typing import Optional, Sequence, Tuple
 
+import deal
 import typic
 from aenum import Enum, IntEnum, skip
 
@@ -108,6 +109,7 @@ class Version(Enum):
         MINOR = 2
         MAJOR = 3
 
+        @deal.pure
         @typic.al(strict = True)
         def __str__(self) -> str:
             return tuple(Version.Str)[self.value]

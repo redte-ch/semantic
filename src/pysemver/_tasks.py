@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import sys
 
+import deal
 import invoke
 from invoke import Collection
 
@@ -21,6 +22,7 @@ class Tasks(Collection):
 
     bar = Bar()
 
+    @deal.pure
     def __init__(self) -> None:
         super().__init__()
         self.add_task(self.check_deprecated)

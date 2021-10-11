@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from typing import List, Tuple
 
+import deal
 import funcy
 import typic
 from pipeop import pipes
@@ -68,6 +69,7 @@ def layout(panel: Panel) -> Layout:
     return panel >> _rows >> _columns
 
 
+@deal.pure
 @pipes
 def _title() -> Text:
     """A title.
