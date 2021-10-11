@@ -37,7 +37,7 @@ test: compile clean
 	@poetry run sphinx-build -b doctest -anqTW docs docs/_build
 
 release:
-	@nox
+	@nox -k "not coverage"
 	@poetry run pip uninstall pysemver -y -q
 	@poetry install -q
 	@poetry run pysemver check-version \

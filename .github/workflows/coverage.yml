@@ -1,0 +1,27 @@
+name: coverage
+
+on: [ push ]
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+
+    name: coverage
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Python setup
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9.7
+          architecture: x64
+
+      - name: Install dependencies
+        run: make install
+
+      - name: Upload coverage
+        run: nox -s "test(3.9.7/1.21.2)" coverage-3.9.7
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

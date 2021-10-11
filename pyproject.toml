@@ -27,6 +27,7 @@ typing_extensions = {version = "<4", python = "~3.7"}
 
 [tool.poetry.dev-dependencies]
 autopep8 = "<2"
+codecov = "<3"
 coverage = {extras = ["toml"], version = "<7"}
 ipython = "<8"
 mypy = "<1"

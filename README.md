@@ -2,6 +2,7 @@
 [![Type](https://github.com/maukoquiroga/pysemver/workflows/type/badge.svg)](https://github.com/maukoquiroga/pysemver/actions?workflow=type)
 [![Lint](https://github.com/maukoquiroga/pysemver/workflows/lint/badge.svg)](https://github.com/maukoquiroga/pysemver/actions?workflow=lint)
 [![Docs](https://github.com/maukoquiroga/pysemver/workflows/docs/badge.svg)](https://github.com/maukoquiroga/pysemver/actions?workflow=docs)
+[![Coverage](https://codecov.io/gh/maukoquiroga/pysemver/branch/master/graph/badge.svg)](https://codecov.io/gh/maukoquiroga/pysemver)
 
 Copyleft (ɔ) 2021 Mauko Quiroga <mauko@pm.me>
 

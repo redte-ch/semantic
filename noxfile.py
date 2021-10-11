@@ -61,6 +61,14 @@ class SessionCache:
 
 
 @nox_poetry.session(python = python_versions[-1:])
+def coverage(session) -> None:
+    session.run("make", "install", external = True, silent = True)
+    session.install("coverage[toml]", "codecov", ".", silent = True)
+    session.run("coverage", "xml", "--fail-under=0")
+    session.run("codecov", *session.posargs)
+
+
+@nox_poetry.session(python = python_versions[-1:])
 def docs(session):
     session.run("make", "install", external = True, silent = True)
     session.install("sphinx", "sphinx-autodoc-typehints", ".", silent = True)
