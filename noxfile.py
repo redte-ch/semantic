@@ -71,7 +71,9 @@ def coverage(session) -> None:
 @nox_poetry.session(python = python_versions[-1:])
 def docs(session):
     session.run("make", "install", external = True, silent = True)
+    session.install("interrogate", silent = True)
     session.install("sphinx", "sphinx-autodoc-typehints", ".", silent = True)
+    session.run("interrogate", "src")
 
     for step in doc_steps:
         session.run("sphinx-build", "-b", step, *doc_build)

@@ -29,6 +29,7 @@ typing_extensions = {version = "<4", python = "~3.7"}
 autopep8 = "<2"
 codecov = "<3"
 coverage = {extras = ["toml"], version = "<7"}
+interrogate = "<2"
 ipython = "<8"
 mypy = "<1"
 pytest = "<7"
@@ -55,6 +56,17 @@ source = ["pysemver"]
 [tool.coverage.report]
 show_missing = true
 fail_under = 100
+
+[tool.interrogate]
+fail-under = 100
+ignore-init-method = true
+ignore-magic = true
+ignore-nested-classes = false
+ignore-nested-functions = true
+ignore-private = true
+ignore-semiprivate = true
+omit-covered-files = true
+verbose = 2
 
 [tool.pytest.ini_options]
 addopts = [

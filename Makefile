@@ -34,6 +34,7 @@ type: compile clean
 
 test: compile clean
 	@poetry run pytest --cov
+	@poetry run interrogate src
 	@poetry run sphinx-build -b doctest -anqTW docs docs/_build
 
 release:
