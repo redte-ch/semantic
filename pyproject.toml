@@ -17,7 +17,6 @@ packages = [{include = "pysemver", from = "src"}]
 python = "~3.7 || ~3.8 || ~3.9"
 aenum = "<4"
 crosshair-tool = "<1"
-cytoolz = "<1"
 deal = "<5"
 invoke = "<2"
 lambdas = "<1"

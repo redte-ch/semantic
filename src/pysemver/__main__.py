@@ -41,8 +41,10 @@ class Main(Program):
         context = self.parser.contexts[command]
         description = inspect.getdoc(self.collection[command])
 
-        return tuple(cytoolz.map(cytoolz.flatten, tuple(
-            cytoolz.chunks(1, context.help_tuples()))))
+        raise ValueError(context.help_tuples())
+
+        # return tuple(cytoolz.map(cytoolz.flatten, tuple(
+        #     cytoolz.chunks(1, context.help_tuples()))))
 
     def task_list_opener(self, __: str = "") -> str:
         return "Commands"

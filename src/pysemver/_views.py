@@ -10,7 +10,6 @@ from typing import List, Tuple
 
 import deal
 import pipeop
-import typic
 from rich.layout import Layout
 from rich.panel import Panel
 from rich.table import Table
@@ -34,7 +33,6 @@ def _rows(panel: Panel) -> Layout:
 
 
 @deal.pure
-@typic.al(strict = True)
 def _columns(panel: Layout) -> Layout:
     layout = Layout()
 
@@ -43,7 +41,6 @@ def _columns(panel: Layout) -> Layout:
     return layout
 
 
-@typic.klass(frozen = True, slots = True, strict = True)
 class Home:
     """Home view."""
 
@@ -113,7 +110,6 @@ class Home:
         return text
 
 
-@typic.klass(frozen = True, slots = True, strict = True)
 class Help:
     """Help view."""
 
@@ -121,15 +117,13 @@ class Help:
 
     @deal.pure
     @pipeop.pipes
-    #  @typic.al(strict = True)
-    #  https://github.com/seandstewart/typical/issues/183
     def root(main: Panel) -> Layout:
         """Global help container."""
 
         return main >> _rows >> _columns
 
-    #  @typic.al(strict = True)
-    #  https://github.com/seandstewart/typical/issues/183
+    @deal.pure
+    @pipeop.pipes
     def main(command: str, content: Table) -> Panel:
         return Panel(
             content,
