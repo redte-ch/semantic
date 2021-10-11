@@ -2,6 +2,7 @@
 [![Type](https://github.com/maukoquiroga/pysemver/workflows/type/badge.svg)](https://github.com/maukoquiroga/pysemver/actions?workflow=type)
 [![Lint](https://github.com/maukoquiroga/pysemver/workflows/lint/badge.svg)](https://github.com/maukoquiroga/pysemver/actions?workflow=lint)
 [![Docs](https://github.com/maukoquiroga/pysemver/workflows/docs/badge.svg)](https://github.com/maukoquiroga/pysemver/actions?workflow=docs)
+[![Docs](https://readthedocs.org/projects/pysemver/badge/)](https://pysemver.readthedocs.io/)
 [![PyPI](https://img.shields.io/pypi/v/pysemver.svg)](https://pypi.org/project/pysemver/)
 [![Coverage](https://codecov.io/gh/maukoquiroga/pysemver/branch/master/graph/badge.svg)](https://codecov.io/gh/maukoquiroga/pysemver)
 

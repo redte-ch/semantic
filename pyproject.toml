@@ -8,7 +8,7 @@ maintainers = ["Mauko Quiroga <mauko@pm.me>"]
 readme = "README.md"
 homepage = ""
 repository = "https://github.com/maukoquiroga/pysemver"
-documentation = ""
+documentation = "https://pysemver.readthedocs.io"
 keywords = []
 classifiers = []
 packages = [{include = "pysemver", from = "src"}]
