@@ -61,7 +61,7 @@ class SessionCache:
 
 
 @nox_poetry.session(python = python_versions[-1:])
-def doc(session):
+def docs(session):
     session.run("make", "install", external = True, silent = True)
     session.install("sphinx", "sphinx-autodoc-typehints", ".", silent = True)
 

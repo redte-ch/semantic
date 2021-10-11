@@ -1,12 +1,12 @@
-name: doc
+name: docs
 
 on: [ push ]
 
 jobs:
-  doc:
+  docs:
     runs-on: ubuntu-latest
 
-    name: doc
+    name: docs
 
     steps:
       - name: Checkout
