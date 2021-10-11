@@ -7,7 +7,7 @@
 import os
 import sys
 
-import funcy
+import cytoolz
 import pytest
 from pipeop import pipes
 
@@ -47,14 +47,14 @@ def okay(mocker, checker):
 
 
 @pytest.fixture
-@pipes
+@pipeop.pipes
 def calls(warn):
     def _calls():
         return (
             warn.call_args_list
-            >> funcy.flatten
-            << funcy.map(funcy.first)
-            >> funcy.compact
+            >> cytoolz.flatten
+            << cytoolz.map(cytoolz.first)
+            >> cytoolz.compact
             >> tuple
             )
 
@@ -161,7 +161,7 @@ def test_funcs_when_no_diff(info, warn, fail, okay, checker):
     assert exit.value.code == os.EX_OK
 
 
-@pipes
+@pipeop.pipes
 def test_funcs_when_added(info, warn, fail, calls, checker):
     """Requires a minor bump when a function is added."""
 
@@ -172,13 +172,13 @@ def test_funcs_when_added(info, warn, fail, calls, checker):
         sys.exit(checker.exit.value)
 
     info.assert_called_with("Version bump required: MINOR!\n")
-    assert calls() << funcy.select(r"\+") >> len == 1
-    assert calls() << funcy.select(r"\-") >> len == 0
+    assert calls() << cytoolz.select(r"\+") >> len == 1
+    assert calls() << cytoolz.select(r"\-") >> len == 0
     fail.assert_called()
     assert exit.value.code != os.EX_OK
 
 
-@pipes
+@pipeop.pipes
 def test_funcs_when_removed(info, warn, fail, calls, checker):
     """Requires a major bump when a function is removed."""
 
@@ -189,8 +189,8 @@ def test_funcs_when_removed(info, warn, fail, calls, checker):
         sys.exit(checker.exit.value)
 
     info.assert_called_with("Version bump required: MAJOR!\n")
-    assert calls() << funcy.select(r"\+") >> len == 0
-    assert calls() << funcy.select(r"\-") >> len == 1
+    assert calls() << cytoolz.select(r"\+") >> len == 0
+    assert calls() << cytoolz.select(r"\-") >> len == 1
     fail.assert_called()
     assert exit.value.code != os.EX_OK
 

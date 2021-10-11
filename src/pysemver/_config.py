@@ -6,9 +6,9 @@
 
 from typing import Any, Callable, MutableMapping, Type, TypeVar
 
+import pipeop
 import toml
 from lambdas import _
-from pipeop import pipes
 
 from ._models import Config
 
@@ -16,7 +16,7 @@ T = TypeVar("T", bound = MutableMapping[str, Any])
 F = TypeVar("F", bound = Callable[[str], T])
 
 
-@pipes
+@pipeop.pipes
 def build_config(loader: F, config: Type[Config]) -> Config[T]:
     return (
         "pyproject.toml"

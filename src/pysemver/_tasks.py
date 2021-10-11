@@ -7,12 +7,12 @@
 from __future__ import annotations
 
 import sys
-from typing import MutableMapping, Sequence
+from typing import MutableMapping, Sequence, Tuple
 
-import typic
 import invoke
+import pipeop
+import typic
 from invoke import Collection
-from pipeop import pipes
 
 from ._check_deprecated import CheckDeprecated
 from ._check_version import CheckVersion
@@ -25,13 +25,18 @@ from ._bar import Bar
 class CheckVersionTask:
 
     optional: Sequence[str]
-    help: MutableMapping[str, str]
+    help: MutableMapping[str, Tuple[str, ...]]
 
-    @pipes
+    @pipeop.pipes
     def __init__(self, ignore: Sequence[str]) -> None:
         self.optional = ["ignore"]
         self.help = {
-            "ignore": f"Paths to ignore\n(default: {ignore << str.join(', ')})"
+            "pico": (
+                "Paths to ignore",
+                f"default: {ignore << str.join(', ')}"),
+            "ignore": (
+                "Paths to ignore",
+                f"(default: {ignore << str.join(', ')}"),
             }
 
 
@@ -54,9 +59,10 @@ class Tasks(Collection):
         sys.exit(task.exit.value)
 
     @invoke.task(**CheckVersionTask(config.ignore).primitive())
-    def check_version(_context, ignore = config.ignore):
+    def check_version(_context, pico, pichula, ignore = config.ignore):
         """Check if the actual version is valid."""
 
+        # breakpoint()
         task: HasExit
         task = CheckVersion(Tasks.bar)
         task()

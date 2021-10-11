@@ -45,7 +45,6 @@ class CheckVersion:
     parser: Parser
     bumper: Bumper
 
-    @deal.pure
     @typic.al(strict = True)
     def __init__(self, bar: Bar, parser: Parser = PARSER) -> None:
         self.bar = bar
