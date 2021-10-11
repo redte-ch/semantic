@@ -7,22 +7,38 @@
 from __future__ import annotations
 
 import sys
+from typing import MutableMapping, Sequence
 
-import deal
+import typic
 import invoke
 from invoke import Collection
+from pipeop import pipes
 
 from ._check_deprecated import CheckDeprecated
 from ._check_version import CheckVersion
+from ._config import config
 from ._types import HasExit
 from ._bar import Bar
+
+
+@typic.klass(always = True, slots = True, strict = True)
+class CheckVersionTask:
+
+    optional: Sequence[str]
+    help: MutableMapping[str, str]
+
+    @pipes
+    def __init__(self, ignore: Sequence[str]) -> None:
+        self.optional = ["ignore"]
+        self.help = {
+            "ignore": f"Paths to ignore\n(default: {ignore << str.join(', ')})"
+            }
 
 
 class Tasks(Collection):
 
     bar = Bar()
 
-    @deal.pure
     def __init__(self) -> None:
         super().__init__()
         self.add_task(self.check_deprecated)
@@ -37,8 +53,8 @@ class Tasks(Collection):
         task()
         sys.exit(task.exit.value)
 
-    @invoke.task
-    def check_version(_context):
+    @invoke.task(**CheckVersionTask(config.ignore).primitive())
+    def check_version(_context, ignore = config.ignore):
         """Check if the actual version is valid."""
 
         task: HasExit
