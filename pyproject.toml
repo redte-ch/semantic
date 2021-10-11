@@ -77,7 +77,7 @@ addopts = [
     "-qx",
     "--disable-pytest-warnings",
     "--pdbcls=IPython.terminal.debugger:TerminalPdb",
-    "--typeguard-packages=pysemver",
+#   "--typeguard-packages=pysemver",
     "--xdoctest",
     ]
 doctest_optionflags = [

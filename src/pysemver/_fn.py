@@ -5,31 +5,44 @@
 #
 
 import functools
-from typing import Sequence, TypeVar
+from typing import Any, Callable, Sequence, TypeVar
 
 import deal
-import typic
 
 T = TypeVar("T")
+F = Callable[..., Any]
 
 partial = functools.partial
 
 
-def _(x):
-    return x
+@deal.pure
+def apply(func: F, seqs: Any) -> Any:
+    """Applies a function to a sequence of sequences.
+
+    Args:
+        func: Any callable,
+        sequences: Any sequence of sequences.
+
+    Examples:
+        >>> tuple(apply(lambda *any: sum(any), [(1, 2), (3, 4)]))
+        (3, 7)
+
+    """
+
+    return (func(*seq) for seq in seqs)
 
 
 @deal.pure
-def first(sequence: Sequence[T]) -> T:
+def first(seq: Sequence[T]) -> T:
     """Returns the first element of a sequence.
 
     Args:
-        sequence: Any sequence.
+        seq: Any sequence.
 
     Examples:
-        >>> first([1,2,3])
+        >>> first([1, 2, 3])
         1
 
     """
 
-    return next(iter(sequence))
+    return next(iter(seq))

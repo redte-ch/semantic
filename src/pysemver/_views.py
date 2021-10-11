@@ -85,7 +85,7 @@ class Home:
 
         Home.columns << map(table.add_column) >> tuple
 
-        tasks << map(lambda task: table.add_row(*task)) >> tuple
+        tasks << _fn.apply(table.add_row) >> tuple
 
         return table
 
