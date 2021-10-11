@@ -6,10 +6,8 @@
 
 from __future__ import annotations
 
-import functools
 from typing import List, Tuple
 
-import cytoolz
 import deal
 import pipeop
 import typic
@@ -18,12 +16,12 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 
+from . import _fn
 from ._repo import Repo
 from ._theme import Theme
 
-_grid = functools.partial(Layout, " ", ratio = 2)
-
-_main = functools.partial(Layout, ratio = 5)
+_grid = _fn.partial(Layout, " ", ratio = 2)
+_main = _fn.partial(Layout, ratio = 5)
 
 
 @deal.pure
@@ -105,7 +103,7 @@ class Home:
         text = (
             __name__
             >> str.split(".")
-            >> cytoolz.first
+            >> _fn.first
             << str.format("Usage: {} [--help] <command> …")
             >> Text
             )
@@ -181,9 +179,9 @@ class Help:
         text = (
             __name__
             >> str.split(".")
-            >> cytoolz.first
-            << functools.partial(str.format("Usage: {} {} [--options] …"))
-            << functools.partial(command)
+            >> _fn.first
+            << _fn.partial(str.format("Usage: {} {} [--options] …"))
+            << _fn.partial(command)
             >> Text
             )
 
