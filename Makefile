@@ -6,7 +6,7 @@
 
 .DEFAULT_GOAL := all
 
-all: format deal lint type test ;
+all: format bind lint type test ;
 
 install:
 	@pip install --upgrade pip wheel setuptools
@@ -25,9 +25,7 @@ format: $(shell git ls-files "*.py")
 	@poetry run pyupgrade $? --py36-plus --keep-runtime-typing
 
 bind: compile clean
-	@poetry run python -m deal lint src
 	@poetry run python -m deal test src
-	@poetry run python -m deal prove src
 	@poetry run crosshair check src
 
 lint: compile clean

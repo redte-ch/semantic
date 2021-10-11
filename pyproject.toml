@@ -25,6 +25,7 @@ numpy = ">=1.7, <1.22"
 pipeop = "<1"
 rich = "<11"
 termcolor = "<2"
+toml = "<1"
 typical = "<3"
 typing_extensions = {version = "<4", python = "~3.7"}
 
@@ -94,6 +95,24 @@ plugins = [
     "typic.mypy",
     ]
 strict = true
+
+[tool.pysemver]
+ignore = [
+    ".editorconfig",
+    ".github",
+    ".gitignore",
+    ".pdbrc",
+    ".pre-commit-hooks.sh",
+    ".python-version",
+    ".readthedocs.yml",
+    "docs",
+    "LICENSE",
+    "Makefile",
+    "noxfile.py",
+    "README.md",
+    "setup.cfg",
+    "tests",
+    ]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

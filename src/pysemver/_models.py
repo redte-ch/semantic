@@ -6,11 +6,27 @@
 
 from __future__ import annotations
 
-from typing import Optional, Sequence, Tuple
+from typing import (
+    Any,
+    MutableMapping,
+    Generic,
+    Optional,
+    Sequence,
+    Tuple,
+    TypeVar,
+    )
 
 import deal
 import typic
 from aenum import Enum, IntEnum, skip
+
+T = TypeVar("T", bound = MutableMapping[str, Any])
+
+
+@typic.klass(always = True, slots = True, strict = True)
+class Config(Generic[T]):
+
+    ignore: Sequence[str]
 
 
 class Exit(IntEnum):

@@ -13,6 +13,7 @@ import typic
 
 from ._bar import Bar
 from ._bumper import Bumper
+from ._config import config
 from ._func_checker import FuncChecker
 from ._models import Exit, Signature
 from ._parser import Parser
@@ -22,18 +23,7 @@ T = TypeVar("T", bound = "CheckVersion")
 
 PARSER = Parser(this = "HEAD")
 
-IGNORE = (
-    ".circleci",
-    ".github",
-    ".gitignore",
-    ".mk",
-    "CONTRIBUTING.md",
-    "LICENSE",
-    "Makefile",
-    "README.md",
-    "STYLEGUIDE.md",
-    "tests",
-    )
+IGNORE = config.ignore
 
 
 @typic.klass(always = True, slots = True, strict = True)
