@@ -1,0 +1,32 @@
+name: release
+on:
+  release:
+    types: [ published ]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    name: release
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Python setup
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9.7
+          architecture: x64
+
+      - name: Install dependencies
+        run: make install
+
+      - name: Run all sessions
+        run: nox
+
+      - name: Build package
+        run: poetry build
+
+      - name: Publish package
+        run: poetry publish --username=__token__ --password=${{ secrets.PYPI_TOKEN }}
