@@ -95,6 +95,28 @@ non_interactive = true
 plugins = ["typic.mypy", "returns.contrib.mypy.returns_plugin"]
 strict = true
 
+[tool.isort]
+force_alphabetical_sort_within_sections = true
+group_by_package = true
+include_trailing_comma = true
+known_typing = [
+    "typing",
+    "types",
+    "typing_extensions",
+    "mypy",
+    "mypy_extensions",
+    ]
+multi_line_output = 8
+py_version = 37
+sections = [
+    "FUTURE",
+    "TYPING",
+    "STDLIB",
+    "THIRDPARTY",
+    "FIRSTPARTY",
+    "LOCALFOLDER",
+    ]
+
 [tool.pysemver]
 ignore = [
     ".editorconfig",
