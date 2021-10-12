@@ -28,54 +28,62 @@ BAR_SIZE: int = 50
 class Bar:
     """Provides a progress bar for tasks.
 
-    .. versionadded:: 36.1.0
+    .. versionadded:: 1.0.0
 
     """
 
-    @deal.pure
+    @deal.safe
+    @deal.has("stdout")
     def init(self) -> None:
         """Initialises the progress bar."""
 
         sys.stdout.write(self._init_message())
 
-    @deal.pure
+    @deal.safe
+    @deal.has("stdout")
     def push(self, count: int, total: int) -> None:
         """Pushes progress to the ``stdout``."""
 
         done: int = (count + 1) * 100 // total
         sys.stdout.write(self._push_message(done))
 
-    @deal.pure
+    @deal.safe
+    @deal.has("stdout")
     def okay(self, message: str) -> None:
         """Prints an okay ``message``."""
 
         sys.stdout.write(f"{OKAY_ICON} {message}")
 
-    @deal.pure
+    @deal.safe
+    @deal.has("stdout")
     def info(self, message: str) -> None:
         """Prints an info ``message``."""
 
         sys.stdout.write(f"{INFO_ICON} {message}")
 
-    @deal.pure
+    @deal.safe
+    @deal.has("stdout")
     def warn(self, message: str) -> None:
         """Prints a warn ``message``."""
 
         sys.stdout.write(f"{WARN_ICON} {message}")
 
-    @deal.pure
+    @deal.safe
+    @deal.has("stdout")
     def fail(self) -> None:
         """Marks last printed message as failing."""
 
         sys.stdout.write(f"\r{FAIL_ICON}")
 
-    @deal.pure
+    @deal.safe
+    @deal.has("stdout")
     def then(self) -> None:
         """Prints a new line and resets the cursor position."""
 
         sys.stdout.write("\n\r")
 
-    @deal.pure
+    @deal.safe
+    @deal.has("stdout")
     def wipe(self) -> None:
         """Cleans last printed message."""
 
