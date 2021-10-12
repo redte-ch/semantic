@@ -8,14 +8,14 @@ from __future__ import annotations
 
 import inspect
 
-import cytoolz
 import pipeop
 from invoke import Program
 from rich.console import Console
 
-from ._views import Home, Help
+from . import _fn
 from ._repo import Repo
 from ._tasks import Tasks
+from ._views import Home, Help
 
 
 class Main(Program):
@@ -37,14 +37,19 @@ class Main(Program):
             >> self.write
             )
 
+    @pipeop.pipes
     def print_task_help(self, command: str) -> None:
-        context = self.parser.contexts[command]
-        description = inspect.getdoc(self.collection[command])
+        context = self.parser.contexts >> dict.get(command)
+        description = self.collection >> Tasks.__getitem__(command)
+        documentation = inspect.getdoc(description)
 
-        raise ValueError(context.help_tuples())
-
-        # return tuple(cytoolz.map(cytoolz.flatten, tuple(
-        #     cytoolz.chunks(1, context.help_tuples()))))
+        (
+            context.help_tuples()
+            << Help.content(documentation)
+            << Help.main(command)
+            >> Help.root
+            >> self.write
+            )
 
     def task_list_opener(self, __: str = "") -> str:
         return "Commands"

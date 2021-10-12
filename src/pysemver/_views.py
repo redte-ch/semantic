@@ -131,7 +131,11 @@ class Home:
             style = Theme.Console.HEADER,
             )
 
-        Home.columns << map(table.add_column) >> tuple
+        (
+            Home.columns
+            << map(table.add_column)
+            << tuple
+            )
 
         tasks << _fn.dfp(table.add_row) >> tuple
 
@@ -164,7 +168,7 @@ class Home:
 class Help:
     """Help view."""
 
-    columns = "Flags", "Description", "Default"
+    columns = "Flags", "Description", "Default values"
 
     @deal.pure
     @pipeop.pipes
@@ -173,7 +177,7 @@ class Help:
 
         return main >> _rows >> _columns
 
-    @deal.pure
+    # @deal.pure
     @pipeop.pipes
     def main(command: str, content: Table) -> Panel:
         return Panel(
@@ -184,7 +188,7 @@ class Help:
             subtitle = Repo.Version.this(),
             )
 
-    @deal.pure
+    # @deal.pure
     @pipeop.pipes
     def content(description: str, options: [Tuple[str, ...]]) -> Table:
         """Task table.
@@ -201,16 +205,24 @@ class Help:
             padding = (0, 5, 1, 10),
             row_styles = [Theme.Console.ROW],
             style = Theme.Console.HEADER,
-            title = description,
             )
 
-        Help.columns << map(table.add_column) >> tuple
+        (
+            Help.columns
+            << map(table.add_column)
+            << tuple
+            )
 
-        options << map(table.add_row) >> tuple
+        (
+            options
+            >> _fn.dfc()
+            << _fn.dfp(table.add_row)
+            << tuple
+            )
 
         return table
 
-    @deal.pure
+    # @deal.pre(lambda command: isinstance(command, str))
     @pipeop.pipes
     def usage(command: str) -> Text:
         """A title.
@@ -221,12 +233,13 @@ class Help:
 
         """
 
+        # breakpoint()
+
         text = (
             __name__
             >> str.split(".")
             >> _fn.first
-            << _fn.partial(str.format("Usage: {} {} [--options] …"))
-            << _fn.partial(command)
+            << str.format("Usage: {1} {0} [--options] …", command)
             >> Text
             )
 

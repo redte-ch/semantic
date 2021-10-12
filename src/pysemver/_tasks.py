@@ -31,12 +31,10 @@ class CheckVersionTask:
     def __init__(self, ignore: Sequence[str]) -> None:
         self.optional = ["ignore"]
         self.help = {
-            "pico": (
-                "Paths to ignore",
-                f"default: {ignore << str.join(', ')}"),
             "ignore": (
                 "Paths to ignore",
-                f"(default: {ignore << str.join(', ')}"),
+                f"{ignore << str.join(', ')}"
+                ),
             }
 
 
@@ -59,10 +57,9 @@ class Tasks(Collection):
         sys.exit(task.exit.value)
 
     @invoke.task(**CheckVersionTask(config.ignore).primitive())
-    def check_version(_context, pico, pichula, ignore = config.ignore):
+    def check_version(_context, ignore = config.ignore):
         """Check if the actual version is valid."""
 
-        # breakpoint()
         task: HasExit
         task = CheckVersion(Tasks.bar)
         task()
