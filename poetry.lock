@@ -1103,6 +1103,17 @@ python-versions = "*"
 docutils = ">=0.11,<1.0"
 
 [[package]]
+name = "returns"
+version = "0.17.0"
+description = "Make your functions return something meaningful, typed, and safe!"
+category = "dev"
+optional = false
+python-versions = ">=3.7,<4.0"
+
+[package.dependencies]
+typing-extensions = ">=3.7,<4.0"
+
+[[package]]
 name = "rich"
 version = "10.12.0"
 description = "Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal"
@@ -1521,7 +1532,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "~3.7 || ~3.8 || ~3.9"
-content-hash = "fee15352cfc486937db83aa47d07fc1c19d5ce57c3870f38494a60ace424f6ce"
+content-hash = "1d44215f1b9ab82b57a41b0faa89944552aa5314ca6af29e6650a1bccd9fb925"
 
 [metadata.files]
 aenum = [
@@ -2109,6 +2120,10 @@ requests = [
 ]
 restructuredtext-lint = [
     {file = "restructuredtext_lint-1.3.2.tar.gz", hash = "sha256:d3b10a1fe2ecac537e51ae6d151b223b78de9fafdd50e5eb6b08c243df173c80"},
+]
+returns = [
+    {file = "returns-0.17.0-py3-none-any.whl", hash = "sha256:28627f989b19d4bcadbd450a8fe4cf4d98e1335271300a428cc53ec83642259a"},
+    {file = "returns-0.17.0.tar.gz", hash = "sha256:8cb7980454bbb2adfd43c44148d902fbd1a0f7288a797eaa6fad1fef7d5ec06c"},
 ]
 rich = [
     {file = "rich-10.12.0-py3-none-any.whl", hash = "sha256:c30d6808d1cd3defd56a7bd2d587d13e53b5f55de6cf587f035bcbb56bc3f37b"},

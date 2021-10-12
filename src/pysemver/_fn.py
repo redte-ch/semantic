@@ -16,19 +16,18 @@ from __future__ import annotations
 
 import functools
 import itertools
-from typing import Any, Callable, Iterator, Sequence, TypeVar
+from typing import Any, Callable, Iterator, Sequence, Tuple, TypeVar
 
 import deal
 
-T = TypeVar("T")
-F = Callable[..., Any]
+T = TypeVar("T", bound = Any)
 
 partial = functools.partial
 """Just a shortcut for `.functools.partial`."""
 
 
 @deal.pure
-def _(x: T) -> T:
+def _(x: T) -> Callable[..., T]:
     """Identity useful for noop.
 
     Examples:
@@ -43,7 +42,7 @@ def _(x: T) -> T:
 
 
 @deal.pure
-def do(func: F) -> T:
+def do(func: Callable[[T], Any]) -> T:
     """Do something on something, thent return something.
 
     Args:
@@ -71,7 +70,7 @@ def do(func: F) -> T:
 
 
 @deal.pure
-def dfc(seqs: Any) -> Any:
+def dfc(seqs: Sequence[Sequence[T]]) -> Iterator[Tuple[T, ...]]:
     """Like the original cons but for cons of cons.
 
     Args:
@@ -89,7 +88,7 @@ def dfc(seqs: Any) -> Any:
 
 
 @deal.pure
-def dfp(func: F, seqs: Any) -> Any:
+def dfp(func: Callable[[T], T], seqs: Sequence[T]) -> Iterator[T]:
     """Applies a function to a sequence of sequences.
 
     Args:
@@ -126,7 +125,7 @@ def first(seq: Sequence[T]) -> T:
 
 
 @deal.pure
-def compact(seq: Any) -> Any:
+def compact(seq: Sequence[Any]) -> Iterator[Any]:
     """ Filters falsy values.
 
     Args:
