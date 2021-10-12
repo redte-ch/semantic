@@ -1106,7 +1106,7 @@ docutils = ">=0.11,<1.0"
 name = "returns"
 version = "0.17.0"
 description = "Make your functions return something meaningful, typed, and safe!"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 
@@ -1532,7 +1532,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "~3.7 || ~3.8 || ~3.9"
-content-hash = "1d44215f1b9ab82b57a41b0faa89944552aa5314ca6af29e6650a1bccd9fb925"
+content-hash = "42116b7ed9ee50589072eee63250ef9e20ed1c5c311b2b56595766e73fea0b8b"
 
 [metadata.files]
 aenum = [

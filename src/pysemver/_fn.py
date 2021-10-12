@@ -14,15 +14,15 @@ AST and so on…
 
 from __future__ import annotations
 
-import functools
 import itertools
 from typing import Any, Callable, Iterator, Sequence, Tuple, TypeVar
 
 import deal
+import returns.curry
 
 T = TypeVar("T", bound = Any)
 
-partial = functools.partial
+partial = returns.curry.partial
 """Just a shortcut for `.functools.partial`."""
 
 
@@ -42,7 +42,7 @@ def _(x: T) -> Callable[..., T]:
 
 
 @deal.pure
-def do(func: Callable[[T], Any]) -> T:
+def do(func: Callable[..., Any]) -> Any:
     """Do something on something, thent return something.
 
     Args:
@@ -58,13 +58,16 @@ def do(func: Callable[[T], Any]) -> T:
         >>> do(func)
         'hey!'
 
+    Todo:
+        Fix types.
+
     .. versionadded:: 1.0.0
 
     """
 
-    self, *args = func.args
+    self, *args = func.args  # type: ignore
 
-    func.func(self, *args, **func.keywords)
+    func.func(self, *args, **func.keywords)  # type: ignore
 
     return self
 
