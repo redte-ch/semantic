@@ -6,8 +6,9 @@
 
 from __future__ import annotations
 
-import textwrap
 from typing import Any, Generator, Optional, Sequence, Set, Tuple
+
+import textwrap
 
 import deal
 import typic

@@ -4,4 +4,4 @@
 # For details: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 #
 
-from .__main__ import main   # noqa: F401
+from .__main__ import main  # noqa: F401

@@ -15,7 +15,7 @@ from rich.console import Console
 from . import _fn
 from ._repo import Repo
 from ._tasks import Tasks
-from ._views import Home, Help
+from ._views import Help, Home
 
 
 class Main(Program):

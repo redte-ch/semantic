@@ -6,11 +6,12 @@
 
 from __future__ import annotations
 
-import pkg_resources
-import subprocess
 from typing import Sequence
 
+import subprocess
+
 import deal
+import pkg_resources
 import typic
 
 

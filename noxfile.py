@@ -4,10 +4,11 @@
 # For details: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 #
 
+from typing import Any, Pattern
+
 import pathlib
 import re
 import shutil
-from typing import Any, Pattern
 
 import nox
 import nox_poetry

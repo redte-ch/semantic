@@ -7,8 +7,8 @@
 import os
 import sys
 
-import pytest
 import pipeop
+import pytest
 
 from pysemver._bar import Bar
 from pysemver._check_version import CheckVersion

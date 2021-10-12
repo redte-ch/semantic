@@ -6,9 +6,6 @@
 
 from __future__ import annotations
 
-import ast
-import functools
-import pathlib
 from typing import (
     Any,
     Callable,
@@ -20,11 +17,15 @@ from typing import (
     Union,
     )
 
+import ast
+import functools
+import pathlib
+
 import deal
 import typic
 
 from ._fn import _
-from ._models import Argument, ArgType, RetType, Signature, Suffix
+from ._models import ArgType, Argument, RetType, Signature, Suffix
 
 
 @typic.klass(always = True, strict = True)

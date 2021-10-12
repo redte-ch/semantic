@@ -14,7 +14,6 @@ AST and so on…
 
 from __future__ import annotations
 
-import itertools
 from typing import (
     Callable,
     Iterable,
@@ -24,6 +23,8 @@ from typing import (
     Tuple,
     TypeVar,
     )
+
+import itertools
 
 import deal
 import returns.curry

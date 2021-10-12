@@ -4,8 +4,9 @@
 # For details: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 #
 
-import re
 from typing import Sequence, Tuple, Type
+
+import re
 
 import deal
 import typic

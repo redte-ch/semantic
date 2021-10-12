@@ -6,19 +6,20 @@
 
 from __future__ import annotations
 
-import sys
 from typing import MutableMapping, Sequence, Tuple
+
+import sys
 
 import invoke
 import pipeop
 import typic
 from invoke import Collection
 
+from ._bar import Bar
 from ._check_deprecated import CheckDeprecated
 from ._check_version import CheckVersion
 from ._config import config
 from ._types import HasExit
-from ._bar import Bar
 
 
 @typic.klass(always = True, slots = True, strict = True)

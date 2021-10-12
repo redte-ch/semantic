@@ -21,6 +21,7 @@ clean: src
 	@rm -rf $(shell find $? -name "*.pyc")
 
 format: $(shell git ls-files "*.py")
+	@poetry run isort $?
 	@poetry run autopep8 $?
 	@poetry run pyupgrade $? --py36-plus --keep-runtime-typing
 

@@ -4,10 +4,11 @@
 # For details: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 #
 
+from typing import Sequence
+
 import ast
 import pathlib
 import textwrap
-from typing import Sequence
 
 import deal
 import typic
