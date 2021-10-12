@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import functools
 import itertools
-from typing import Any, Callable, Sequence, TypeVar
+from typing import Any, Callable, Iterator, Sequence, TypeVar
 
 import deal
 
@@ -144,7 +144,7 @@ def compact(seq: Any) -> Any:
 
 
 @deal.pure
-def flatten(seqs: Any) -> Sequence[Any]:
+def flatten(seqs: Sequence[Sequence[Any]]) -> Iterator[Any]:
     """Flattens a sequences of sequences.
 
     Args:
