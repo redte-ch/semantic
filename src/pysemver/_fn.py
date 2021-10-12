@@ -15,12 +15,12 @@ AST and so on…
 from __future__ import annotations
 
 import itertools
-from typing import Any, Callable, Iterator, Sequence, Tuple, TypeVar
+from typing import Any, Callable, Iterable, Iterator, Sequence, Tuple, TypeVar
 
 import deal
 import returns.curry
 
-T = TypeVar("T", bound = Any)
+T = TypeVar("T")
 
 partial = returns.curry.partial
 """Just a shortcut for `.functools.partial`."""
@@ -73,7 +73,7 @@ def do(func: Callable[..., Any]) -> Any:
 
 
 @deal.pure
-def dfc(seqs: Sequence[Sequence[T]]) -> Iterator[Tuple[T, ...]]:
+def dfc(seqs: Sequence[Tuple[T, Iterable[T]]]) -> Iterator[Tuple[T, ...]]:
     """Like the original cons but for cons of cons.
 
     Args:
@@ -91,7 +91,7 @@ def dfc(seqs: Sequence[Sequence[T]]) -> Iterator[Tuple[T, ...]]:
 
 
 @deal.pure
-def dfp(func: Callable[[T], T], seqs: Sequence[T]) -> Iterator[T]:
+def dfp(func: Callable[[T], T], seqs: Sequence[Sequence[T]]) -> Iterator[T]:
     """Applies a function to a sequence of sequences.
 
     Args:
