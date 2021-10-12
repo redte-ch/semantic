@@ -74,12 +74,12 @@ def do(func: F) -> T:
 def dfc(seqs: Any) -> Any:
     """Like the original cons but for cons of cons.
 
-        Args:
-            seqs: Any sequences of sequences.
+    Args:
+        seqs: Any sequences of sequences.
 
-        Examples:
-            >>> list(dfc[(1, [2, 3]), (4, [5, 6])]))
-            [(1, 2, 3), (4, 5, 6), (7, 8, 9)]
+    Examples:
+        >>> list(dfc[(1, [2, 3]), (4, [5, 6])]))
+        [(1, 2, 3), (4, 5, 6), (7, 8, 9)]
 
     .. versionadded:: 1.0.0
 
