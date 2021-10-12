@@ -61,7 +61,7 @@ class CheckDeprecated(ast.NodeVisitor):
     version: str
 
     @deal.pure
-    @typic.al(strict = True)
+    # @typic.al(strict = True)
     def __init__(
             self,
             bar: Bar,
@@ -177,12 +177,12 @@ class CheckDeprecated(ast.NodeVisitor):
             self.bar.then()
 
     @deal.pure
-    @typic.al(strict = True)
+    # @typic.al(strict = True)
     def _isthis(self, version: str) -> bool:
         return self.version == version
 
     @deal.pure
-    @typic.al(strict = True)
+    # @typic.al(strict = True)
     def _node(self, file: str) -> ast.Module:
         source: str
 

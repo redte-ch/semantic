@@ -45,7 +45,7 @@ class CheckVersion:
     parser: Parser
     bumper: Bumper
 
-    @typic.al(strict = True)
+    # @typic.al(strict = True)
     def __init__(self, bar: Bar, parser: Parser = PARSER) -> None:
         self.bar = bar
         self.exit = Exit.OK
@@ -70,7 +70,7 @@ class CheckVersion:
             )
 
     @deal.pure
-    @typic.al(strict = True)
+    # @typic.al(strict = True)
     def _parse(self, parser: Parser, what: What) -> Sequence[Signature]:
         """Updates status while the parser builds signatures."""
 
@@ -183,7 +183,7 @@ class CheckVersion:
         return self
 
     @deal.pure
-    @typic.al(strict = True)
+    # @typic.al(strict = True)
     def _is_functional(self, file: str) -> bool:
         """Checks if a given ``file`` is whitelisted as functional."""
 

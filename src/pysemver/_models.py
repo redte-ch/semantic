@@ -126,6 +126,6 @@ class Version(Enum):
         MAJOR = 3
 
         @deal.pure
-        @typic.al(strict = True)
+        # @typic.al(strict = True)
         def __str__(self) -> str:
             return tuple(Version.Str)[self.value]

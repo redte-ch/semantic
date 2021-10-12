@@ -68,7 +68,7 @@ class SignatureBuilder(ast.NodeVisitor):
         return len(self.files)
 
     @deal.pure
-    @typic.al(strict = True)
+    # @typic.al(strict = True)
     def __call__(self, source: str) -> None:
         """Builds all signatures from the passed source code.
 
@@ -172,7 +172,7 @@ class SignatureBuilder(ast.NodeVisitor):
         self.signatures = self.signatures + (signature,)
 
     @deal.pure
-    @typic.al(strict = True)
+    # @typic.al(strict = True)
     def _build_unique_name(
             self,
             path: pathlib.Path,
@@ -211,7 +211,7 @@ class SignatureBuilder(ast.NodeVisitor):
         return self._build_unique_name(path, node, suffixes)
 
     @deal.pure
-    @typic.al(strict = True)
+    # @typic.al(strict = True)
     def _build_posarg(self, node: ast.FunctionDef) -> Callable[..., Any]:
         """Curryfies the positional arguments builder."""
 
@@ -222,7 +222,7 @@ class SignatureBuilder(ast.NodeVisitor):
             )
 
     @deal.pure
-    @typic.al(strict = True)
+    # @typic.al(strict = True)
     def _build_keyarg(self, node: ast.FunctionDef) -> Callable[..., Any]:
         """Curryfies the keyword arguments builder."""
 
@@ -233,7 +233,7 @@ class SignatureBuilder(ast.NodeVisitor):
             )
 
     @deal.pure
-    @typic.al(strict = True)
+    # @typic.al(strict = True)
     def _build_argument(
             self,
             acc: Sequence[Argument],
@@ -254,7 +254,7 @@ class SignatureBuilder(ast.NodeVisitor):
         return (*acc, argument)
 
     @deal.pure
-    @typic.al(strict = True)
+    # @typic.al(strict = True)
     def _build_arg_types(self, node: ast.arg) -> Optional[Tuple[ArgType, ...]]:
         """Builds the types of an argument."""
 
@@ -268,7 +268,7 @@ class SignatureBuilder(ast.NodeVisitor):
         return types
 
     @deal.pure
-    @typic.al(strict = True)
+    # @typic.al(strict = True)
     def _build_arg_default(
             self,
             n_acc: int,
@@ -294,7 +294,7 @@ class SignatureBuilder(ast.NodeVisitor):
         return self._build(defaults[index])
 
     @deal.pure
-    @typic.al(strict = True)
+    # @typic.al(strict = True)
     def _build_returns(self, node: ast.FunctionDef) -> Tuple[RetType, ...]:
         """Builds a return type."""
 
@@ -308,7 +308,7 @@ class SignatureBuilder(ast.NodeVisitor):
         return returns
 
     @deal.pure
-    @typic.al(strict = True)
+    # @typic.al(strict = True)
     def _build(
             self,
             node: Optional[Union[ast.expr, ast.slice]],
@@ -370,7 +370,7 @@ class SignatureBuilder(ast.NodeVisitor):
         raise TypeError(ast.dump(node))
 
     @deal.pure
-    @typic.al(strict = True)
+    # @typic.al(strict = True)
     def _is_unique(self, name: str) -> bool:
         """Check if a signature's name is unique or not."""
 

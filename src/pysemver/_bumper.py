@@ -54,13 +54,13 @@ class Bumper:
         self.required = Version.Int.NONE
 
     @deal.pure
-    @typic.al(strict = True)
+    # @typic.al(strict = True)
     def __call__(self, bump: int) -> None:
         index = max(self.required.value, Version.Int(bump).value)
         self.required = Version.Int(index)
 
     @deal.pure
-    @typic.al(strict = True)
+    # @typic.al(strict = True)
     def is_acceptable(self) -> bool:
         """Determines if the current version is acceptable or not.
 
@@ -119,7 +119,7 @@ class Bumper:
         return actual_number >= before_number
 
     @deal.pure
-    @typic.al(strict = True)
+    # @typic.al(strict = True)
     def _extract(self, version: str) -> Tuple[int, bool]:
         """Extract a major/minor/patch number from a version string."""
 

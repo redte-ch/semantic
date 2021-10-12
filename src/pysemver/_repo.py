@@ -27,7 +27,7 @@ class Repo:
 
     @staticmethod
     @deal.pure
-    @typic.al(strict = True)
+    # @typic.al(strict = True)
     def run(cmd: Sequence[str]) -> str:
         """Runs a command an decodes the result.
 
@@ -60,7 +60,7 @@ class Repo:
 
         @staticmethod
         @deal.pure
-        @typic.al(strict = True)
+        # @typic.al(strict = True)
         def show(revision: str, file: str) -> str:
             """Retrives the content of a file in a revision.
 
@@ -87,7 +87,7 @@ class Repo:
 
         @staticmethod
         @deal.pure
-        @typic.al(strict = True)
+        # @typic.al(strict = True)
         def tree(revision: str) -> Sequence[str]:
             """Retrives the list of tracked files in a revision.
 
@@ -111,7 +111,7 @@ class Repo:
 
         @staticmethod
         @deal.pure
-        @typic.al(strict = True)
+        # @typic.al(strict = True)
         def diff(this: str, that: str) -> Sequence[str]:
             """Retrives the list of changed files between two revisions.
 
@@ -143,7 +143,7 @@ class Repo:
 
         @staticmethod
         @deal.pure
-        @typic.al(strict = True)
+        # @typic.al(strict = True)
         def this() -> str:
             """Retrives the actual version.
 
@@ -170,7 +170,7 @@ class Repo:
 
         @staticmethod
         @deal.pure
-        @typic.al(strict = True)
+        # @typic.al(strict = True)
         def last() -> str:
             """Retrives the last tagged version.
 

@@ -83,7 +83,7 @@ class Parser:
     signatures: Optional[Sequence[Signature]]
 
     @deal.pure
-    @typic.al(strict = True)
+    # @typic.al(strict = True)
     def __init__(self, *, this: str = THIS, that: str = THAT) -> None:
         self.this = this
         self.that = that
@@ -93,7 +93,7 @@ class Parser:
         self.signatures = None
 
     @deal.pure
-    @typic.al(strict = True)
+    # @typic.al(strict = True)
     def __call__(self, *, what: What) -> Parser:
         # We try recover the revision (``this`` or ``that``). Fails otherwise.
         self.current: str = self.__getattribute__(what)
