@@ -16,6 +16,7 @@ packages = [{include = "pysemver", from = "src"}]
 [tool.poetry.dependencies]
 python = "~3.7 || ~3.8 || ~3.9"
 aenum = "<4"
+deal = "<5"
 invoke = "<2"
 numpy = ">=1.7, <1.22"
 pipeop = "<1"
@@ -31,7 +32,6 @@ autopep8 = "<2"
 codecov = "<3"
 coverage = {extras = ["toml"], version = "<7"}
 crosshair-tool = "<1"
-deal = "<5"
 interrogate = "<2"
 ipython = "<8"
 mypy = "<1"

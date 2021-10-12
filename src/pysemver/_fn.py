@@ -15,12 +15,23 @@ AST and so on…
 from __future__ import annotations
 
 import itertools
-from typing import Any, Callable, Iterable, Iterator, Sequence, Tuple, TypeVar
+from typing import (
+    Callable,
+    Iterable,
+    Iterator,
+    Optional,
+    Sequence,
+    Tuple,
+    TypeVar,
+    )
 
 import deal
 import returns.curry
 
 T = TypeVar("T")
+
+chain = itertools.chain
+"""Just a shortcut for `.itertools.chain`."""
 
 partial = returns.curry.partial
 """Just a shortcut for `.functools.partial`."""
@@ -41,8 +52,10 @@ def _(x: T) -> Callable[..., T]:
     return lambda: x
 
 
-@deal.pure
-def do(func: Callable[..., Any]) -> Any:
+@deal.ensure(lambda func, result: func.args[0] == result)
+@deal.raises(NotImplementedError)
+@deal.has()
+def do(func: Callable[..., T]) -> T:
     """Do something on something, thent return something.
 
     Args:
@@ -64,6 +77,12 @@ def do(func: Callable[..., Any]) -> Any:
     .. versionadded:: 1.0.0
 
     """
+
+    if not hasattr(func, "args"):
+        raise NotImplementedError
+
+    if not hasattr(func, "keywords"):
+        raise NotImplementedError
 
     self, *args = func.args  # type: ignore
 
@@ -110,7 +129,7 @@ def dfp(func: Callable[[T], T], seqs: Sequence[Sequence[T]]) -> Iterator[T]:
 
 
 @deal.pure
-def first(seq: Sequence[T]) -> T:
+def first(seq: Sequence[T]) -> Optional[T]:
     """Returns the first element of a sequence.
 
     Args:
@@ -120,15 +139,18 @@ def first(seq: Sequence[T]) -> T:
         >>> first([1, 2, 3])
         1
 
+        >>> first([])
+        None
+
     .. versionadded:: 1.0.0
 
     """
 
-    return next(iter(seq))
+    return next(iter(seq), None)
 
 
 @deal.pure
-def compact(seq: Sequence[Any]) -> Iterator[Any]:
+def compact(seq: Iterable[T]) -> Iterator[T]:
     """ Filters falsy values.
 
     Args:
@@ -145,8 +167,10 @@ def compact(seq: Sequence[Any]) -> Iterator[Any]:
     return filter(bool, seq)
 
 
-@deal.pure
-def flatten(seqs: Sequence[Sequence[Any]]) -> Iterator[Any]:
+@deal.ensure(lambda seqs, result: seqs[0][0] is list(result)[0])
+@deal.raises(NotImplementedError)
+@deal.has()
+def flatten(seqs: Sequence[Sequence[T]]) -> Iterator[T]:
     """Flattens a sequences of sequences.
 
     Args:
@@ -163,4 +187,10 @@ def flatten(seqs: Sequence[Sequence[Any]]) -> Iterator[Any]:
 
     """
 
-    return itertools.chain.from_iterable(seqs)
+    if len(seqs) < 1:
+        raise NotImplementedError
+
+    if any(map(lambda x: len(x) < 1, seqs)):
+        raise NotImplementedError
+
+    return chain.from_iterable(seqs)
