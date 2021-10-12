@@ -4,9 +4,17 @@
 # For details: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 #
 
-"""Somme handy functions to parse data."""
+"""Somme handy functions to pipe data.
 
-import pipeop
+These are rather convenient for building the interface, and traversing the
+AST and so on…
+
+.. versionadded:: 1.0.0
+
+"""
+
+from __future__ import annotations
+
 import functools
 import itertools
 from typing import Any, Callable, Sequence, TypeVar
@@ -21,16 +29,46 @@ partial = functools.partial
 
 
 @deal.pure
-def _(identity: T) -> T:
+def _(x: T) -> T:
     """Identity useful for noop.
 
     Examples:
-        >>> _(1)
+        >>> _(1)()
         1
+
+    .. versionadded:: 1.0.0
 
     """
 
-    return identity
+    return lambda: x
+
+
+@deal.pure
+def do(func: F) -> T:
+    """Do something on something, thent return something.
+
+    Args:
+        func: Something.
+
+    Returns:
+        Any: The original thing.
+
+    Examples:
+        >>> x = "hey!"
+        >>> func = partial(str.upper, x)
+        >>> func()
+        >>> do(func)
+        'hey!'
+
+    .. versionadded:: 1.0.0
+
+    """
+
+    self, *args = func.args
+
+    func.func(self, *args, **func.keywords)
+
+    return self
 
 
 @deal.pure
@@ -41,8 +79,10 @@ def dfc(seqs: Any) -> Any:
             seqs: Any sequences of sequences.
 
         Examples:
-            >>> list(dc[(1, [2, 3]), (4, [5, 6])]))
+            >>> list(dfc[(1, [2, 3]), (4, [5, 6])]))
             [(1, 2, 3), (4, 5, 6), (7, 8, 9)]
+
+    .. versionadded:: 1.0.0
 
     """
 
@@ -58,8 +98,10 @@ def dfp(func: F, seqs: Any) -> Any:
         seqs: Any sequence of sequences.
 
     Examples:
-        >>> list(dp(float.__add__, [(.1, .2), (.3, .4)]))
+        >>> list(dfp(float.__add__, [(.1, .2), (.3, .4)]))
         [0.3..., 0.7]
+
+    .. versionadded:: 1.0.0
 
     """
 
@@ -77,6 +119,8 @@ def first(seq: Sequence[T]) -> T:
         >>> first([1, 2, 3])
         1
 
+    .. versionadded:: 1.0.0
+
     """
 
     return next(iter(seq))
@@ -92,6 +136,8 @@ def compact(seq: Any) -> Any:
     Examples:
         >>> list(compact(["1", 0, "a", None, {}]))
         ['1', 'a']
+
+    .. versionadded:: 1.0.0
 
     """
 
@@ -111,6 +157,8 @@ def flatten(seqs: Any) -> Sequence[Any]:
 
         >>> list(flatten(["ab", "cd"]))
         ['a', 'b', 'c', 'd']
+
+    .. versionadded:: 1.0.0
 
     """
 

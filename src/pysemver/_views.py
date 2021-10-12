@@ -4,6 +4,16 @@
 # For details: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 #
 
+"""Views, or interface, of pysemver.
+
+Loosely based on the MVC thing, the idea is to have a clear separation of
+concerns between the presentation layer and the rest of the package. Views
+are mostly repetitive, but it is yet too soon to refactor them.
+
+.. versionadded:: 1.0.0
+
+"""
+
 from __future__ import annotations
 
 from typing import List, Tuple
@@ -20,40 +30,81 @@ from ._repo import Repo
 from ._theme import Theme
 
 _grid = _fn.partial(Layout, " ", ratio = 2)
+"""To fill around the terminal."""
+
 _main = _fn.partial(Layout, ratio = 5)
+"""To render the main cli view."""
 
 
 @deal.pure
+@pipeop.pipes
 def _rows(panel: Panel) -> Layout:
-    layout = Layout()
+    """Splits the terminal horizontally."""
 
-    layout.split_column(_grid(), _main(panel), _grid())
-
-    return layout
+    return (
+        Layout()
+        << _fn.partial(Layout.split_column)
+        >> _fn.partial(_grid())
+        >> _fn.partial(_main(panel))
+        >> _fn.partial(_grid())
+        >> _fn.do
+        )
 
 
 @deal.pure
+@pipeop.pipes
 def _columns(panel: Layout) -> Layout:
-    layout = Layout()
+    """Splits the terminal vertically."""
 
-    layout.split_row(_grid(), _main(panel), _grid())
-
-    return layout
+    return (
+        Layout()
+        << _fn.partial(Layout.split_row)
+        >> _fn.partial(_grid())
+        >> _fn.partial(_main(panel))
+        >> _fn.partial(_grid())
+        >> _fn.do
+        )
 
 
 class Home:
-    """Home view."""
+    """Home screen view."""
 
     columns = "Command", "Description"
+    """Main command columns."""
 
     @deal.pure
     @pipeop.pipes
     def root(main: Panel) -> Layout:
-        """Global home container."""
+        """Global home container.
+
+        Args:
+            main: Main container to wrap.
+
+        Returns:
+            Layout: To render.
+
+        Examples:
+            >>> Home.root(Panel("Hey!"))
+            Layout()
+
+        """
 
         return main >> _rows >> _columns
 
     def main(content: Table) -> Panel:
+        """The main container, or panel.
+
+        Args:
+            content: The inner container.
+
+        Returns:
+            The outer panel.
+
+        Examples:
+            >>> main()
+
+        """
+
         return Panel(
             content,
             border_style = Theme.Console.BORDER,

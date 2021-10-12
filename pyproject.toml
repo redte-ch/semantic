@@ -75,6 +75,8 @@ addopts = [
     "-qx",
     "--disable-pytest-warnings",
     "--pdbcls=IPython.terminal.debugger:TerminalPdb",
+    "--showlocals",
+    "--tb=long",
 #   "--typeguard-packages=pysemver",
     "--xdoctest",
     ]
