@@ -90,10 +90,7 @@ doctest_optionflags = [
 [tool.mypy]
 install_types = true
 non_interactive = true
-plugins = [
-    "lambdas.contrib.mypy.lambdas_plugin",
-    "typic.mypy",
-    ]
+plugins = ["typic.mypy"]
 strict = true
 
 [tool.pysemver]
