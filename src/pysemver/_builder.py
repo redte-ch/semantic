@@ -24,7 +24,7 @@ import deal
 import typic
 
 from ._fn import _
-from ._models import Argument, ArgType, RetType, Signature
+from ._models import Argument, ArgType, RetType, Signature, Suffix
 
 
 @typic.klass(always = True, strict = True)

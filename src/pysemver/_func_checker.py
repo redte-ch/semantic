@@ -10,7 +10,7 @@ import deal
 import numpy
 import typic
 
-from ._models import Signature
+from ._models import Signature, Version
 
 
 @typic.klass(always = True, slots = True, strict = True)
@@ -30,23 +30,27 @@ class FuncChecker:
 
     @property
     @deal.pure
+    @typic.al(strict = True)
     def nones(self) -> numpy.ndarray:
-        return numpy.repeat(SemVer.NONES.value, self.size_min)
+        return numpy.repeat(Version.Int.NONE.value, self.size_min)
 
     @property
     @deal.pure
+    @typic.al(strict = True)
     def patch(self) -> numpy.ndarray:
-        return numpy.repeat(SemVer.PATCH.value, self.size_min)
+        return numpy.repeat(Version.Int.PATCH.value, self.size_min)
 
     @property
     @deal.pure
+    @typic.al(strict = True)
     def minor(self) -> numpy.ndarray:
-        return numpy.repeat(SemVer.MINOR.value, self.size_min)
+        return numpy.repeat(Version.Int.MINOR.value, self.size_min)
 
     @property
     @deal.pure
+    @typic.al(strict = True)
     def major(self) -> numpy.ndarray:
-        return numpy.repeat(SemVer.MAJOR.value, self.size_min)
+        return numpy.repeat(Version.Int.MAJOR.value, self.size_min)
 
     @deal.pure
     @typic.al(strict = True)
