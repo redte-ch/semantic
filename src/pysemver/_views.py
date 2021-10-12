@@ -36,7 +36,6 @@ _main = _fn.partial(Layout, ratio = 5)
 """To render the main cli view."""
 
 
-@deal.pure
 @pipeop.pipes
 def _rows(panel: Panel) -> Layout:
     """Splits the terminal horizontally."""
@@ -51,7 +50,6 @@ def _rows(panel: Panel) -> Layout:
         )
 
 
-@deal.pure
 @pipeop.pipes
 def _columns(panel: Layout) -> Layout:
     """Splits the terminal vertically."""
@@ -72,7 +70,6 @@ class Home:
     columns = "Command", "Description"
     """Main command columns."""
 
-    @deal.pure
     @pipeop.pipes
     def root(main: Panel) -> Layout:
         """Global home container.
@@ -113,6 +110,7 @@ class Home:
             subtitle = Repo.Version.this(),
             )
 
+    @deal.pure
     @pipeop.pipes
     def content(tasks: List[Tuple[str, str]]) -> Table:
         """Main cli content.
@@ -170,14 +168,12 @@ class Help:
 
     columns = "Flags", "Description", "Default values"
 
-    @deal.pure
     @pipeop.pipes
     def root(main: Panel) -> Layout:
         """Global help container."""
 
         return main >> _rows >> _columns
 
-    # @deal.pure
     @pipeop.pipes
     def main(command: str, content: Table) -> Panel:
         return Panel(
@@ -188,7 +184,7 @@ class Help:
             subtitle = Repo.Version.this(),
             )
 
-    # @deal.pure
+    @deal.pure
     @pipeop.pipes
     def content(description: str, options: [Tuple[str, ...]]) -> Table:
         """Task table.
@@ -222,7 +218,7 @@ class Help:
 
         return table
 
-    # @deal.pre(lambda command: isinstance(command, str))
+    @deal.pure
     @pipeop.pipes
     def usage(command: str) -> Text:
         """A title.
@@ -232,8 +228,6 @@ class Help:
             <text 'Usage: name <command> [--help] …'...
 
         """
-
-        # breakpoint()
 
         text = (
             __name__
