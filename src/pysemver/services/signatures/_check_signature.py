@@ -12,13 +12,34 @@ import deal
 import numpy
 import typic
 
-from ._models import Version
-from .domain import Signature
+from ..._models import Version
+from ...domain import Signature
 
 
-# @typic.klass(always = True, slots = True, strict = True)
+@typic.klass(always = True, slots = True, strict = True)
 @dataclasses.dataclass
-class FuncChecker:
+class CheckSignature:
+    """Checks for changes between two :class:`.Signature`.
+
+    Args:
+        this: A signature.
+        that: Another signature.
+
+    Examples
+        >>> from pysemver.domain import Argument
+
+        >>> argument = Argument("count")
+        >>> this = Signature("greet", "file.py", (argument,))
+        >>> that = Signature("greet", "file.py", (argument,))
+        >>> service = CheckSignature(this, that)
+
+        >>> service
+        CheckSignature(this=Signature(name='greet', file='file.py', argument...
+
+        >>> service.score()
+        0
+
+    """
 
     this: Signature
     that: Signature
