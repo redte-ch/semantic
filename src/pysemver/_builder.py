@@ -18,17 +18,20 @@ from typing import (
     )
 
 import ast
+import dataclasses
 import functools
 import pathlib
 
 import deal
 import typic
 
-from ._fn import _
-from ._models import ArgType, Argument, RetType, Signature, Suffix
+from ._fn import _, first
+from ._models import Suffix
+from .domain import Argument, default, Signature, type_annotation
 
 
-@typic.klass(always = True, strict = True)
+# @typic.klass(always = True, strict = True)
+@dataclasses.dataclass
 class SignatureBuilder(ast.NodeVisitor):
     """Builds signatures from the abstract syntax-tree of a revision.
 
@@ -49,8 +52,8 @@ class SignatureBuilder(ast.NodeVisitor):
     count: int = 0
     signatures: Tuple[Signature, ...] = ()
 
+    # @deal.pure
     @property
-    @deal.pure
     def total(self) -> int:
         """The total number of files to build signatures from.
 
@@ -68,7 +71,7 @@ class SignatureBuilder(ast.NodeVisitor):
 
         return len(self.files)
 
-    @deal.pure
+    # @deal.pure
     # @typic.al(strict = True)
     def __call__(self, source: str) -> None:
         """Builds all signatures from the passed source code.
@@ -108,7 +111,7 @@ class SignatureBuilder(ast.NodeVisitor):
             ('1',)
 
             >>> signature.returns
-            (RetType(name='int'),)
+            (type_annotation(name='int'),)
 
             >>> builder.count
             1
@@ -121,7 +124,7 @@ class SignatureBuilder(ast.NodeVisitor):
         self.visit(node)
         self.count += 1
 
-    @deal.pure
+    # @deal.pure
     def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
         """An :obj:`ast` node visitor."""
 
@@ -132,7 +135,7 @@ class SignatureBuilder(ast.NodeVisitor):
         kwds: Sequence[ast.arg]
         posargs: Tuple[Argument, ...]
         keyargs: Tuple[Argument, ...]
-        returns: Tuple[RetType, ...]
+        returns: Tuple[type_annotation, ...]
         signature: Signature
 
         # We look for the corresponding ``file``.
@@ -172,7 +175,7 @@ class SignatureBuilder(ast.NodeVisitor):
         # And we add it to the list of signatures.
         self.signatures = self.signatures + (signature,)
 
-    @deal.pure
+    # @deal.pure
     # @typic.al(strict = True)
     def _build_unique_name(
             self,
@@ -211,7 +214,7 @@ class SignatureBuilder(ast.NodeVisitor):
         # Otherwise, we retry…
         return self._build_unique_name(path, node, suffixes)
 
-    @deal.pure
+    # @deal.pure
     # @typic.al(strict = True)
     def _build_posarg(self, node: ast.FunctionDef) -> Callable[..., Any]:
         """Curryfies the positional arguments builder."""
@@ -222,7 +225,7 @@ class SignatureBuilder(ast.NodeVisitor):
             defaults = node.args.defaults,
             )
 
-    @deal.pure
+    # @deal.pure
     # @typic.al(strict = True)
     def _build_keyarg(self, node: ast.FunctionDef) -> Callable[..., Any]:
         """Curryfies the keyword arguments builder."""
@@ -233,7 +236,7 @@ class SignatureBuilder(ast.NodeVisitor):
             defaults = node.args.kw_defaults,
             )
 
-    @deal.pure
+    # @deal.pure
     # @typic.al(strict = True)
     def _build_argument(
             self,
@@ -250,17 +253,22 @@ class SignatureBuilder(ast.NodeVisitor):
 
         types = self._build_arg_types(node)
         default = self._build_arg_default(len(acc), len(args), defaults)
+
+        # todo: fix
+        if isinstance(default, tuple):
+            default = first(default)
+
         argument = Argument(node.arg, types, default)
 
         return (*acc, argument)
 
-    @deal.pure
+    # @deal.pure
     # @typic.al(strict = True)
     def _build_arg_types(self, node: ast.arg) -> Optional[Tuple[ArgType, ...]]:
         """Builds the types of an argument."""
 
         # We try to build types from the type annotation of the node.
-        types = self._build(node.annotation, ArgType)
+        types = self._build(node.annotation, type_annotation)
 
         # We do always return a tuple of types, or None.
         if types is not None and not isinstance(types, tuple):
@@ -268,7 +276,7 @@ class SignatureBuilder(ast.NodeVisitor):
 
         return types
 
-    @deal.pure
+    # @deal.pure
     # @typic.al(strict = True)
     def _build_arg_default(
             self,
@@ -292,15 +300,16 @@ class SignatureBuilder(ast.NodeVisitor):
         # We define the defaults index based on the current visited argument.
         index = n_def + n_acc - n_arg
 
-        return self._build(defaults[index])
+        return self._build(defaults[index], default)
 
-    @deal.pure
+    # @deal.pure
     # @typic.al(strict = True)
-    def _build_returns(self, node: ast.FunctionDef) -> Tuple[RetType, ...]:
+    def _build_returns(
+            self, node: ast.FunctionDef) -> Tuple[type_annotation, ...]:
         """Builds a return type."""
 
         # We try to build return types from the returns of the node.
-        returns = self._build(node.returns, RetType)
+        returns = self._build(node.returns, type_annotation)
 
         # We do always return a tuple of types, or None.
         if returns is not None and not isinstance(returns, tuple):
@@ -308,7 +317,7 @@ class SignatureBuilder(ast.NodeVisitor):
 
         return returns
 
-    @deal.pure
+    # @deal.pure
     # @typic.al(strict = True)
     def _build(
             self,
@@ -370,7 +379,7 @@ class SignatureBuilder(ast.NodeVisitor):
 
         raise TypeError(ast.dump(node))
 
-    @deal.pure
+    # @deal.pure
     # @typic.al(strict = True)
     def _is_unique(self, name: str) -> bool:
         """Check if a signature's name is unique or not."""
@@ -380,7 +389,7 @@ class SignatureBuilder(ast.NodeVisitor):
 
         return is_unique
 
-    @deal.pure
+    # @deal.pure
     def _find(self, name: str) -> Generator[bool, None, None]:
         """Check if there is a signature with ``name``."""
 

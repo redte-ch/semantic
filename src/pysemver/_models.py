@@ -6,15 +6,7 @@
 
 from __future__ import annotations
 
-from typing import (
-    Any,
-    Generic,
-    MutableMapping,
-    Optional,
-    Sequence,
-    Tuple,
-    TypeVar,
-    )
+from typing import Any, Generic, MutableMapping, Sequence, TypeVar
 
 import deal
 import typic
@@ -34,39 +26,6 @@ class Exit(IntEnum):
 
     OK = 0
     KO = 1
-
-
-@typic.klass(frozen = True, slots = True, strict = True)
-class ArgType:
-    """An argument type."""
-
-    name: str
-
-
-@typic.klass(frozen = True, slots = True, strict = True)
-class RetType:
-    """A return type."""
-
-    name: str
-
-
-@typic.klass(frozen = True, slots = True, strict = True)
-class Argument:
-    """An argument."""
-
-    name: str
-    types: Optional[Tuple[ArgType, ...]] = None
-    default: Optional[str] = None
-
-
-@typic.klass(frozen = True, slots = True, strict = True)
-class Signature:
-    """A signature, that is arguments and returns."""
-
-    name: str
-    file: str
-    arguments: Sequence[Argument] = ()
-    returns: Optional[Sequence[RetType]] = None
 
 
 class Suffix(str, Enum):

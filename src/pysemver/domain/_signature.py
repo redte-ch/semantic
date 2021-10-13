@@ -5,7 +5,7 @@
 
 from __future__ import annotations
 
-from typing import List, Optional, Tuple, Union
+from typing import Any, Tuple
 
 import typic
 
@@ -55,5 +55,5 @@ class Signature:
 
     name: str
     file: str
-    arguments: Union[List[Argument], Tuple[Argument]] = ()
-    returns: Optional[Union[List[str], Tuple[str]]] = None
+    arguments: Tuple[Argument] = ()
+    returns: Tuple[str, Tuple[Any]] = None

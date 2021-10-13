@@ -14,9 +14,9 @@ import deal
 import typic
 
 from ._builder import SignatureBuilder
-from ._models import Signature
 from ._repo import Repo
 from ._types import What
+from .domain import Signature
 
 THIS: str = Repo.Version.this()
 THAT: str = Repo.Version.last()

@@ -15,9 +15,10 @@ from ._bar import Bar
 from ._bumper import Bumper
 from ._config import config
 from ._func_checker import FuncChecker
-from ._models import Exit, Signature
+from ._models import Exit
 from ._parser import Parser
 from ._types import HasIndex, What
+from .domain import Signature
 
 T = TypeVar("T", bound = "CheckVersion")
 

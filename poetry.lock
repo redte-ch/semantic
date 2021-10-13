@@ -824,6 +824,14 @@ python-versions = ">=3.6"
 pyparsing = ">=2.0.2"
 
 [[package]]
+name = "pampy"
+version = "0.3.0"
+description = "The Pattern Matching for Python you always dreamed of"
+category = "main"
+optional = false
+python-versions = ">3.6"
+
+[[package]]
 name = "parso"
 version = "0.8.2"
 description = "A Python Parser"
@@ -1621,7 +1629,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "~3.7 || ~3.8 || ~3.9"
-content-hash = "159da99c2d1d9ade4e8086446621ea5b41e0e54f28d76b1009a2e73ed87c4ce5"
+content-hash = "1dd2fb8d151684b8baaa52397196763ae507fee35a8010ceedbf0e1fa84e4ebb"
 
 [metadata.files]
 aenum = [
@@ -2058,6 +2066,10 @@ numpy = [
 packaging = [
     {file = "packaging-21.0-py3-none-any.whl", hash = "sha256:c86254f9220d55e31cc94d69bade760f0847da8000def4dfe1c6b872fd14ff14"},
     {file = "packaging-21.0.tar.gz", hash = "sha256:7dc96269f53a4ccec5c0670940a4281106dd0bb343f47b7471f779df49c2fbe7"},
+]
+pampy = [
+    {file = "pampy-0.3.0-py3-none-any.whl", hash = "sha256:304470a6562173096fc88c22dc0ab50401ca2e3875a8725ee510759ec8ba58ff"},
+    {file = "pampy-0.3.0.tar.gz", hash = "sha256:82054212e4478fc22163c55321a3583eda9918aff4440eed6c197e872a2a667b"},
 ]
 parso = [
     {file = "parso-0.8.2-py2.py3-none-any.whl", hash = "sha256:a8c4922db71e4fdb90e0d0bc6e50f9b273d3397925e5e60a717e719201778d22"},
