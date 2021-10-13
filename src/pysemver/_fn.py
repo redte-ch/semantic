@@ -168,7 +168,6 @@ def compact(seq: Iterable[T]) -> Iterator[T]:
     return filter(bool, seq)
 
 
-@deal.ensure(lambda seqs, result: seqs[0][0] is list(result)[0])
 @deal.raises(NotImplementedError)
 @deal.has()
 def flatten(seqs: Sequence[Sequence[T]]) -> Iterator[T]:
