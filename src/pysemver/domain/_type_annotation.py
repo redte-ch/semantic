@@ -27,7 +27,7 @@ def type_annotation(instance) -> str:
         Traceback (most recent call last):
         NotImplementedError...
 
-    . versionadded:: 1.0.0
+    .. versionadded:: 1.0.0
 
     """
 

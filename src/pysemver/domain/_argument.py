@@ -44,6 +44,8 @@ class Argument:
         Traceback (most recent call last):
         typic.constraints.error.ConstraintValueError...
 
+    .. versionadded:: 1.0.0
+
     """
 
     name: str

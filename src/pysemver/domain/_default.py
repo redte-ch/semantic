@@ -31,7 +31,7 @@ def default(instance) -> str:
         >>> default(None)
         None
 
-    . versionadded:: 1.0.0
+    .. versionadded:: 1.0.0
 
     """
 
