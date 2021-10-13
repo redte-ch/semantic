@@ -25,7 +25,7 @@ import pathlib
 import deal
 import typic
 
-from ._fn import _, first
+from . import utils
 from ._models import Suffix
 from .domain import Argument, default, Signature, type_annotation
 
@@ -256,7 +256,7 @@ class SignatureBuilder(ast.NodeVisitor):
 
         # todo: fix
         if isinstance(default, tuple):
-            default = first(default)
+            default = utils.first(default)
 
         argument = Argument(node.arg, types, default)
 
@@ -322,7 +322,7 @@ class SignatureBuilder(ast.NodeVisitor):
     def _build(
             self,
             node: Optional[Union[ast.expr, ast.slice]],
-            builder: Callable[..., Any] = _,
+            builder: Callable[..., Any] = utils._,
             ) -> Any:
         """Generic builder."""
 

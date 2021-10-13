@@ -12,7 +12,7 @@ import pipeop
 from invoke import Program
 from rich.console import Console
 
-from . import _fn
+from . import utils
 from ._repo import Repo
 from ._tasks import Tasks
 from ._views import Help, Home

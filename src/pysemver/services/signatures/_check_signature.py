@@ -5,26 +5,27 @@
 
 from __future__ import annotations
 
-from typing import Any, Optional, Sequence, Sized, TypeVar, Protocol
+from typing import Any, Optional, Protocol, Sequence, Sized, TypeVar
 
 import dataclasses
 
 import deal
 import numpy
 import typic
-
-from hypothesis.strategies import register_type_strategy
 from hypothesis import strategies
+from hypothesis.strategies import register_type_strategy
 
 from ..._models import Version
 from ...domain import Signature
-
 
 limit = 2e5
 """Just a random size/length sentinel."""
 
 
-strategy = strategies.builds(Signature, name = strategies.just("count"), file = strategies.just("file.py"))
+strategy = strategies.builds(
+    Signature,
+    name = strategies.just("count"),
+    file = strategies.just("file.py"))
 
 register_type_strategy(Signature, strategy)
 
@@ -60,8 +61,22 @@ def diff_hash(service: CheckSignature) -> numpy.integer:
     these = fill(service.this_len, service.that_len, service.this)
     those = fill(service.this_len, service.that_len, service.that)
 
-    patch = [*service.patch, *repeat(service.this_len, service.that_len, service.patch[0])]
-    nones = [*service.nones, *repeat(service.this_len, service.that_len, service.nones[0])]
+    patch = [
+        *
+        service.patch,
+        *
+        repeat(
+            service.this_len,
+            service.that_len,
+            service.patch[0])]
+    nones = [
+        *
+        service.nones,
+        *
+        repeat(
+            service.this_len,
+            service.that_len,
+            service.nones[0])]
 
     return numpy.where(these != those, patch, nones)
 
@@ -166,9 +181,30 @@ class CheckSignature:
         these = numpy.array([self.this_len] * self.size_max)
         those = numpy.array([self.that_len] * self.size_max)
 
-        major = [*self.major, *repeat(self.this_len, self.that_len, self.major[0])]
-        minor = [*self.minor, *repeat(self.this_len, self.that_len, self.minor[0])]
-        nones = [*self.nones, *repeat(self.this_len, self.that_len, self.nones[0])]
+        major = [
+            *
+            self.major,
+            *
+            repeat(
+                self.this_len,
+                self.that_len,
+                self.major[0])]
+        minor = [
+            *
+            self.minor,
+            *
+            repeat(
+                self.this_len,
+                self.that_len,
+                self.minor[0])]
+        nones = [
+            *
+            self.nones,
+            *
+            repeat(
+                self.this_len,
+                self.that_len,
+                self.nones[0])]
 
         conds = [these < those, these > those, True]
         takes = [major, minor, nones]
@@ -220,9 +256,30 @@ class CheckSignature:
     # @deal.pure
     # @typic.al(strict = True)
     def diff_defs(self) -> numpy.ndarray:
-        major = [*self.major, *repeat(self.this_len, self.that_len, self.major[0])]
-        minor = [*self.minor, *repeat(self.this_len, self.that_len, self.minor[0])]
-        nones = [*self.nones, *repeat(self.this_len, self.that_len, self.nones[0])]
+        major = [
+            *
+            self.major,
+            *
+            repeat(
+                self.this_len,
+                self.that_len,
+                self.major[0])]
+        minor = [
+            *
+            self.minor,
+            *
+            repeat(
+                self.this_len,
+                self.that_len,
+                self.minor[0])]
+        nones = [
+            *
+            self.nones,
+            *
+            repeat(
+                self.this_len,
+                self.that_len,
+                self.nones[0])]
 
         these = numpy.array(
             [a.default is None for a in self.this.arguments],

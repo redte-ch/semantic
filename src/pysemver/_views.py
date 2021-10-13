@@ -25,14 +25,14 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 
-from . import _fn
+from . import utils
 from ._repo import Repo
 from ._theme import Theme
 
-_grid = _fn.partial(Layout, " ", ratio = 2)
+_grid = utils.partial(Layout, " ", ratio = 2)
 """To fill around the terminal."""
 
-_main = _fn.partial(Layout, ratio = 5)
+_main = utils.partial(Layout, ratio = 5)
 """To render the main cli view."""
 
 
@@ -42,11 +42,11 @@ def _rows(panel: Panel) -> Layout:
 
     return (
         Layout()
-        << _fn.partial(Layout.split_column)
-        >> _fn.partial(_grid())
-        >> _fn.partial(_main(panel))
-        >> _fn.partial(_grid())
-        >> _fn.do
+        << utils.partial(Layout.split_column)
+        >> utils.partial(_grid())
+        >> utils.partial(_main(panel))
+        >> utils.partial(_grid())
+        >> utils.do
         )
 
 
@@ -56,11 +56,11 @@ def _columns(panel: Layout) -> Layout:
 
     return (
         Layout()
-        << _fn.partial(Layout.split_row)
-        >> _fn.partial(_grid())
-        >> _fn.partial(_main(panel))
-        >> _fn.partial(_grid())
-        >> _fn.do
+        << utils.partial(Layout.split_row)
+        >> utils.partial(_grid())
+        >> utils.partial(_main(panel))
+        >> utils.partial(_grid())
+        >> utils.do
         )
 
 
@@ -135,7 +135,7 @@ class Home:
             << tuple
             )
 
-        tasks << _fn.dfp(table.add_row) >> tuple
+        tasks << utils.dfp(table.add_row) >> tuple
 
         return table
 
@@ -153,7 +153,7 @@ class Home:
         text = (
             __name__
             >> str.split(".")
-            >> _fn.first
+            >> utils.first
             << str.format("Usage: {} [--help] <command> …")
             >> Text
             )
@@ -211,8 +211,8 @@ class Help:
 
         (
             options
-            >> _fn.dfc()
-            << _fn.dfp(table.add_row)
+            >> utils.dfc()
+            << utils.dfp(table.add_row)
             << tuple
             )
 
@@ -232,7 +232,7 @@ class Help:
         text = (
             __name__
             >> str.split(".")
-            >> _fn.first
+            >> utils.first
             << str.format("Usage: {1} {0} [--options] …", command)
             >> Text
             )

@@ -153,27 +153,6 @@ def first(seq: Sequence[T]) -> Optional[T]:
 
 
 @deal.pure
-def second(seq) -> Optional[T]:
-    """Returns the second element of a sequence.
-
-    Args:
-        seq: Any sequence.
-
-    Examples:
-        >>> second([1, 2, 3])
-        2
-
-        >>> second([])
-        None
-
-    .. versionadded:: 1.0.0
-
-    """
-
-    return first(do(partial(first, iter(seq))))
-
-
-@deal.pure
 def compact(seq: Iterable[T]) -> Iterator[T]:
     """ Filters falsy values.
 
