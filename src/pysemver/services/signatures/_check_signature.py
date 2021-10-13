@@ -5,7 +5,7 @@
 
 from __future__ import annotations
 
-from typing import Iterable, Optional
+from typing import Any, Optional, Sequence, Sized, TypeVar, Protocol
 
 import dataclasses
 
@@ -13,49 +13,55 @@ import deal
 import numpy
 import typic
 
-from ... import _fn
+from hypothesis.strategies import register_type_strategy
+from hypothesis import strategies
+
 from ..._models import Version
 from ...domain import Signature
 
-# @typic.klass(always = True, slots = True, strict = True)
-# class Service()
+
+limit = 2e5
+"""Just a random size/length sentinel."""
+
+
+strategy = strategies.builds(Signature, name = strategies.just("count"), file = strategies.just("file.py"))
+
+register_type_strategy(Signature, strategy)
 
 
 @deal.pure
+@typic.al(strict = True)
 def add(this: int, that: int) -> int:
     return max(that - this, 0)
 
 
+@deal.pre(lambda _: limit > _.what >= 0)
+@deal.pre(lambda _: limit > _.that > 0)
+@deal.pre(lambda _: limit > _.this > 0)
+@deal.pure
 @typic.al
-def fill(this: int, that: int, array: Iterable[int]) -> Iterable[int]:
-    index: int = _fn.first(array)
+def repeat(this: int, that: int, what: int) -> numpy.ndarray:
     times: int = max(add(this, that), add(that, this))
+    return numpy.repeat(what, times)
 
-    return numpy.repeat(index, times)
+
+@deal.pre(lambda _: limit > _.that > 0)
+@deal.pre(lambda _: limit > _.this > 0)
+@deal.pure
+@typic.al(strict = True)
+def fill(this: int, that: int, what: Signature) -> numpy.ndarray:
+    max_size: int = max(this, that)
+    return numpy.array([what] * max_size)
 
 
 # @typic.al(strict = True)
 # @deal.pure
 def diff_hash(service: CheckSignature) -> numpy.integer:
-    these = numpy.array([service.this] * service.size_max)
-    those = numpy.array([service.that] * service.size_max)
+    these = fill(service.this_len, service.that_len, service.this)
+    those = fill(service.this_len, service.that_len, service.that)
 
-    patch = [
-        *
-        service.patch,
-        *
-        fill(
-            service.this_len,
-            service.that_len,
-            service.patch)]
-    nones = [
-        *
-        service.nones,
-        *
-        fill(
-            service.this_len,
-            service.that_len,
-            service.nones)]
+    patch = [*service.patch, *repeat(service.this_len, service.that_len, service.patch[0])]
+    nones = [*service.nones, *repeat(service.this_len, service.that_len, service.nones[0])]
 
     return numpy.where(these != those, patch, nones)
 
@@ -160,9 +166,9 @@ class CheckSignature:
         these = numpy.array([self.this_len] * self.size_max)
         those = numpy.array([self.that_len] * self.size_max)
 
-        major = [*self.major, *fill(self.this_len, self.that_len, self.major)]
-        minor = [*self.minor, *fill(self.this_len, self.that_len, self.minor)]
-        nones = [*self.nones, *fill(self.this_len, self.that_len, self.nones)]
+        major = [*self.major, *repeat(self.this_len, self.that_len, self.major[0])]
+        minor = [*self.minor, *repeat(self.this_len, self.that_len, self.minor[0])]
+        nones = [*self.nones, *repeat(self.this_len, self.that_len, self.nones[0])]
 
         conds = [these < those, these > those, True]
         takes = [major, minor, nones]
@@ -185,10 +191,10 @@ class CheckSignature:
                 conds,
                 takes),
             *
-            fill(
+            repeat(
                 self.this_len,
                 self.that_len,
-                self.minor)]
+                self.minor[0])]
 
     # @deal.pure
     # @typic.al(strict = True)
@@ -206,17 +212,17 @@ class CheckSignature:
                 conds,
                 takes),
             *
-            fill(
+            repeat(
                 self.this_len,
                 self.that_len,
-                self.nones)]
+                self.nones[0])]
 
     # @deal.pure
     # @typic.al(strict = True)
     def diff_defs(self) -> numpy.ndarray:
-        major = [*self.major, *fill(self.this_len, self.that_len, self.major)]
-        minor = [*self.minor, *fill(self.this_len, self.that_len, self.minor)]
-        nones = [*self.nones, *fill(self.this_len, self.that_len, self.nones)]
+        major = [*self.major, *repeat(self.this_len, self.that_len, self.major[0])]
+        minor = [*self.minor, *repeat(self.this_len, self.that_len, self.minor[0])]
+        nones = [*self.nones, *repeat(self.this_len, self.that_len, self.nones[0])]
 
         these = numpy.array(
             [a.default is None for a in self.this.arguments],
@@ -229,8 +235,8 @@ class CheckSignature:
             )
 
         glued = tuple(zip(
-            [*these, *[fill(self.this_len, self.that_len, self.nones), []][len(these) > len(those)]],
-            [*those, *[fill(self.this_len, self.that_len, self.nones), []][len(those) > len(these)]],
+            [*these, *[repeat(self.this_len, self.that_len, self.nones[0]), []][len(these) > len(those)]],
+            [*those, *[repeat(self.this_len, self.that_len, self.nones[0]), []][len(those) > len(these)]],
             ))
 
         conds = [

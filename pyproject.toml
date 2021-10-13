@@ -97,6 +97,7 @@ doctest_optionflags = [
 
 [tool.mypy]
 ignore_missing_imports = true
+implicit_reexport = true
 install_types = true
 non_interactive = true
 plugins = ["typic.mypy", "returns.contrib.mypy.returns_plugin"]
