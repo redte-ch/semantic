@@ -1,1 +1,1 @@
-from ._check_signature import CheckSignature
+from ._check_signature import CheckSignature, diff_hash

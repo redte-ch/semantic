@@ -14,11 +14,11 @@ import typic
 from ._bar import Bar
 from ._bumper import Bumper
 from ._config import config
-from .services.signatures import CheckSignature
 from ._models import Exit
 from ._parser import Parser
 from ._types import HasIndex, What
 from .domain import Signature
+from .services.signatures import CheckSignature
 
 T = TypeVar("T", bound = "CheckVersion")
 

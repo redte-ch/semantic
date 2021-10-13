@@ -518,6 +518,7 @@ python-versions = ">=3.6"
 
 [package.dependencies]
 attrs = ">=19.2.0"
+numpy = {version = ">=1.9.0", optional = true, markers = "extra == \"numpy\""}
 sortedcontainers = ">=2.1.0,<3.0.0"
 
 [package.extras]
@@ -1629,7 +1630,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "~3.7 || ~3.8 || ~3.9"
-content-hash = "1dd2fb8d151684b8baaa52397196763ae507fee35a8010ceedbf0e1fa84e4ebb"
+content-hash = "544f55d5b345fa77f400b08c8e4816a91e73da2d74c5a10214cac07595038d8b"
 
 [metadata.files]
 aenum = [
