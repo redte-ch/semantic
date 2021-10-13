@@ -66,9 +66,11 @@ def do(func: Callable[..., T]) -> T:
         Any: The original thing.
 
     Examples:
+        >>> def double(x: str) -> None:
+        ...     return x * 2
+
         >>> x = "hey!"
-        >>> func = partial(str.upper, x)
-        >>> func()
+        >>> func = partial(double, x)
         >>> do(func)
         'hey!'
 
@@ -148,6 +150,27 @@ def first(seq: Sequence[T]) -> Optional[T]:
     """
 
     return next(iter(seq), None)
+
+
+@deal.pure
+def second(seq) -> Optional[T]:
+    """Returns the second element of a sequence.
+
+    Args:
+        seq: Any sequence.
+
+    Examples:
+        >>> second([1, 2, 3])
+        2
+
+        >>> second([])
+        None
+
+    .. versionadded:: 1.0.0
+
+    """
+
+    return first(do(partial(first, iter(seq))))
 
 
 @deal.pure
