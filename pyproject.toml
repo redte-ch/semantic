@@ -26,6 +26,9 @@ termcolor = "<2"
 toml = "<1"
 typical = "<3"
 typing_extensions = {version = "<4", python = "~3.7"}
+pampy = "<1"
+classes = "<1"
+pyrsistent = "<1"
 
 [tool.poetry.dev-dependencies]
 autopep8 = "<2"
