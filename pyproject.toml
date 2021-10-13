@@ -107,6 +107,7 @@ strict = true
 force_alphabetical_sort_within_sections = true
 group_by_package = true
 include_trailing_comma = true
+known_first_party = ["pysemver"]
 known_typing = [
     "typing",
     "types",

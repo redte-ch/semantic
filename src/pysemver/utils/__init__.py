@@ -9,3 +9,4 @@ from ._functional import (
     flatten,
     partial,
     )
+from ._vectorial import add

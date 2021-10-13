@@ -12,8 +12,8 @@ import dataclasses
 import deal
 import numpy
 import typic
-from hypothesis import strategies
-from hypothesis.strategies import register_type_strategy
+
+from pysemver import utils
 
 from ..._models import Version
 from ...domain import Signature
@@ -22,44 +22,11 @@ limit = 2e5
 """Just a random size/length sentinel."""
 
 
-strategy = strategies.builds(
-    Signature,
-    name = strategies.just("count"),
-    file = strategies.just("file.py"))
-
-register_type_strategy(Signature, strategy)
-
-
-@deal.pure
-@typic.al(strict = True)
-def add(this: int, that: int) -> int:
-    return max(that - this, 0)
-
-
-@deal.pre(lambda _: limit > _.what >= 0)
-@deal.pre(lambda _: limit > _.that > 0)
-@deal.pre(lambda _: limit > _.this > 0)
-@deal.pure
-@typic.al
-def repeat(this: int, that: int, what: int) -> numpy.ndarray:
-    times: int = max(add(this, that), add(that, this))
-    return numpy.repeat(what, times)
-
-
-@deal.pre(lambda _: limit > _.that > 0)
-@deal.pre(lambda _: limit > _.this > 0)
-@deal.pure
-@typic.al(strict = True)
-def fill(this: int, that: int, what: Signature) -> numpy.ndarray:
-    max_size: int = max(this, that)
-    return numpy.array([what] * max_size)
-
-
 # @typic.al(strict = True)
 # @deal.pure
 def diff_hash(service: CheckSignature) -> numpy.integer:
-    these = fill(service.this_len, service.that_len, service.this)
-    those = fill(service.this_len, service.that_len, service.that)
+    these = utils.fill(service.this_len, service.that_len, service.this)
+    those = utils.fill(service.this_len, service.that_len, service.that)
 
     patch = [
         *
