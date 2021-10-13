@@ -5,14 +5,14 @@
 
 from __future__ import annotations
 
-from typing import Optional
-
 import classes
 
 
 @classes.typeclass
-def default(instance) -> Optional[str]:
-    """An argument default value.
+def default(instance) -> str:
+    """An argument's default value.
+
+    Please note that ``None`` is always treated literally.
 
     Args:
         instance: Value of the return.
@@ -21,12 +21,15 @@ def default(instance) -> Optional[str]:
         >>> default("1")
         '1'
 
-        >>> default(None)
-        None
-
         >>> default(1)
         Traceback (most recent call last):
         NotImplementedError: Missing matched typeclass instance for type: int
+
+        >>> default("None")
+        'None'
+
+        >>> default(None)
+        None
 
     . versionadded:: 1.0.0
 

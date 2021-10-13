@@ -102,8 +102,8 @@ def dfc(seqs: Sequence[Tuple[T, Iterable[T]]]) -> Iterator[Tuple[T, ...]]:
         seqs: Any sequences of sequences.
 
     Examples:
-        >>> list(dfc[(1, [2, 3]), (4, [5, 6])]))
-        [(1, 2, 3), (4, 5, 6), (7, 8, 9)]
+        >>> list(dfc([(1, [2, 3]), (4, [5, 6])]))
+        [(1, 2, 3), (4, 5, 6)]
 
     .. versionadded:: 1.0.0
 

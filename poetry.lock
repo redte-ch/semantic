@@ -824,14 +824,6 @@ python-versions = ">=3.6"
 pyparsing = ">=2.0.2"
 
 [[package]]
-name = "pampy"
-version = "0.3.0"
-description = "The Pattern Matching for Python you always dreamed of"
-category = "main"
-optional = false
-python-versions = ">3.6"
-
-[[package]]
 name = "parso"
 version = "0.8.2"
 description = "A Python Parser"
@@ -884,23 +876,6 @@ python-versions = "*"
 
 [package.dependencies]
 ptyprocess = ">=0.5"
-
-[[package]]
-name = "phantom-types"
-version = "0.13.0"
-description = "Phantom types for Python"
-category = "main"
-optional = false
-python-versions = ">=3.7"
-
-[package.dependencies]
-typeguard = ">=2.10"
-typing-extensions = ">=3.10.0.2"
-
-[package.extras]
-phonenumbers = ["phonenumbers (>=8.12.11)"]
-pydantic = ["pydantic (>=1.8.1)"]
-test = ["mypy", "pytest", "pytest-mypy-plugins", "coverage"]
 
 [[package]]
 name = "pickleshare"
@@ -1646,7 +1621,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "~3.7 || ~3.8 || ~3.9"
-content-hash = "02aecb98ee11cab8ed7c47cf2b69192ed0671e4c4c443cbd7cb2e332e3d134d4"
+content-hash = "159da99c2d1d9ade4e8086446621ea5b41e0e54f28d76b1009a2e73ed87c4ce5"
 
 [metadata.files]
 aenum = [
@@ -2084,10 +2059,6 @@ packaging = [
     {file = "packaging-21.0-py3-none-any.whl", hash = "sha256:c86254f9220d55e31cc94d69bade760f0847da8000def4dfe1c6b872fd14ff14"},
     {file = "packaging-21.0.tar.gz", hash = "sha256:7dc96269f53a4ccec5c0670940a4281106dd0bb343f47b7471f779df49c2fbe7"},
 ]
-pampy = [
-    {file = "pampy-0.3.0-py3-none-any.whl", hash = "sha256:304470a6562173096fc88c22dc0ab50401ca2e3875a8725ee510759ec8ba58ff"},
-    {file = "pampy-0.3.0.tar.gz", hash = "sha256:82054212e4478fc22163c55321a3583eda9918aff4440eed6c197e872a2a667b"},
-]
 parso = [
     {file = "parso-0.8.2-py2.py3-none-any.whl", hash = "sha256:a8c4922db71e4fdb90e0d0bc6e50f9b273d3397925e5e60a717e719201778d22"},
     {file = "parso-0.8.2.tar.gz", hash = "sha256:12b83492c6239ce32ff5eed6d3639d6a536170723c6f3f1506869f1ace413398"},
@@ -2126,10 +2097,6 @@ pep8-naming = [
 pexpect = [
     {file = "pexpect-4.8.0-py2.py3-none-any.whl", hash = "sha256:0b48a55dcb3c05f3329815901ea4fc1537514d6ba867a152b581d69ae3710937"},
     {file = "pexpect-4.8.0.tar.gz", hash = "sha256:fc65a43959d153d0114afe13997d439c22823a27cefceb5ff35c2178c6784c0c"},
-]
-phantom-types = [
-    {file = "phantom-types-0.13.0.tar.gz", hash = "sha256:b3240f8200128208854a68d3cb707aeb1901dd5044b9f562c39003b93296c9c4"},
-    {file = "phantom_types-0.13.0-py3-none-any.whl", hash = "sha256:abbc6b7bbbc0b3ec3206a44dcb3fcbe605aa41dd81bbbfbd42a0f9e94d44725f"},
 ]
 pickleshare = [
     {file = "pickleshare-0.7.5-py2.py3-none-any.whl", hash = "sha256:9649af414d74d4df115d5d718f82acb59c9d418196b7b4290ed47a12ce62df56"},
