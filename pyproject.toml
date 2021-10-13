@@ -16,19 +16,19 @@ packages = [{include = "pysemver", from = "src"}]
 [tool.poetry.dependencies]
 python = "~3.7 || ~3.8 || ~3.9"
 aenum = "<4"
+classes = "<1"
 deal = "<5"
 invoke = "<2"
 numpy = ">=1.7, <1.22"
+pampy = "<1"
 pipeop = "<1"
+pyrsistent = "<1"
 returns = "<1"
 rich = "<11"
 termcolor = "<2"
 toml = "<1"
 typical = "<3"
 typing_extensions = {version = "<4", python = "~3.7"}
-pampy = "<1"
-classes = "<1"
-pyrsistent = "<1"
 
 [tool.poetry.dev-dependencies]
 autopep8 = "<2"
@@ -41,6 +41,9 @@ mypy = "<1"
 pytest = "<7"
 pytest-cov = "<4"
 pytest-mock = "<4"
+pytest-randomly = "<4"
+pytest-sugar = "<1"
+pytest-xdist = {extras = ["psutil"], version = "<3"}
 pytype = "^2021.10.4"
 pyupgrade = "<3"
 Sphinx = "<5"
@@ -78,6 +81,7 @@ verbose = 2
 addopts = [
     "-qx",
     "--disable-pytest-warnings",
+    "--numprocesses=auto",
     "--pdbcls=IPython.terminal.debugger:TerminalPdb",
     "--showlocals",
     "--tb=long",
