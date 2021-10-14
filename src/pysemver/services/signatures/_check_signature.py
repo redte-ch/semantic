@@ -32,6 +32,80 @@ def diff_hash(this: DataclassLike, that: DataclassLike) -> numpy.ndarray:
     return numpy.where(these != those, patch, nones)
 
 
+@deal.pure
+def diff_args(this: DataclassLike, that: DataclassLike) -> numpy.ndarray:
+    these = utils.fill(len(this), len(that), this)
+    those = utils.fill(len(this), len(that), that)
+
+    major = utils.pop(len(this), len(that), Version.Int.MAJOR)
+    minor = utils.pop(len(this), len(that), Version.Int.MINOR)
+    nones = utils.pop(len(this), len(that), Version.Int.NONE)
+
+    conds = [these < those, these > those, True]
+    takes = [major, minor, nones]
+
+    return numpy.select(conds, takes)
+
+
+@deal.pure
+def diff_name(this: DataclassLike, that: DataclassLike) -> numpy.ndarray:
+    these = numpy.array([a.name for a in this.arguments])
+    those = numpy.array([a.name for a in that.arguments])
+    glued = tuple(zip(these, those))
+
+    conds = [[this != that for this, that in glued], True]
+    takes = [self.major, self.nones]
+
+    return [
+        *numpy.select(conds, takes),
+        *utils.rep(len(this), len(that), Version.Int.MINOR),
+        ]
+
+
+@deal.pure
+def diff_type(this: DataclassLike, that: DataclassLike) -> numpy.ndarray:
+    these = numpy.array([a.types is None for a in self.this.arguments])
+    those = numpy.array([a.types is None for a in self.that.arguments])
+    glued = tuple(zip(these, those))
+
+    conds = [[this != that for this, that in glued], True]
+    takes = [self.patch, self.nones]
+
+    return [
+        *numpy.select(conds, takes),
+        *utils.rep(len(this), len(that), Version.Int.NONE),
+        ]
+
+
+@deal.pure
+def diff_defs(this: DataclassLike, that: DataclassLike) -> numpy.ndarray:
+    major = utils.pop(len(this), len(that), Version.Int.MAJOR)
+    minor = utils.pop(len(this), len(that), Version.Int.MINOR)
+    nones = utils.pop(len(this), len(that), Version.Int.NONE)
+
+    these = numpy.array([a.default is None for a in this.arguments], int)
+    those = numpy.array([a.default is None for a in that.arguments], int)
+
+    glued = tuple(zip(
+        [*these, *[utils.rep(len(this), len(that), Version.Int.NONE), []][len(these) > len(those)]],
+        [*those, *[utils.rep(len(this), len(that), Version.Int.NONE), []][len(those) > len(these)]],
+        ))
+
+    conds = [
+        [this > that for this, that in glued],
+        [this < that for this, that in glued],
+        True,
+        ]
+
+    takes = [
+        major,
+        minor,
+        nones,
+        ]
+
+    return numpy.select(conds, takes)
+
+
 @typic.klass(always = True, slots = True, strict = True)
 @dataclasses.dataclass
 class CheckSignature:
@@ -120,89 +194,8 @@ class CheckSignature:
 
         return max(
             max(diff_hash(self.this, self.that)),
-            max(self.diff_args()),
-            max(self.diff_name()),
-            max(self.diff_type()),
-            max(self.diff_defs()),
+            max(diff_args(self.this, self.that)),
+            max(diff_name(self.this, self.that)),
+            max(diff_type(self.this, self.that)),
+            max(diff_defs(self.this, self.that)),
             )
-
-    # @deal.pure
-    # @typic.al(strict = True)
-    def diff_args(self) -> numpy.ndarray:
-        these = numpy.array([self.this_len] * self.size_max)
-        those = numpy.array([self.that_len] * self.size_max)
-
-        major = utils.pop(self.this_len, self.that_len, self.major[0])
-        minor = utils.pop(self.this_len, self.that_len, self.minor[0])
-        nones = utils.pop(self.this_len, self.that_len, self.nones[0])
-
-        conds = [these < those, these > those, True]
-        takes = [major, minor, nones]
-
-        return numpy.select(conds, takes)
-
-    # @deal.pure
-    # @typic.al(strict = True)
-    def diff_name(self) -> numpy.ndarray:
-        these = numpy.array([a.name for a in self.this.arguments])
-        those = numpy.array([a.name for a in self.that.arguments])
-        glued = tuple(zip(these, those))
-
-        conds = [[this != that for this, that in glued], True]
-        takes = [self.major, self.nones]
-
-        return [
-            *numpy.select(conds, takes),
-            *utils.rep(self.this_len, self.that_len, self.minor[0]),
-            ]
-
-    # @deal.pure
-    # @typic.al(strict = True)
-    def diff_type(self) -> numpy.ndarray:
-        these = numpy.array([a.types is None for a in self.this.arguments])
-        those = numpy.array([a.types is None for a in self.that.arguments])
-        glued = tuple(zip(these, those))
-
-        conds = [[this != that for this, that in glued], True]
-        takes = [self.patch, self.nones]
-
-        return [
-            *numpy.select(conds, takes),
-            *utils.rep(self.this_len, self.that_len, self.nones[0]),
-            ]
-
-    # @deal.pure
-    # @typic.al(strict = True)
-    def diff_defs(self) -> numpy.ndarray:
-        major = utils.pop(self.this_len, self.that_len, self.major[0])
-        minor = utils.pop(self.this_len, self.that_len, self.minor[0])
-        nones = utils.pop(self.this_len, self.that_len, self.nones[0])
-
-        these = numpy.array(
-            [a.default is None for a in self.this.arguments],
-            int,
-            )
-
-        those = numpy.array(
-            [a.default is None for a in self.that.arguments],
-            int,
-            )
-
-        glued = tuple(zip(
-            [*these, *[utils.rep(self.this_len, self.that_len, self.nones[0]), []][len(these) > len(those)]],
-            [*those, *[utils.rep(self.this_len, self.that_len, self.nones[0]), []][len(those) > len(these)]],
-            ))
-
-        conds = [
-            [this > that for this, that in glued],
-            [this < that for this, that in glued],
-            True,
-            ]
-
-        takes = [
-            major,
-            minor,
-            nones,
-            ]
-
-        return numpy.select(conds, takes)
