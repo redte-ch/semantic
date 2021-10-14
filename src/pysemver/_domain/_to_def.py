@@ -9,7 +9,7 @@ import classes
 
 
 @classes.typeclass
-def default(instance) -> str:
+def to_def(instance) -> str:
     """An argument's default value.
 
     Please note that ``None`` is always treated literally.
@@ -18,17 +18,17 @@ def default(instance) -> str:
         instance: Value of the return.
 
     Examples:
-        >>> default("1")
+        >>> to_def("1")
         '1'
 
-        >>> default(1)
+        >>> to_def(1)
         Traceback (most recent call last):
         NotImplementedError: Missing matched typeclass instance for type: int
 
-        >>> default("None")
+        >>> to_def("None")
         'None'
 
-        >>> default(None)
+        >>> to_def(None)
         None
 
     .. versionadded:: 1.0.0
@@ -36,11 +36,11 @@ def default(instance) -> str:
     """
 
 
-@default.instance(str)
-def _default_str(instance: str) -> str:
+@to_def.instance(str)
+def _from_str(instance: str) -> str:
     return instance
 
 
-@default.instance(None)
-def _default_none(instance: None) -> None:
+@to_def.instance(None)
+def _from_none(instance: None) -> None:
     return instance

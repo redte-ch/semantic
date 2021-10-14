@@ -18,7 +18,6 @@ import typic
 from pysemver import utils
 from pysemver.domain import Version
 
-from ..._types import DataclassLike
 from ...domain import Signature
 
 limit = 2e5

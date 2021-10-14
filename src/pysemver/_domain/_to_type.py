@@ -9,21 +9,21 @@ import classes
 
 
 @classes.typeclass
-def type_annotation(instance) -> str:
+def to_type(instance) -> str:
     """An argument/return type.
 
     Args:
         instance: Name of the type.
 
     Examples:
-        >>> type_annotation("int")
+        >>> to_type("int")
         'int'
 
-        >>> type_annotation(int)
+        >>> to_type(int)
         Traceback (most recent call last):
         NotImplementedError...
 
-        >>> type_annotation(None)
+        >>> to_type(None)
         Traceback (most recent call last):
         NotImplementedError...
 
@@ -32,6 +32,6 @@ def type_annotation(instance) -> str:
     """
 
 
-@type_annotation.instance(str)
-def _type_str(instance: str) -> str:
+@to_type.instance(str)
+def _from_str(instance: str) -> str:
     return instance
