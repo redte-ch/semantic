@@ -29,6 +29,8 @@ import itertools
 import deal
 import returns.curry
 
+from .._types import PartialLike
+
 T = TypeVar("T")
 
 chain = itertools.chain
@@ -54,9 +56,8 @@ def _(x: T) -> Callable[..., T]:
 
 
 @deal.ensure(lambda func, result: func.args[0] == result)
-@deal.raises(NotImplementedError)
-@deal.has()
-def do(func: Callable[..., T]) -> T:
+@deal.pure
+def do(func: PartialLike) -> T:
     """Do something on something, thent return something.
 
     Args:
@@ -80,12 +81,6 @@ def do(func: Callable[..., T]) -> T:
     .. versionadded:: 1.0.0
 
     """
-
-    if not hasattr(func, "args"):
-        raise NotImplementedError
-
-    if not hasattr(func, "keywords"):
-        raise NotImplementedError
 
     self, *args = func.args  # type: ignore
 

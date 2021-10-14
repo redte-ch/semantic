@@ -6,9 +6,10 @@
 
 from __future__ import annotations
 
-from typing import Optional, Tuple
+from typing import Any
 
 import abc
+import dataclasses
 import sys
 
 if sys.version_info >= (3, 8):
@@ -33,6 +34,18 @@ class HasExit(Protocol):
         ...
 
 
-ArgName = str
-ArgDefault = Optional[str]
-ArgTypeAnn = Optional[Tuple[str, ...]]
+@dataclasses.dataclass
+class DataclassLike(abc.ABC):
+    some: str
+    thing: str
+
+
+class PartialLike:
+
+    def __init__(self) -> None:
+        self.func = self
+        self.args = sum, *(1, 2, 3)
+        self.keywords = {"a": 1, "b": 2, "c": 3}
+
+    def __call__(self, *args: Any, **kwds: Any) -> None:
+        ...

@@ -3,17 +3,9 @@
 # Licensed under the EUPL-1.2-or-later
 # For details: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 
-import abc
-import dataclasses
-
 from hypothesis import strategies
 
-
-@dataclasses.dataclass
-class DataclassLike(abc.ABC):
-    some: str
-    thing: str
-
+from .._types import DataclassLike
 
 dataclass_strategy = strategies.builds(
     DataclassLike,

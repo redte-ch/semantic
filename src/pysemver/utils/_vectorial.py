@@ -2,7 +2,7 @@ import deal
 import numpy
 from hypothesis import strategies
 
-from ._builders import DataclassLike, dataclass_strategy
+from ._builders import dataclass_strategy, DataclassLike
 
 strategies.register_type_strategy(DataclassLike, dataclass_strategy)
 

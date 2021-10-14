@@ -109,11 +109,12 @@ group_by_package = true
 include_trailing_comma = true
 known_first_party = ["pysemver"]
 known_typing = [
-    "typing",
-    "types",
-    "typing_extensions",
+    "_types",
     "mypy",
     "mypy_extensions",
+    "types",
+    "typing",
+    "typing_extensions",
     ]
 multi_line_output = 8
 py_version = 37
