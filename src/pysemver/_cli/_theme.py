@@ -3,12 +3,13 @@
 # Licensed under the EUPL-1.2-or-later
 # For details: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 
-from aenum import Enum, skip
+import aenum
+from aenum import Enum
 
 
 class Theme(Enum):
 
-    @skip
+    @aenum.skip
     class Common(str, Enum):
         FAIL = "red"
         INFO = "cyan"
@@ -17,7 +18,7 @@ class Theme(Enum):
         WARN = "yellow"
         WORK = "magenta"
 
-    @skip
+    @aenum.skip
     class Console(str, Enum):
         BORDER = "cyan"
         HEADER = "magenta"
