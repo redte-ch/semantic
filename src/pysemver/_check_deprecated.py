@@ -13,9 +13,9 @@ import deal
 import typic
 
 from ._bar import Bar
-from ._models import Exit
 from ._repo import Repo
 from ._types import HasIndex
+from .domain import Exit
 
 VERSION: str
 VERSION = Repo.Version.last()

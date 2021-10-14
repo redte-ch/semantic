@@ -25,8 +25,7 @@ import deal
 import typic
 
 from . import utils
-from ._models import Suffix
-from .domain import Argument, default, Signature, type_annotation
+from .domain import Argument, default, Signature, Suffix, type_annotation
 
 
 # @typic.klass(always = True, strict = True)

@@ -16,8 +16,8 @@ import numpy
 import typic
 
 from pysemver import utils
+from pysemver.domain import Version
 
-from ..._models import Version
 from ..._types import DataclassLike
 from ...domain import Signature
 

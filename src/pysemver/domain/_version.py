@@ -5,46 +5,13 @@
 
 from __future__ import annotations
 
-from typing import Any, Generic, MutableMapping, Sequence, TypeVar
-
-import deal
-import typic
-from aenum import Enum, IntEnum, skip
-
-T = TypeVar("T", bound = MutableMapping[str, Any])
-
-
-@typic.klass(always = True, slots = True, strict = True)
-class Config(Generic[T]):
-
-    ignore: Sequence[str]
-
-
-class Exit(IntEnum):
-    """An enum with exit codes."""
-
-    OK = 0
-    KO = 1
-
-
-class Suffix(str, Enum):
-    """An enum to find unique signature names."""
-
-    SEMEL = ""
-    BIS = "(bis)"
-    TER = "(ter)"
-    QUATER = "(quater)"
-    QUINQUIES = "(quinquies)"
-    SEXIES = "(sexies)"
-    SEPTIES = "(septies)"
-    OCTIES = "(octies)"
-    NONIES = "(nonies)"
-    DECIES = "(decies)"
+import aenum
+from aenum import Enum, IntEnum
 
 
 class Version(Enum):
 
-    @skip
+    @aenum.skip
     class Str(str, Enum):
         """An enum used to explain the required version.
 
@@ -52,7 +19,7 @@ class Version(Enum):
             >>> [version.name for version in Version.Str]
             ['NONE', 'PATCH', 'MINOR', 'MAJOR']
 
-            >>> [version.value for version in Version.Str]
+            >>> [version for version in Version.Str]
             ['', '~', '+', '-']
 
         """
@@ -62,7 +29,7 @@ class Version(Enum):
         MINOR = "+"
         MAJOR = "-"
 
-    @skip
+    @aenum.skip
     class Int(IntEnum):
         """An enum used to determine the required version.
 
@@ -70,7 +37,7 @@ class Version(Enum):
             >>> [version.name for version in Version.Int]
             ['NONE', 'PATCH', 'MINOR', 'MAJOR']
 
-            >>> [version.value for version in Version.Int]
+            >>> [version for version in Version.Int]
             [0, 1, 2, 3]
 
             >>> [str(version) for version in Version.Int]
@@ -83,7 +50,5 @@ class Version(Enum):
         MINOR = 2
         MAJOR = 3
 
-        @deal.pure
-        # @typic.al(strict = True)
         def __str__(self) -> str:
             return tuple(Version.Str)[self.value]

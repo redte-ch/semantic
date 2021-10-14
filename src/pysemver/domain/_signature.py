@@ -35,17 +35,17 @@ class Signature:
         >>> Signature("greet", "file.py", (argument,))
         Signature(name='greet', file='file.py', arguments=(Argument(name='co...
 
-        >>> Signature("greet", "file.py", (), ["None"])
-        Signature(name='greet', file='file.py', arguments=(), returns=['None'])
+        >>> Signature("greet", "file.py", (), ("None",))
+        Signature(name='greet', file='file.py', arguments=(), returns=('None...
 
-        >>> Signature("greet", "file.py", [], None)
-        Signature(name='greet', file='file.py', arguments=[], returns=None)
+        >>> Signature("greet", "file.py", (), None)
+        Signature(name='greet', file='file.py', arguments=(), returns=None)
 
-        >>> Signature("greet", "file.py", [], "int")
+        >>> Signature("greet", "file.py", (), "int")
         Traceback (most recent call last):
         typic.constraints.error.ConstraintValueError...
 
-        >>> Signature("greet", "file.py", [], [int])
+        >>> Signature("greet", "file.py", (), [int])
         Traceback (most recent call last):
         typic.constraints.error.ConstraintValueError...
 

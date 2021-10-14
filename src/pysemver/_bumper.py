@@ -10,8 +10,8 @@ import re
 import deal
 import typic
 
-from ._models import Version
 from ._repo import Repo
+from .domain import Version
 
 
 @typic.klass(always = True, slots = True, strict = True)

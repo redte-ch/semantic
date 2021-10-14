@@ -3,19 +3,24 @@
 # Licensed under the EUPL-1.2-or-later
 # For details: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 
-from typing import Any, Callable, MutableMapping, Type, TypeVar
+from typing import Any, Callable, MutableMapping, Sequence, Type, TypeVar
 
 import pipeop
 import toml
-
-from ._models import Config
+import typic
 
 T = TypeVar("T", bound = MutableMapping[str, Any])
 F = TypeVar("F", bound = Callable[[str], T])
 
 
+@typic.klass(always = True, slots = True, strict = True)
+class Config:
+
+    ignore: Sequence[str]
+
+
 @pipeop.pipes
-def build_config(loader: F, config: Type[Config]) -> Config[T]:
+def build_config(loader: F, config: Type[Config]) -> Config:
     return (
         "pyproject.toml"
         >> loader.load
