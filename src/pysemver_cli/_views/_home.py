@@ -24,7 +24,7 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 
-from . import utils
+from . import columns, rows, utils
 from ._repo import Repo
 from ._theme import Theme
 
@@ -32,7 +32,7 @@ from ._theme import Theme
 class Home:
     """Home screen view."""
 
-    columns = "Command", "Description"
+    headers = "Command", "Description"
     """Main command columns."""
 
     @pipeop.pipes
@@ -51,7 +51,7 @@ class Home:
 
         """
 
-        return main >> _rows >> _columns
+        return main >> rows >> columns
 
     def main(content: Table) -> Panel:
         """The main container, or panel.
@@ -95,12 +95,16 @@ class Home:
             )
 
         (
-            Home.columns
+            Home.headers
             << map(table.add_column)
             << tuple
             )
 
-        tasks << utils.dfp(table.add_row) >> tuple
+        (
+            tasks
+            << utils.dfp(table.add_row)
+            >> tuple
+            )
 
         return table
 

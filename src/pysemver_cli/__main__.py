@@ -11,10 +11,12 @@ import pipeop
 from invoke import Program
 from rich.console import Console
 
-from . import utils
-from ._repo import Repo
+import pysemver
+
 from ._tasks import Tasks
 from ._views import Help, Home
+
+version = pysemver.infra.versions.this()
 
 
 class Main(Program):
@@ -23,7 +25,7 @@ class Main(Program):
     write = Console().print
 
     def __init__(self) -> None:
-        super().__init__(namespace = self.tasks, version = Repo.Version.this())
+        super().__init__(namespace = self.tasks, version = version)
 
     @pipeop.pipes
     def print_help(self) -> None:

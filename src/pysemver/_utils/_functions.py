@@ -52,7 +52,7 @@ def _(x: T) -> Callable[..., T]:
 
     """
 
-    return lambda: x
+    return x
 
 
 @deal.pure
@@ -89,14 +89,14 @@ def do(func: PartialLike) -> T:
 
 
 @deal.pure
-def dfc(seqs: Sequence[Tuple[T, Iterable[T]]]) -> Iterator[Tuple[T, ...]]:
+def dcons(seqs: Sequence[Tuple[T, Iterable[T]]]) -> Iterator[Tuple[T, ...]]:
     """Like the original cons but for cons of cons.
 
     Args:
         seqs: Any sequences of sequences.
 
     Examples:
-        >>> list(dfc([(1, [2, 3]), (4, [5, 6])]))
+        >>> list(dcons([(1, [2, 3]), (4, [5, 6])]))
         [(1, 2, 3), (4, 5, 6)]
 
     .. versionadded:: 1.0.0
@@ -107,7 +107,7 @@ def dfc(seqs: Sequence[Tuple[T, Iterable[T]]]) -> Iterator[Tuple[T, ...]]:
 
 
 @deal.pure
-def dfp(func: Callable[[T], T], seqs: Sequence[Sequence[T]]) -> Iterator[T]:
+def dmap(func: Callable[[T], T], seqs: Sequence[Sequence[T]]) -> Iterator[T]:
     """Applies a function to a sequence of sequences.
 
     Args:
@@ -115,7 +115,7 @@ def dfp(func: Callable[[T], T], seqs: Sequence[Sequence[T]]) -> Iterator[T]:
         seqs: Any sequence of sequences.
 
     Examples:
-        >>> list(dfp(float.__add__, [(.1, .2), (.3, .4)]))
+        >>> list(dmap(float.__add__, [(.1, .2), (.3, .4)]))
         [0.3..., 0.7]
 
     .. versionadded:: 1.0.0

@@ -7,15 +7,15 @@ from typing import Any, Callable, MutableMapping, Sequence, Type, TypeVar
 
 import pipeop
 import toml
-import typic
+
+from . import typed
 
 T = TypeVar("T", bound = MutableMapping[str, Any])
 F = TypeVar("F", bound = Callable[[str], T])
 
 
-@typic.klass(always = True, slots = True, strict = True)
+@typed
 class Config:
-
     ignore: Sequence[str]
 
 

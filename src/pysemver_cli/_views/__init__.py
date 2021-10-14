@@ -13,6 +13,14 @@ are mostly repetitive, but it is yet too soon to refactor them.
 
 """
 
+from __future__ import annotations
+
+import pipeop
+from rich.layout import Layout
+from rich.panel import Panel
+
+from pysemver import utils
+
 _grid = utils.partial(Layout, " ", ratio = 2)
 """To fill around the terminal."""
 
@@ -21,7 +29,7 @@ _main = utils.partial(Layout, ratio = 5)
 
 
 @pipeop.pipes
-def _rows(panel: Panel) -> Layout:
+def rows(panel: Panel) -> Layout:
     """Splits the terminal horizontally."""
 
     return (
@@ -35,7 +43,7 @@ def _rows(panel: Panel) -> Layout:
 
 
 @pipeop.pipes
-def _columns(panel: Layout) -> Layout:
+def columns(panel: Layout) -> Layout:
     """Splits the terminal vertically."""
 
     return (

@@ -15,7 +15,7 @@ are mostly repetitive, but it is yet too soon to refactor them.
 
 from __future__ import annotations
 
-from typing import List, Tuple
+from typing import Tuple
 
 import deal
 import pipeop
@@ -24,7 +24,7 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 
-from . import utils
+from . import columns, rows, utils
 from ._repo import Repo
 from ._theme import Theme
 
@@ -32,13 +32,13 @@ from ._theme import Theme
 class Help:
     """Help view."""
 
-    columns = "Flags", "Description", "Default values"
+    headers = "Flags", "Description", "Default values"
 
     @pipeop.pipes
     def root(main: Panel) -> Layout:
         """Global help container."""
 
-        return main >> _rows >> _columns
+        return main >> rows >> columns
 
     @pipeop.pipes
     def main(command: str, content: Table) -> Panel:
@@ -70,7 +70,7 @@ class Help:
             )
 
         (
-            Help.columns
+            Help.headers
             << map(table.add_column)
             << tuple
             )

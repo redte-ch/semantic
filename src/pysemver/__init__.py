@@ -5,8 +5,8 @@
 
 from hypothesis import strategies
 
-from .__main__ import main  # noqa: F401
+from . import _infra as infra  # noqa: F401
+from . import _utils as utils
 from ._types import DataclassLike
-from .utils import dataclass_strategy
 
-strategies.register_type_strategy(DataclassLike, dataclass_strategy)
+strategies.register_type_strategy(DataclassLike, utils.dataclass_strategy)

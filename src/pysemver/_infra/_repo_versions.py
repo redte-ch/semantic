@@ -3,59 +3,66 @@
 # Licensed under the EUPL-1.2-or-later
 # For details: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 
-class Version:
-    """Retrieves version/change information.
+"""Retrieves version/change information.
+
+.. versionadded:: 1.0.0
+
+"""
+
+
+from __future__ import annotations
+
+from typing import Sequence
+
+import deal
+import pkg_resources
+
+from . import _repo
+
+
+@deal.pure
+def this() -> str:
+    """Retrives the actual version.
+
+    Returns:
+        str: Representing the version.
+
+    Examples:
+        >>> version = Repo.Version.this()
+        >>> major, minor, patch, *rest = version.split(".")
+        >>> major.isdecimal()
+        True
 
     .. versionadded:: 36.1.0
 
     """
 
-    @staticmethod
-    @deal.pure
-    # @typic.al(strict = True)
-    def this() -> str:
-        """Retrives the actual version.
+    # TODO: This needs to go to a config, or something.
 
-        Returns:
-            str: Representing the version.
+    return (
+        pkg_resources
+        .get_distribution("pysemver")
+        .version
+        )
 
-        Examples:
-            >>> version = Repo.Version.this()
-            >>> major, minor, patch, *rest = version.split(".")
-            >>> major.isdecimal()
-            True
 
-        .. versionadded:: 36.1.0
+@deal.pure
+def last() -> str:
+    """Retrives the last tagged version.
 
-        """
+    Returns:
+        str: Representing the version.
 
-        # TODO: This needs to go to a config, or something.
+    Examples:
+        >>> version = Repo.Version.last()
+        >>> major, minor, patch, *rest = version.split(".")
+        >>> major.isdecimal()
+        True
 
-        return (
-            pkg_resources
-            .get_distribution("pysemver")
-            .version
-            )
+    .. versionadded:: 1.0.0
 
-    @staticmethod
-    @deal.pure
-    # @typic.al(strict = True)
-    def last() -> str:
-        """Retrives the last tagged version.
+    """
 
-        Returns:
-            str: Representing the version.
-
-        Examples:
-            >>> version = Repo.Version.last()
-            >>> major, minor, patch, *rest = version.split(".")
-            >>> major.isdecimal()
-            True
-
-        .. versionadded:: 36.1.0
-
-        """
-
-        cmd: Sequence[str]
-        cmd = ["git", "describe", "--tags", "--abbrev=0", "--first-parent"]
-        return Repo.run(cmd).split()[0]
+    cmd: Sequence[str]
+    cmd = ["git", "describe", "--tags", "--abbrev=0", "--first-parent"]
+    return _repo.run(cmd).split()[0]
