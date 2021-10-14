@@ -55,7 +55,6 @@ def _(x: T) -> Callable[..., T]:
     return lambda: x
 
 
-@deal.ensure(lambda func, result: func.args[0] == result)
 @deal.pure
 def do(func: PartialLike) -> T:
     """Do something on something, thent return something.

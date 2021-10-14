@@ -16,20 +16,19 @@ import typic
 from pysemver import utils
 
 from ..._models import Version
+from ..._types import DataclassLike
 from ...domain import Signature
 
 limit = 2e5
 """Just a random size/length sentinel."""
 
 
-# @typic.al(strict = True)
-# @deal.pure
-def diff_hash(service: CheckSignature) -> numpy.integer:
-    these = utils.fill(service.this_len, service.that_len, service.this)
-    those = utils.fill(service.this_len, service.that_len, service.that)
-    patch = utils.pop(service.this_len, service.that_len, Version.Int.PATCH)
-    nones = utils.pop(service.this_len, service.that_len, Version.Int.NONE)
-
+@deal.pure
+def diff_hash(this: DataclassLike, that: DataclassLike) -> numpy.ndarray:
+    these = utils.fill(len(this), len(that), this)
+    those = utils.fill(len(this), len(that), that)
+    patch = utils.pop(len(this), len(that), Version.Int.PATCH)
+    nones = utils.pop(len(this), len(that), Version.Int.NONE)
     return numpy.where(these != those, patch, nones)
 
 
@@ -120,7 +119,7 @@ class CheckSignature:
             self.reason = "args/defaults-diff"
 
         return max(
-            max(diff_hash(self)),
+            max(diff_hash(self.this, self.that)),
             max(self.diff_args()),
             max(self.diff_name()),
             max(self.diff_type()),
@@ -169,7 +168,7 @@ class CheckSignature:
 
         return [
             *numpy.select(conds, takes),
-            *utils.rep(self.this_len, self.that_len,self.nones[0]),
+            *utils.rep(self.this_len, self.that_len, self.nones[0]),
             ]
 
     # @deal.pure

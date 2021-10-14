@@ -1,12 +1,9 @@
-import deal
-import numpy
-from hypothesis import strategies
-
 from typing import Sequence
 
-from ._builders import dataclass_strategy, DataclassLike
+import deal
+import numpy
 
-strategies.register_type_strategy(DataclassLike, dataclass_strategy)
+from pysemver._types import DataclassLike
 
 limit = 2e5
 """Just a random size/length sentinel."""

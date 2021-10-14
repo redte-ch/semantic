@@ -34,7 +34,7 @@ def test(this_builder, that_builder):
 
     checker = CheckSignature(this, that)
 
-    assert_equal(diff_hash(checker), [0, 0, 0, 0])
+    assert_equal(diff_hash(checker.this, checker.that), [0, 0, 0, 0])
     assert_equal(checker.diff_args(), [0, 0, 0, 0])
     assert_equal(checker.diff_name(), [0, 0, 0, 0])
     assert_equal(checker.diff_type(), [0, 0, 0, 0])
@@ -53,7 +53,7 @@ def test_when_added_args(this_builder, that_builder):
 
     checker = CheckSignature(this, that)
 
-    assert_equal(diff_hash(checker), [1, 1, 1, 1, 1, 1])
+    assert_equal(diff_hash(checker.this, checker.that), [1, 1, 1, 1, 1, 1])
     assert_equal(checker.diff_args(), [2, 2, 2, 2, 2, 2])
     assert_equal(checker.diff_name(), [0, 0, 0, 0, 2, 2])
     assert_equal(checker.diff_type(), [0, 0, 0, 0, 0, 0])
@@ -72,7 +72,7 @@ def test_when_removed_args(this_builder, that_builder):
 
     checker = CheckSignature(this, that)
 
-    assert_equal(diff_hash(checker), [1, 1, 1, 1, 1, 1])
+    assert_equal(diff_hash(checker.this, checker.that), [1, 1, 1, 1, 1, 1])
     assert_equal(checker.diff_args(), [3, 3, 3, 3, 3, 3])
     assert_equal(checker.diff_name(), [0, 0, 0, 0, 2, 2])
     assert_equal(checker.diff_type(), [0, 0, 0, 0, 0, 0])
@@ -91,7 +91,7 @@ def test_when_changed_arg_names(this_builder, that_builder):
 
     checker = CheckSignature(this, that)
 
-    assert_equal(diff_hash(checker), [1, 1, 1, 1])
+    assert_equal(diff_hash(checker.this, checker.that), [1, 1, 1, 1])
     assert_equal(checker.diff_args(), [0, 0, 0, 0])
     assert_equal(checker.diff_name(), [0, 3, 3, 0])
     assert_equal(checker.diff_type(), [0, 0, 0, 0])
@@ -110,7 +110,7 @@ def test_when_added_types(this_builder, that_builder):
 
     checker = CheckSignature(this, that)
 
-    assert_equal(diff_hash(checker), [1, 1, 1, 1])
+    assert_equal(diff_hash(checker.this, checker.that), [1, 1, 1, 1])
     assert_equal(checker.diff_args(), [0, 0, 0, 0])
     assert_equal(checker.diff_name(), [0, 0, 0, 0])
     assert_equal(checker.diff_type(), [1, 1, 0, 0])
@@ -129,7 +129,7 @@ def test_when_removed_types(this_builder, that_builder):
 
     checker = CheckSignature(this, that)
 
-    assert_equal(diff_hash(checker), [1, 1, 1, 1])
+    assert_equal(diff_hash(checker.this, checker.that), [1, 1, 1, 1])
     assert_equal(checker.diff_args(), [0, 0, 0, 0])
     assert_equal(checker.diff_name(), [0, 0, 0, 0])
     assert_equal(checker.diff_type(), [1, 1, 0, 0])
@@ -148,7 +148,7 @@ def test_when_added_defaults(this_builder, that_builder):
 
     checker = CheckSignature(this, that)
 
-    assert_equal(diff_hash(checker), [1, 1, 1, 1])
+    assert_equal(diff_hash(checker.this, checker.that), [1, 1, 1, 1])
     assert_equal(checker.diff_args(), [0, 0, 0, 0])
     assert_equal(checker.diff_name(), [0, 0, 0, 0])
     assert_equal(checker.diff_type(), [0, 0, 0, 0])
@@ -167,7 +167,7 @@ def test_when_removed_defaults(this_builder, that_builder):
 
     checker = CheckSignature(this, that)
 
-    assert_equal(diff_hash(checker), [1, 1, 1, 1])
+    assert_equal(diff_hash(checker.this, checker.that), [1, 1, 1, 1])
     assert_equal(checker.diff_args(), [0, 0, 0, 0])
     assert_equal(checker.diff_name(), [0, 0, 0, 0])
     assert_equal(checker.diff_type(), [0, 0, 0, 0])
@@ -186,7 +186,7 @@ def test_when_added_args_and_defs(this_builder, that_builder):
 
     checker = CheckSignature(this, that)
 
-    assert_equal(diff_hash(checker), [1, 1, 1, 1, 1, 1])
+    assert_equal(diff_hash(checker.this, checker.that), [1, 1, 1, 1, 1, 1])
     assert_equal(checker.diff_args(), [2, 2, 2, 2, 2, 2])
     assert_equal(checker.diff_name(), [0, 0, 0, 0, 2, 2])
     assert_equal(checker.diff_type(), [0, 0, 0, 0, 0, 0])
@@ -205,7 +205,7 @@ def test_when_removed_args_and_defs(this_builder, that_builder):
 
     checker = CheckSignature(this, that)
 
-    assert_equal(diff_hash(checker), [1, 1, 1, 1, 1, 1])
+    assert_equal(diff_hash(checker.this, checker.that), [1, 1, 1, 1, 1, 1])
     assert_equal(checker.diff_args(), [3, 3, 3, 3, 3, 3])
     assert_equal(checker.diff_name(), [0, 0, 0, 0, 2, 2])
     assert_equal(checker.diff_type(), [0, 0, 0, 0, 0, 0])

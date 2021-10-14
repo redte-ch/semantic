@@ -57,3 +57,6 @@ class Signature:
     file: str
     arguments: Tuple[Argument] = ()
     returns: Tuple[str, Tuple[Any]] = None
+
+    def __len__(self) -> int:
+        return len(self.arguments)
