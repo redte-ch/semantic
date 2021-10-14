@@ -8,8 +8,6 @@ from __future__ import annotations
 from typing import Any
 
 import abc
-import dataclasses
-import random
 import sys
 
 if sys.version_info >= (3, 8):
@@ -34,19 +32,7 @@ class HasExit(Protocol):
         ...
 
 
-@dataclasses.dataclass
-class DataclassLike(abc.ABC):
-    some: str
-    thing: str
-    length: int
-
-    def __post_init__(self) -> None:
-        self.length = random.randrange(2e5)
-
-    def __len__(self) -> int:
-        return self.length
-
-
+# TODO: fix this (move to pysemver_hypothesis)
 class PartialLike:
 
     def __init__(self) -> None:

@@ -11,12 +11,12 @@ import pipeop
 from invoke import Program
 from rich.console import Console
 
-import pysemver
+from pysemver.infra import versions
 
 from ._tasks import Tasks
 from ._views import Help, Home
 
-version = pysemver.infra.versions.this()
+version = versions.this()
 
 
 class Main(Program):

@@ -14,6 +14,7 @@ classifiers = []
 packages = [
     {include = "pysemver", from = "src"},
     {include = "pysemver_cli", from = "src"},
+    {include = "pysemver_hypothesis", from = "src"},
     ]
 
 [tool.poetry.dependencies]
@@ -55,7 +56,7 @@ wemake-python-styleguide = "<1"
 xdoctest = "<1"
 
 [tool.poetry.scripts]
-pysemver = 'pysemver:main.run'
+pysemver = 'pysemver_cli:main.run'
 
 [tool.coverage.paths]
 source = ["src", "*/site-packages"]
@@ -110,6 +111,7 @@ force_alphabetical_sort_within_sections = true
 group_by_package = true
 include_trailing_comma = true
 known_first_party = ["pysemver", "pysemver_cli"]
+known_third_party = ["pysemver_hypothesis"]
 known_typing = [
     "_types",
     "mypy",
