@@ -2,7 +2,6 @@
 #
 # Licensed under the EUPL-1.2-or-later
 # For details: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
-#
 
 import re
 
