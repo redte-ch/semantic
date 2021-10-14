@@ -32,7 +32,7 @@ def diff_hash(service: CheckSignature) -> numpy.integer:
         *
         service.patch,
         *
-        repeat(
+        utils.repeat(
             service.this_len,
             service.that_len,
             service.patch[0])]
@@ -40,7 +40,7 @@ def diff_hash(service: CheckSignature) -> numpy.integer:
         *
         service.nones,
         *
-        repeat(
+        utils.repeat(
             service.this_len,
             service.that_len,
             service.nones[0])]
@@ -152,7 +152,7 @@ class CheckSignature:
             *
             self.major,
             *
-            repeat(
+            utils.repeat(
                 self.this_len,
                 self.that_len,
                 self.major[0])]
@@ -160,7 +160,7 @@ class CheckSignature:
             *
             self.minor,
             *
-            repeat(
+            utils.repeat(
                 self.this_len,
                 self.that_len,
                 self.minor[0])]
@@ -168,7 +168,7 @@ class CheckSignature:
             *
             self.nones,
             *
-            repeat(
+            utils.repeat(
                 self.this_len,
                 self.that_len,
                 self.nones[0])]
@@ -194,7 +194,7 @@ class CheckSignature:
                 conds,
                 takes),
             *
-            repeat(
+            utils.repeat(
                 self.this_len,
                 self.that_len,
                 self.minor[0])]
@@ -215,7 +215,7 @@ class CheckSignature:
                 conds,
                 takes),
             *
-            repeat(
+            utils.repeat(
                 self.this_len,
                 self.that_len,
                 self.nones[0])]
@@ -227,7 +227,7 @@ class CheckSignature:
             *
             self.major,
             *
-            repeat(
+            utils.repeat(
                 self.this_len,
                 self.that_len,
                 self.major[0])]
@@ -235,7 +235,7 @@ class CheckSignature:
             *
             self.minor,
             *
-            repeat(
+            utils.repeat(
                 self.this_len,
                 self.that_len,
                 self.minor[0])]
@@ -243,7 +243,7 @@ class CheckSignature:
             *
             self.nones,
             *
-            repeat(
+            utils.repeat(
                 self.this_len,
                 self.that_len,
                 self.nones[0])]
@@ -259,8 +259,8 @@ class CheckSignature:
             )
 
         glued = tuple(zip(
-            [*these, *[repeat(self.this_len, self.that_len, self.nones[0]), []][len(these) > len(those)]],
-            [*those, *[repeat(self.this_len, self.that_len, self.nones[0]), []][len(those) > len(these)]],
+            [*these, *[utils.repeat(self.this_len, self.that_len, self.nones[0]), []][len(these) > len(those)]],
+            [*those, *[utils.repeat(self.this_len, self.that_len, self.nones[0]), []][len(those) > len(these)]],
             ))
 
         conds = [
