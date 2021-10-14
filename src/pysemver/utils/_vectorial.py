@@ -2,19 +2,12 @@ import deal
 import numpy
 from hypothesis import strategies
 
-from pysemver.domain import Signature
+from ._builders import DataclassLike, dataclass_strategy
+
+strategies.register_type_strategy(DataclassLike, dataclass_strategy)
 
 limit = 2e5
 """Just a random size/length sentinel."""
-
-
-strategy = strategies.builds(
-    Signature,
-    name = strategies.just("count"),
-    file = strategies.just("file.py"),
-    )
-
-strategies.register_type_strategy(Signature, strategy)
 
 
 @deal.pure
@@ -34,6 +27,6 @@ def repeat(this: int, that: int, what: int) -> numpy.ndarray:
 @deal.pre(lambda _: limit > _.that > 0)
 @deal.pre(lambda _: limit > _.this > 0)
 @deal.pure
-def fill(this: int, that: int, what: Signature) -> numpy.ndarray:
+def fill(this: int, that: int, what: DataclassLike) -> numpy.ndarray:
     max_size: int = max(this, that)
     return numpy.array([what] * max_size)

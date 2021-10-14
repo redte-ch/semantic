@@ -170,8 +170,9 @@ def compact(seq: Iterable[T]) -> Iterator[T]:
     return filter(bool, seq)
 
 
-@deal.raises(NotImplementedError)
-@deal.has()
+@deal.pre(lambda seqs: any(map(lambda x: len(x) > 0, seqs)))
+@deal.pre(lambda seqs: len(seqs) > 0)
+@deal.pure
 def flatten(seqs: Sequence[Sequence[T]]) -> Iterator[T]:
     """Flattens a sequences of sequences.
 
@@ -188,11 +189,5 @@ def flatten(seqs: Sequence[Sequence[T]]) -> Iterator[T]:
     .. versionadded:: 1.0.0
 
     """
-
-    if len(seqs) < 1:
-        raise NotImplementedError
-
-    if any(map(lambda x: len(x) < 1, seqs)):
-        raise NotImplementedError
 
     return chain.from_iterable(seqs)
