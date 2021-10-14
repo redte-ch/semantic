@@ -27,23 +27,8 @@ limit = 2e5
 def diff_hash(service: CheckSignature) -> numpy.integer:
     these = utils.fill(service.this_len, service.that_len, service.this)
     those = utils.fill(service.this_len, service.that_len, service.that)
-
-    patch = [
-        *
-        service.patch,
-        *
-        utils.repeat(
-            service.this_len,
-            service.that_len,
-            service.patch[0])]
-    nones = [
-        *
-        service.nones,
-        *
-        utils.repeat(
-            service.this_len,
-            service.that_len,
-            service.nones[0])]
+    patch = utils.pop(service.this_len, service.that_len, Version.Int.PATCH)
+    nones = utils.pop(service.this_len, service.that_len, Version.Int.NONE)
 
     return numpy.where(these != those, patch, nones)
 
@@ -148,30 +133,9 @@ class CheckSignature:
         these = numpy.array([self.this_len] * self.size_max)
         those = numpy.array([self.that_len] * self.size_max)
 
-        major = [
-            *
-            self.major,
-            *
-            utils.repeat(
-                self.this_len,
-                self.that_len,
-                self.major[0])]
-        minor = [
-            *
-            self.minor,
-            *
-            utils.repeat(
-                self.this_len,
-                self.that_len,
-                self.minor[0])]
-        nones = [
-            *
-            self.nones,
-            *
-            utils.repeat(
-                self.this_len,
-                self.that_len,
-                self.nones[0])]
+        major = utils.pop(self.this_len, self.that_len, self.major[0])
+        minor = utils.pop(self.this_len, self.that_len, self.minor[0])
+        nones = utils.pop(self.this_len, self.that_len, self.nones[0])
 
         conds = [these < those, these > those, True]
         takes = [major, minor, nones]
@@ -189,15 +153,9 @@ class CheckSignature:
         takes = [self.major, self.nones]
 
         return [
-            *
-            numpy.select(
-                conds,
-                takes),
-            *
-            utils.repeat(
-                self.this_len,
-                self.that_len,
-                self.minor[0])]
+            *numpy.select(conds, takes),
+            *utils.rep(self.this_len, self.that_len, self.minor[0]),
+            ]
 
     # @deal.pure
     # @typic.al(strict = True)
@@ -210,43 +168,16 @@ class CheckSignature:
         takes = [self.patch, self.nones]
 
         return [
-            *
-            numpy.select(
-                conds,
-                takes),
-            *
-            utils.repeat(
-                self.this_len,
-                self.that_len,
-                self.nones[0])]
+            *numpy.select(conds, takes),
+            *utils.rep(self.this_len, self.that_len,self.nones[0]),
+            ]
 
     # @deal.pure
     # @typic.al(strict = True)
     def diff_defs(self) -> numpy.ndarray:
-        major = [
-            *
-            self.major,
-            *
-            utils.repeat(
-                self.this_len,
-                self.that_len,
-                self.major[0])]
-        minor = [
-            *
-            self.minor,
-            *
-            utils.repeat(
-                self.this_len,
-                self.that_len,
-                self.minor[0])]
-        nones = [
-            *
-            self.nones,
-            *
-            utils.repeat(
-                self.this_len,
-                self.that_len,
-                self.nones[0])]
+        major = utils.pop(self.this_len, self.that_len, self.major[0])
+        minor = utils.pop(self.this_len, self.that_len, self.minor[0])
+        nones = utils.pop(self.this_len, self.that_len, self.nones[0])
 
         these = numpy.array(
             [a.default is None for a in self.this.arguments],
@@ -259,8 +190,8 @@ class CheckSignature:
             )
 
         glued = tuple(zip(
-            [*these, *[utils.repeat(self.this_len, self.that_len, self.nones[0]), []][len(these) > len(those)]],
-            [*those, *[utils.repeat(self.this_len, self.that_len, self.nones[0]), []][len(those) > len(these)]],
+            [*these, *[utils.rep(self.this_len, self.that_len, self.nones[0]), []][len(these) > len(those)]],
+            [*those, *[utils.rep(self.this_len, self.that_len, self.nones[0]), []][len(those) > len(these)]],
             ))
 
         conds = [

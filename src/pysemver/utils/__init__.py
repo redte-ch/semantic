@@ -14,4 +14,4 @@ from ._functional import (
     flatten,
     partial,
     )
-from ._vectorial import add, repeat, fill
+from ._vectorial import add, fill, pre, rep, pop
