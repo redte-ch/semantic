@@ -3,6 +3,8 @@
 # Licensed under the EUPL-1.2-or-later
 # For details: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 
+"""Check for signature changes and version bump requirements."""
+
 from __future__ import annotations
 
 from typing import Optional
@@ -25,6 +27,35 @@ limit = 2e5
 
 @deal.pure
 def diff_hash(this: DataclassLike, that: DataclassLike) -> numpy.ndarray:
+    """Check if two signatures have a different ``hashes``.
+
+    Args:
+        this: A signature.
+        that: Another signature.
+
+    Examples:
+        >>> from pysemver.domain import Argument
+
+        >>> argument = Argument("count", default = "0")
+        >>> this = Signature("greet", "file.py", (argument,))
+        >>> that = Signature("greet", "file.py", (argument,))
+
+        >>> diff_hash(this, that)
+        array([0])
+
+        >>> argument = Argument("count")
+        >>> this = Signature("greet", "file.py", (argument,))
+
+        >>> diff_hash(this, that)
+        array([1])
+
+        >>> diff_hash(that, this)
+        array([1])
+
+    .. versionadded:: 1.0.0
+
+    """
+
     these = utils.fill(len(this), len(that), this)
     those = utils.fill(len(this), len(that), that)
     patch = utils.pop(len(this), len(that), Version.Int.PATCH)
@@ -34,8 +65,37 @@ def diff_hash(this: DataclassLike, that: DataclassLike) -> numpy.ndarray:
 
 @deal.pure
 def diff_args(this: DataclassLike, that: DataclassLike) -> numpy.ndarray:
-    these = utils.fill(len(this), len(that), this)
-    those = utils.fill(len(this), len(that), that)
+    """Check if two signatures have a diferent arguments.
+
+    Args:
+        this: A signature.
+        that: Another signature.
+
+    Examples:
+        >>> from pysemver.domain import Argument
+
+        >>> argument = Argument("count", default = "0")
+        >>> this = Signature("greet", "file.py", (argument,))
+        >>> that = Signature("greet", "file.py", (argument,))
+
+        >>> diff_args(this, that)
+        array([0])
+
+        >>> another_argument = Argument("size")
+        >>> this = Signature("greet", "file.py", (argument, another_argument))
+
+        >>> diff_args(this, that)
+        array([2, 2])
+
+        >>> diff_args(that, this)
+        array([3, 3])
+
+    .. versionadded:: 1.0.0
+
+    """
+
+    these = utils.fill(len(this), len(that), len(this))
+    those = utils.fill(len(this), len(that), len(that))
 
     major = utils.pop(len(this), len(that), Version.Int.MAJOR)
     minor = utils.pop(len(this), len(that), Version.Int.MINOR)
@@ -49,6 +109,44 @@ def diff_args(this: DataclassLike, that: DataclassLike) -> numpy.ndarray:
 
 @deal.pure
 def diff_name(this: DataclassLike, that: DataclassLike) -> numpy.ndarray:
+    """Check if two signatures have a different argument names.
+
+    Args:
+        this: A signature.
+        that: Another signature.
+
+    Examples:
+        >>> from pysemver.domain import Argument
+
+        >>> argument = Argument("count")
+        >>> this = Signature("greet", "file.py", (argument,))
+        >>> that = Signature("greet", "file.py", (argument,))
+
+        >>> diff_name(this, that)
+        array([0])
+
+        >>> another_argument = Argument("size")
+        >>> this = Signature("greet", "file.py", (argument, another_argument))
+
+        >>> diff_name(this, that)
+        array([0, 2])
+
+        >>> diff_name(that, this)
+        array([0, 2])
+
+        >>> argument = Argument("counter")
+        >>> this = Signature("greet", "file.py", (argument,))
+
+        >>> diff_name(this, that)
+        array([3])
+
+        >>> diff_name(that, this)
+        array([3])
+
+    .. versionadded:: 1.0.0
+
+    """
+
     these = numpy.array([a.name for a in this.arguments])
     those = numpy.array([a.name for a in that.arguments])
     glued = tuple(zip(these, those))
@@ -59,14 +157,43 @@ def diff_name(this: DataclassLike, that: DataclassLike) -> numpy.ndarray:
         utils.pre(len(this), len(that), Version.Int.NONE),
         ]
 
-    return [
+    return numpy.array([
         *numpy.select(conds, takes),
         *utils.rep(len(this), len(that), Version.Int.MINOR),
-        ]
+        ])
 
 
 @deal.pure
 def diff_type(this: DataclassLike, that: DataclassLike) -> numpy.ndarray:
+    """Check if two signatures have a different types.
+
+    Args:
+        this: A signature.
+        that: Another signature.
+
+    Examples:
+        >>> from pysemver.domain import Argument
+
+        >>> argument = Argument("count")
+        >>> this = Signature("greet", "file.py", (argument,))
+        >>> that = Signature("greet", "file.py", (argument,))
+
+        >>> diff_type(this, that)
+        array([0])
+
+        >>> argument = Argument("count", types = ("List", "int"))
+        >>> this = Signature("greet", "file.py", (argument,))
+
+        >>> diff_type(this, that)
+        array([1])
+
+        >>> diff_type(that, this)
+        array([1])
+
+    .. versionadded:: 1.0.0
+
+    """
+
     these = numpy.array([a.types is None for a in this.arguments])
     those = numpy.array([a.types is None for a in that.arguments])
     glued = tuple(zip(these, those))
@@ -77,10 +204,10 @@ def diff_type(this: DataclassLike, that: DataclassLike) -> numpy.ndarray:
         utils.pre(len(this), len(that), Version.Int.NONE),
         ]
 
-    return [
+    return numpy.array([
         *numpy.select(conds, takes),
         *utils.rep(len(this), len(that), Version.Int.NONE),
-        ]
+        ])
 
 
 @deal.pure

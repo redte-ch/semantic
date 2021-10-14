@@ -57,7 +57,7 @@ def _(x: T) -> Callable[..., T]:
 
 @deal.pure
 def do(func: PartialLike) -> T:
-    """Do something on something, thent return something.
+    """Do something on something, then return something.
 
     Args:
         func: Something.
