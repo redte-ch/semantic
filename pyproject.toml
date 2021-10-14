@@ -11,7 +11,10 @@ repository = "https://github.com/maukoquiroga/pysemver"
 documentation = "https://pysemver.readthedocs.io"
 keywords = []
 classifiers = []
-packages = [{include = "pysemver", from = "src"}]
+packages = [
+    {include = "pysemver", from = "src"},
+    {include = "pysemver_cli", from = "src"},
+    ]
 
 [tool.poetry.dependencies]
 python = "~3.7 || ~3.8 || ~3.9"
@@ -20,7 +23,6 @@ classes = "<1"
 deal = "<5"
 invoke = "<2"
 numpy = ">=1.7, <1.22"
-pampy = "<1"
 pipeop = "<1"
 returns = "<1"
 rich = "<11"
@@ -107,7 +109,7 @@ strict = true
 force_alphabetical_sort_within_sections = true
 group_by_package = true
 include_trailing_comma = true
-known_first_party = ["pysemver"]
+known_first_party = ["pysemver", "pysemver_cli"]
 known_typing = [
     "_types",
     "mypy",
