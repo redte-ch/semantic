@@ -5,7 +5,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Optional, Protocol, Sequence, Sized, TypeVar
+from typing import Optional
 
 import dataclasses
 
@@ -54,7 +54,10 @@ def diff_name(this: DataclassLike, that: DataclassLike) -> numpy.ndarray:
     glued = tuple(zip(these, those))
 
     conds = [[this != that for this, that in glued], True]
-    takes = [self.major, self.nones]
+    takes = [
+        utils.pre(len(this), len(that), Version.Int.MAJOR),
+        utils.pre(len(this), len(that), Version.Int.NONE),
+        ]
 
     return [
         *numpy.select(conds, takes),
@@ -64,12 +67,15 @@ def diff_name(this: DataclassLike, that: DataclassLike) -> numpy.ndarray:
 
 @deal.pure
 def diff_type(this: DataclassLike, that: DataclassLike) -> numpy.ndarray:
-    these = numpy.array([a.types is None for a in self.this.arguments])
-    those = numpy.array([a.types is None for a in self.that.arguments])
+    these = numpy.array([a.types is None for a in this.arguments])
+    those = numpy.array([a.types is None for a in that.arguments])
     glued = tuple(zip(these, those))
 
     conds = [[this != that for this, that in glued], True]
-    takes = [self.patch, self.nones]
+    takes = [
+        utils.pre(len(this), len(that), Version.Int.PATCH),
+        utils.pre(len(this), len(that), Version.Int.NONE),
+        ]
 
     return [
         *numpy.select(conds, takes),
