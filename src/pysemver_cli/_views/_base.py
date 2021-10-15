@@ -16,7 +16,6 @@ are mostly repetitive, but it is yet too soon to refactor them.
 from __future__ import annotations
 
 import aenum
-import pipeop
 from aenum import Enum
 from rich.layout import Layout
 from rich.panel import Panel
@@ -30,7 +29,7 @@ _main = utils.partial(Layout, ratio = 5)
 """To render the main cli view."""
 
 
-@pipeop.pipes
+@utils.pipes
 def rows(panel: Panel) -> Layout:
     """Splits the terminal horizontally."""
 
@@ -44,7 +43,7 @@ def rows(panel: Panel) -> Layout:
         )
 
 
-@pipeop.pipes
+@utils.pipes
 def columns(panel: Layout) -> Layout:
     """Splits the terminal vertically."""
 

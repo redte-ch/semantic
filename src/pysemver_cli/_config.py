@@ -5,7 +5,7 @@
 
 from typing import Any, Callable, MutableMapping, Sequence, Type, TypeVar
 
-import pipeop
+from pysemver import utils
 import toml
 import typic
 
@@ -18,7 +18,7 @@ class Config:
     ignore: Sequence[str]
 
 
-@pipeop.pipes
+@utils.pipes
 def build_config(loader: F, config: Type[Config]) -> Config:
     return (
         "pyproject.toml"

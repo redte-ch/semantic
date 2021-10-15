@@ -3,11 +3,7 @@
 # Licensed under the EUPL-1.2-or-later
 # For details: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 
-"""Views, or interface, of pysemver.
-
-Loosely based on the MVC thing, the idea is to have a clear separation of
-concerns between the presentation layer and the rest of the package. Views
-are mostly repetitive, but it is yet too soon to refactor them.
+"""Help view.
 
 .. versionadded:: 1.0.0
 
@@ -15,95 +11,125 @@ are mostly repetitive, but it is yet too soon to refactor them.
 
 from __future__ import annotations
 
-from typing import Tuple
+from typing import Sequence, Tuple
 
 import deal
-import pipeop
 from rich.layout import Layout
 from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 
+import pysemver
+import pysemver_hypothesis
 from pysemver import utils
 
 from .. import __version__
 from ._base import columns, rows, Theme
 
+pysemver_hypothesis.register(Panel(''))
 
-class Help:
-    """Help view."""
+_headers = "Flags", "Description", "Default values"
+"""Help command headers."""
 
-    headers = "Flags", "Description", "Default values"
 
-    @pipeop.pipes
-    def root(main: Panel) -> Layout:
-        """Global help container."""
+@deal.pure
+@utils.pipes
+def _root(main: Panel) -> Layout:
+    """Global help container.
 
-        return main >> rows >> columns
+    Examples:
+        >>> content = _content(())
+        >>> main = _main("command", content)
+        >>> _root(main)
+        Layout()
 
-    @pipeop.pipes
-    def main(command: str, content: Table) -> Panel:
-        return Panel(
-            content,
-            border_style = Theme.Console.BORDER,
-            padding = 5,
-            title = Help.usage(command),
-            subtitle = __version__,
-            )
+    .. versionadded:: 1.0.0
 
-    @deal.pure
-    @pipeop.pipes
-    def content(description: str, options: [Tuple[str, ...]]) -> Table:
-        """Task table.
+    """
 
-        Examples:
+    return main >> rows >> columns
 
-        >>> content()
-        "asd"
 
-        """
+@deal.pure
+@utils.pipes
+def _main(command: str, content: Table) -> Panel:
+    """Main help container.
 
-        table = Table(
-            box = None,
-            padding = (0, 5, 1, 10),
-            row_styles = [Theme.Console.ROW],
-            style = Theme.Console.HEADER,
-            )
+    Examples:
+        >>> content = _content(())
+        >>> main = _main("command", content)
+        >>> main.title
+        ...command...
 
-        (
-            Help.headers
-            << map(table.add_column)
-            << tuple
-            )
+    .. versionadded:: 1.0.0
 
-        (
-            options
-            >> utils.dfc()
-            << utils.dfp(table.add_row)
-            << tuple
-            )
+    """
 
-        return table
+    return Panel(
+        content,
+        border_style = Theme.Console.BORDER,
+        padding = 5,
+        title = _usage(command),
+        subtitle = __version__,
+        )
 
-    @deal.pure
-    @pipeop.pipes
-    def usage(command: str) -> Text:
-        """A title.
 
-        Examples:
-            >>> title("name")
-            <text 'Usage: name <command> [--help] …'...
+@deal.pure
+@utils.pipes
+def _content(options: Sequence[Tuple[str, Tuple[str, str]]]) -> Table:
+    """Inner usage instructions content.
 
-        """
+    Examples:
+        >>> options = (("-f --flag", ("How?", "Like that!")),)
+        >>> content = _content(options)
+        >>> list(map(lambda option: option._cells, content.columns))
+        [['-f --flag'], ['How?'], ['Like that!']]
 
-        text = (
-            __name__
-            >> str.split(".")
-            >> utils.first
-            << str.format("Usage: {1} {0} [--options] …", command)
-            >> Text
-            )
+    .. versionadded:: 1.0.0
 
-        text.stylize(Theme.Console.TITLE)
+    """
 
-        return text
+    table = Table(
+        box = None,
+        padding = (0, 5, 1, 10),
+        row_styles = [Theme.Console.ROW],
+        style = Theme.Console.HEADER,
+        )
+
+    (
+        _headers
+        << map(table.add_column)
+        << tuple
+        )
+
+    (
+        options
+        >> utils.dcons
+        << utils.dmap(table.add_row)
+        << tuple
+        )
+
+    return table
+
+
+@deal.has()
+@utils.pipes
+def _usage(command: str) -> Text:
+    """Usage instructions.
+
+    Examples:
+        >>> _usage("command")
+        <text 'Usage: pysemver command [--options] …' ...>
+
+    .. versionadded:: 1.0.0
+
+    """
+
+    return (
+        pysemver.__name__
+        << str.format("Usage: {1} {0} [--options] …", command)
+        >> Text
+        << utils.partial(Text.stylize)
+        >> utils.partial(Theme.Console.TITLE)
+        >> utils.do
+        )

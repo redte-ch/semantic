@@ -10,11 +10,10 @@ from typing import MutableMapping, Sequence, Tuple
 import sys
 
 import invoke
-import pipeop
 import typic
 from invoke import Collection
 
-from pysemver import actions, infra
+from pysemver import actions, infra, utils
 # TODO: remove this
 from pysemver._types import HasExit
 
@@ -27,7 +26,7 @@ class CheckVersionTask:
     optional: Sequence[str]
     help: MutableMapping[str, Tuple[str, ...]]
 
-    @pipeop.pipes
+    @utils.pipes
     def __init__(self, ignore: Sequence[str]) -> None:
         self.optional = ["ignore"]
         self.help = {

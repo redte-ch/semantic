@@ -24,7 +24,6 @@ classes = "<1"
 deal = "<5"
 invoke = "<2"
 numpy = ">=1.7, <1.22"
-pipeop = "<1"
 returns = "<1"
 rich = "<11"
 termcolor = "<2"
@@ -111,8 +110,7 @@ case_sensitive = true
 force_alphabetical_sort_within_sections = true
 group_by_package = true
 include_trailing_comma = true
-known_first_party = ["pysemver", "pysemver_cli"]
-known_third_party = ["pysemver_hypothesis"]
+known_first_party = ["pysemver", "pysemver_cli", "pysemver_hypothesis"]
 known_typing = [
     "_types",
     "mypy",

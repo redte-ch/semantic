@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import inspect
 
-import pipeop
+from pysemver import utils
 from invoke import Program
 from rich.console import Console
 
@@ -28,18 +28,19 @@ class Main(Program):
             version = pysemver_cli.__version__,
             )
 
-    @pipeop.pipes
+    @utils.pipes
     def print_help(self) -> None:
         (
             self.scoped_collection
             >> self._make_pairs
-            >> home_view.content
-            >> home_view.main
-            >> home_view.root
+            >> home_view.render
+            # >> home_view.content
+            # >> home_view.main
+            # >> home_view.root
             >> self.write
             )
 
-    @pipeop.pipes
+    @utils.pipes
     def print_task_help(self, command: str) -> None:
         context = self.parser.contexts >> dict.get(command)
         description = self.collection >> Tasks.__getitem__(command)
@@ -47,9 +48,10 @@ class Main(Program):
 
         (
             context.help_tuples()
-            << help_view.content(documentation)
-            << help_view.main(command)
-            >> help_view.root
+            >> home_view.render
+            # << help_view.content(documentation)
+            # << help_view.main(command)
+            # >> help_view.root
             >> self.write
             )
 

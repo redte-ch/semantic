@@ -3,11 +3,7 @@
 # Licensed under the EUPL-1.2-or-later
 # For details: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 
-"""Views, or interface, of pysemver.
-
-Loosely based on the MVC thing, the idea is to have a clear separation of
-concerns between the presentation layer and the rest of the package. Views
-are mostly repetitive, but it is yet too soon to refactor them.
+"""Home screen view.
 
 .. versionadded:: 1.0.0
 
@@ -18,116 +14,116 @@ from __future__ import annotations
 from typing import List, Tuple
 
 import deal
-import pipeop
 from rich.layout import Layout
 from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 
+import pysemver
 from pysemver import utils
 
 from .. import __version__
 from ._base import columns, rows, Theme
 
+_headers = "Command", "Description"
+"""Main command headers."""
 
-class Home:
-    """Home screen view."""
 
-    headers = "Command", "Description"
-    """Main command columns."""
+@utils.pipes
+def _root(main: Panel) -> Layout:
+    """Global home container.
 
-    @pipeop.pipes
-    def root(main: Panel) -> Layout:
-        """Global home container.
+    Args:
+        main: Main container to wrap.
 
-        Args:
-            main: Main container to wrap.
+    Returns:
+        Layout: To render.
 
-        Returns:
-            Layout: To render.
+    Examples:
+        >>> Home.root(Panel("Hey!"))
+        Layout()
 
-        Examples:
-            >>> Home.root(Panel("Hey!"))
-            Layout()
+    """
 
-        """
+    return main >> rows >> columns
 
-        return main >> rows >> columns
 
-    def main(content: Table) -> Panel:
-        """The main container, or panel.
+def _main(content: Table) -> Panel:
+    """The main container, or panel.
 
-        Args:
-            content: The inner container.
+    Args:
+        content: The inner container.
 
-        Returns:
-            The outer panel.
+    Returns:
+        The outer panel.
 
-        Examples:
-            >>> main()
+    Examples:
+        >>> main()
 
-        """
+    """
 
-        return Panel(
-            content,
-            border_style = Theme.Console.BORDER,
-            padding = 5,
-            title = Home.usage(),
-            subtitle = __version__,
-            )
+    return Panel(
+        content,
+        border_style = Theme.Console.BORDER,
+        padding = 5,
+        title = _usage(),
+        subtitle = __version__,
+        )
 
-    @deal.pure
-    @pipeop.pipes
-    def content(tasks: List[Tuple[str, str]]) -> Table:
-        """Main cli content.
 
-        Examples:
+@deal.pure
+@utils.pipes
+def _content(tasks: List[Tuple[str, str]]) -> Table:
+    """Main cli content.
 
-        >>> content()
-        "asd"
+    Examples:
 
-        """
+    >>> content()
+    "asd"
 
-        table = Table(
-            box = None,
-            padding = (0, 5, 1, 10),
-            row_styles = [Theme.Console.ROW],
-            style = Theme.Console.HEADER,
-            )
+    """
 
-        (
-            Home.headers
-            << map(table.add_column)
-            << tuple
-            )
+    table = Table(
+        box = None,
+        padding = (0, 5, 1, 10),
+        row_styles = [Theme.Console.ROW],
+        style = Theme.Console.HEADER,
+        )
 
-        (
-            tasks
-            << utils.dfp(table.add_row)
-            >> tuple
-            )
+    (
+        _headers
+        << map(table.add_column)
+        << tuple
+        )
 
-        return table
+    (
+        tasks
+        << utils.dfp(table.add_row)
+        >> tuple
+        )
 
-    @deal.pure
-    @pipeop.pipes
-    def usage() -> Text:
-        """A title.
+    return table
 
-        Examples:
-            >>> title("name")
-            <text 'Usage: name <command> [--help] …'...
 
-        """
+@deal.pure
+@utils.pipes
+def _usage() -> Text:
+    """Usage instructions.
 
-        text = (
-            __name__
-            >> str.split(".")
-            >> utils.first
-            << str.format("Usage: {} [--help] <command> …")
-            >> Text
-            )
+    Examples:
+        >>> _usage()
+        <text 'Usage: pysemver [--help] <command> …' ...>
 
-        text.stylize(Theme.Console.TITLE)
+    """
 
-        return text
+    text = (
+        pysemver.__name__
+        >> str.split(".")
+        >> utils.first
+        << str.format("Usage: {} [--help] <command> …")
+        >> Text
+        )
+
+    text.stylize(Theme.Console.TITLE)
+
+    return text

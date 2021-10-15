@@ -887,14 +887,6 @@ optional = false
 python-versions = "*"
 
 [[package]]
-name = "pipeop"
-version = "0.3.0"
-description = "A decorator that changes the >> and << operators to mimic Elixir-style function pipes"
-category = "main"
-optional = false
-python-versions = "*"
-
-[[package]]
 name = "pluggy"
 version = "1.0.0"
 description = "plugin and hook calling mechanisms for python"
@@ -1622,7 +1614,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "~3.7 || ~3.8 || ~3.9"
-content-hash = "26eb30c6ec24c8fe0c49cbbb001d2b1fa994d382988b0b8d54c72161b751116e"
+content-hash = "53199f45dbda00b5df7b545d9a26c58ee1681032672d2da3508aac18e6720ef5"
 
 [metadata.files]
 aenum = [
@@ -2102,9 +2094,6 @@ pexpect = [
 pickleshare = [
     {file = "pickleshare-0.7.5-py2.py3-none-any.whl", hash = "sha256:9649af414d74d4df115d5d718f82acb59c9d418196b7b4290ed47a12ce62df56"},
     {file = "pickleshare-0.7.5.tar.gz", hash = "sha256:87683d47965c1da65cdacaf31c8441d12b8044cdec9aca500cd78fc2c683afca"},
-]
-pipeop = [
-    {file = "pipeop-0.3.0.tar.gz", hash = "sha256:d41664f141eb17dbe0c52fdb49252cd2d640b953dbb706caa8412617a513301e"},
 ]
 pluggy = [
     {file = "pluggy-1.0.0-py2.py3-none-any.whl", hash = "sha256:74134bbf457f031a36d68416e1509f34bd5ccc019f0bcc952c7b909d06b37bd3"},
