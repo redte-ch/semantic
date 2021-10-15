@@ -14,6 +14,7 @@ from __future__ import annotations
 from typing import Sequence, Tuple
 
 import deal
+from rich.console import Console
 from rich.layout import Layout
 from rich.panel import Panel
 from rich.table import Table
@@ -33,6 +34,37 @@ pysemver_hypothesis.register(Table(''))
 
 _headers = "Command", "Description"
 """Main command headers."""
+
+_render = Console().print
+"""Internal function used to render."""
+
+
+@deal.has("stdout")
+@deal.safe
+@utils.pipes
+def render(tasks: Sequence[Tuple[str, str]]) -> None:
+    """Render the home view.
+
+    Args:
+        tasks:
+            A sequence of tuples containing the commands and their
+            descriptions, default values, for each command.
+
+    Examples:
+        >>> render([("say-hi!", "HI!!! ❤ ❤ ❤")])
+        ...say-hi!...HI!!! ❤ ❤ ❤...
+
+    .. versionadded:: 1.0.0
+
+    """
+
+    (
+        tasks
+        >> _content
+        >> _main
+        >> _root
+        >> _render
+        )
 
 
 @deal.pure

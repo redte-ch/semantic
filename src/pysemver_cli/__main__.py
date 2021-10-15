@@ -14,7 +14,7 @@ import pysemver_cli
 from pysemver import utils
 
 from ._tasks import Tasks
-from ._views import help_view, home_view
+from ._views import help_view, home_view, to_options
 
 
 class Main(Program):
@@ -34,10 +34,6 @@ class Main(Program):
             self.scoped_collection
             >> self._make_pairs
             >> home_view.render
-            # >> home_view.content
-            # >> home_view.main
-            # >> home_view.root
-            >> self.write
             )
 
     @utils.pipes
@@ -55,7 +51,7 @@ class Main(Program):
             >> self.write
             )
 
-    def task_list_opener(self, __: str = "") -> str:
+    def task_list_opener(_self, _name: str = "") -> str:
         return "Commands"
 
 

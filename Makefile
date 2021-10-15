@@ -37,7 +37,7 @@ type: compile clean
 	@poetry run pytype docs/conf.py src noxfile.py
 
 test: compile clean
-	@poetry run robot tests/functional
+	@poetry run robot --maxerrorlines NONE tests/functional
 	@poetry run pytest --cov
 	@poetry run interrogate src
 	@poetry run sphinx-build -b doctest -anqTW docs docs/_build
