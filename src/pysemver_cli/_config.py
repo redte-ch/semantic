@@ -5,9 +5,10 @@
 
 from typing import Any, Callable, MutableMapping, Sequence, Type, TypeVar
 
-from pysemver import utils
 import toml
 import typic
+
+from pysemver import utils
 
 T = TypeVar("T", bound = MutableMapping[str, Any])
 F = TypeVar("F", bound = Callable[[str], T])

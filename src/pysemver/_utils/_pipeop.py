@@ -1,6 +1,9 @@
-"""Implements a @pipes decorator.
+# Copyright (c) 2018 Robin Hilliard
+#
+# Licensed under the MIT
+# For details: https://opensource.org/licenses/MIT
 
-That converts the << and >> operators to mimic Elixir pipes.
+"""Implements a @pipes decorator.
 
 Adapted from `pipes`_.
 
@@ -11,41 +14,36 @@ Adapted from `pipes`_.
 
 """
 
-from ast import (
-    Call,
-    increment_lineno,
-    LShift,
-    Name,
-    NodeTransformer,
-    parse,
-    RShift,
-    walk,
-    )
-from inspect import getsource, isclass, stack
-from itertools import takewhile
-from textwrap import dedent
+import ast
+import inspect
+import itertools
+import textwrap
 
 
-class _PipeTransformer(NodeTransformer):
+class _PipeTransformer(ast.NodeTransformer):
 
     def visit_BinOp(self, node):
-        if isinstance(node.op, (LShift, RShift)):
+        if isinstance(node.op, (ast.LShift, ast.RShift)):
             # Convert function name / lambda etc without braces into call
-            if not isinstance(node.right, Call):
-                return self.visit(Call(
-                    func=node.right,
-                    args=[node.left],
-                    keywords=[],
-                    starargs=None,
-                    kwargs=None,
-                    lineno=node.right.lineno,
-                    col_offset=node.right.col_offset
+            if not isinstance(node.right, ast.Call):
+                return self.visit(ast.Call(
+                    func = node.right,
+                    args = [node.left],
+                    keywords = [],
+                    starargs = None,
+                    kwargs = None,
+                    lineno = node.right.lineno,
+                    col_offset = node.right.col_offset
                     ))
             else:
                 # Rewrite a >> b(...) as b(a, ...)
                 node.right.args.insert(
-                    0 if isinstance(node.op, RShift) else len(node.right.args),
-                    node.left)
+                    0
+                    if isinstance(node.op, ast.RShift)
+                    else len(node.right.args),
+                    node.left,
+                    )
+
                 return self.visit(node.right)
 
         else:
@@ -53,8 +51,16 @@ class _PipeTransformer(NodeTransformer):
 
 
 def pipes(func_or_class):
-    if isclass(func_or_class):
-        decorator_frame = stack()[1]
+    """Implements a @pipes decorator.
+
+    It converts the << and >> operators to mimic Elixir pipes.
+
+    .. versionadded:: 1.0.0
+
+    """
+
+    if inspect.isclass(func_or_class):
+        decorator_frame = inspect.stack()[1]
         ctx = decorator_frame[0].f_locals
         first_line_number = decorator_frame[2]
 
@@ -62,16 +68,17 @@ def pipes(func_or_class):
         ctx = func_or_class.__globals__
         first_line_number = func_or_class.__code__.co_firstlineno
 
-    source = getsource(func_or_class)
+    source = inspect.getsource(func_or_class)
 
     # AST data structure representing parsed function code
-    tree = parse(dedent(source))
+    tree = ast.parse(textwrap.dedent(source))
 
     # Fix line and column numbers so that debuggers still work
-    increment_lineno(tree, first_line_number - 1)
-    source_indent = sum(1 for _ in takewhile(str.isspace, source)) + 1
+    ast.increment_lineno(tree, first_line_number - 1)
+    source_indent = sum(1 for _ in itertools.takewhile(str.isspace, source))
+    source_indent += 1
 
-    for node in walk(tree):
+    for node in ast.walk(tree):
         if hasattr(node, "col_offset"):
             node.col_offset += source_indent
 
@@ -83,10 +90,17 @@ def pipes(func_or_class):
     # Call if it had braces, and a Name if it had no braces.
     # The location of the decorator function name in these
     # nodes is slightly different.
-    tree.body[0].decorator_list = \
-        [d for d in tree.body[0].decorator_list
-         if isinstance(d, Call) and d.func.id != 'pipes'
-         or isinstance(d, Name) and d.id != 'pipes']
+    tree.body[0].decorator_list = [
+        node for node in tree.body[0].decorator_list
+        if isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Attribute)
+        and node.func.attr != "pipes"
+        or isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Name)
+        and node.func.id != "pipes"
+        or isinstance(node, ast.Name)
+        and node.id != "pipes"
+        ]
 
     # Apply the visit_BinOp transformation
     tree = _PipeTransformer().visit(tree)

@@ -7,11 +7,11 @@ from __future__ import annotations
 
 import inspect
 
-from pysemver import utils
 from invoke import Program
 from rich.console import Console
 
 import pysemver_cli
+from pysemver import utils
 
 from ._tasks import Tasks
 from ._views import help_view, home_view
