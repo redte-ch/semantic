@@ -35,12 +35,12 @@ pysemver_hypothesis.register(Table(''))
 _headers = "Command", "Description"
 """Main command headers."""
 
-_render = Console().print
+_console = Console()
 """Internal function used to render."""
 
 
-@deal.has("stdout")
-@deal.safe
+# @deal.has("stdout")
+# @deal.safe
 @utils.pipes
 def render(tasks: Sequence[Tuple[str, str]]) -> None:
     """Render the home view.
@@ -63,11 +63,11 @@ def render(tasks: Sequence[Tuple[str, str]]) -> None:
         >> _content
         >> _main
         >> _root
-        >> _render
+        >> _console.print
         )
 
 
-@deal.pure
+# @deal.pure
 @utils.pipes
 def _root(main: Panel) -> Layout:
     """Global home container.
@@ -91,7 +91,7 @@ def _root(main: Panel) -> Layout:
     return main >> rows >> columns
 
 
-@deal.pure
+# @deal.pure
 @utils.pipes
 def _main(content: Table) -> Panel:
     """The main container, or panel.
@@ -121,7 +121,7 @@ def _main(content: Table) -> Panel:
         )
 
 
-@deal.pure
+# @deal.pure
 @utils.pipes
 def _content(tasks: Sequence[Tuple[str, str]]) -> Table:
     """Inner usage instructions content.
@@ -165,7 +165,7 @@ def _content(tasks: Sequence[Tuple[str, str]]) -> Table:
     return table
 
 
-@deal.pure
+# @deal.pure
 @utils.pipes
 def _usage() -> Text:
     """Usage instructions.

@@ -11,8 +11,6 @@
 .nox
 .pytest_cache
 .pytype
+.robot
 dist
 docs/_build
-log.html
-output.xml
-report.html
