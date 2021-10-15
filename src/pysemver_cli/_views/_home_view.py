@@ -15,7 +15,7 @@ are mostly repetitive, but it is yet too soon to refactor them.
 
 from __future__ import annotations
 
-from typing import Tuple
+from typing import List, Tuple
 
 import deal
 import pipeop
@@ -24,36 +24,62 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 
-from . import columns, rows, utils
-from ._repo import Repo
-from ._theme import Theme
+from pysemver import utils
+
+from .. import __version__
+from ._base import columns, rows, Theme
 
 
-class Help:
-    """Help view."""
+class Home:
+    """Home screen view."""
 
-    headers = "Flags", "Description", "Default values"
+    headers = "Command", "Description"
+    """Main command columns."""
 
     @pipeop.pipes
     def root(main: Panel) -> Layout:
-        """Global help container."""
+        """Global home container.
+
+        Args:
+            main: Main container to wrap.
+
+        Returns:
+            Layout: To render.
+
+        Examples:
+            >>> Home.root(Panel("Hey!"))
+            Layout()
+
+        """
 
         return main >> rows >> columns
 
-    @pipeop.pipes
-    def main(command: str, content: Table) -> Panel:
+    def main(content: Table) -> Panel:
+        """The main container, or panel.
+
+        Args:
+            content: The inner container.
+
+        Returns:
+            The outer panel.
+
+        Examples:
+            >>> main()
+
+        """
+
         return Panel(
             content,
             border_style = Theme.Console.BORDER,
             padding = 5,
-            title = Help.usage(command),
-            subtitle = Repo.Version.this(),
+            title = Home.usage(),
+            subtitle = __version__,
             )
 
     @deal.pure
     @pipeop.pipes
-    def content(description: str, options: [Tuple[str, ...]]) -> Table:
-        """Task table.
+    def content(tasks: List[Tuple[str, str]]) -> Table:
+        """Main cli content.
 
         Examples:
 
@@ -70,23 +96,22 @@ class Help:
             )
 
         (
-            Help.headers
+            Home.headers
             << map(table.add_column)
             << tuple
             )
 
         (
-            options
-            >> utils.dfc()
+            tasks
             << utils.dfp(table.add_row)
-            << tuple
+            >> tuple
             )
 
         return table
 
     @deal.pure
     @pipeop.pipes
-    def usage(command: str) -> Text:
+    def usage() -> Text:
         """A title.
 
         Examples:
@@ -99,7 +124,7 @@ class Help:
             __name__
             >> str.split(".")
             >> utils.first
-            << str.format("Usage: {1} {0} [--options] …", command)
+            << str.format("Usage: {} [--help] <command> …")
             >> Text
             )
 

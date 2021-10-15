@@ -11,12 +11,10 @@ import pipeop
 from invoke import Program
 from rich.console import Console
 
-from pysemver.infra import versions
+import pysemver_cli
 
 from ._tasks import Tasks
-from ._views import Help, Home
-
-version = versions.this()
+from ._views import help_view, home_view
 
 
 class Main(Program):
@@ -25,16 +23,19 @@ class Main(Program):
     write = Console().print
 
     def __init__(self) -> None:
-        super().__init__(namespace = self.tasks, version = version)
+        super().__init__(
+            namespace = self.tasks,
+            version = pysemver_cli.__version__,
+            )
 
     @pipeop.pipes
     def print_help(self) -> None:
         (
             self.scoped_collection
             >> self._make_pairs
-            >> Home.content
-            >> Home.main
-            >> Home.root
+            >> home_view.content
+            >> home_view.main
+            >> home_view.root
             >> self.write
             )
 
@@ -46,9 +47,9 @@ class Main(Program):
 
         (
             context.help_tuples()
-            << Help.content(documentation)
-            << Help.main(command)
-            >> Help.root
+            << help_view.content(documentation)
+            << help_view.main(command)
+            >> help_view.root
             >> self.write
             )
 

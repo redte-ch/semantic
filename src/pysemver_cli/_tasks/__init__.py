@@ -14,11 +14,11 @@ import pipeop
 import typic
 from invoke import Collection
 
-from ._bar import Bar
-from ._check_deprecated import CheckDeprecated
-from ._check_version import CheckVersion
-from ._config import config
-from ._types import HasExit
+from pysemver import actions, infra
+# TODO: remove this
+from pysemver._types import HasExit
+
+from .._config import config
 
 
 @typic.klass(always = True, slots = True, strict = True)
@@ -40,8 +40,6 @@ class CheckVersionTask:
 
 class Tasks(Collection):
 
-    bar = Bar()
-
     def __init__(self) -> None:
         super().__init__()
         self.add_task(self.check_deprecated)
@@ -52,7 +50,7 @@ class Tasks(Collection):
         """Check if there are features to deprecate."""
 
         task: HasExit
-        task = CheckDeprecated(Tasks.bar)
+        task = actions.CheckDeprecated(infra.logger)
         task()
         sys.exit(task.exit.value)
 
@@ -61,6 +59,6 @@ class Tasks(Collection):
         """Check if the actual version is valid."""
 
         task: HasExit
-        task = CheckVersion(Tasks.bar)
+        task = actions.CheckVersion(infra.logger)
         task()
         sys.exit(task.exit.value)
