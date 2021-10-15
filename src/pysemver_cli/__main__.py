@@ -5,6 +5,8 @@
 
 from __future__ import annotations
 
+import inspect
+
 from invoke import Program
 
 import pysemver_cli
@@ -31,7 +33,9 @@ class Main(Program):
     @utils.pipes
     def print_task_help(self, command: str) -> None:
         context = self.parser.contexts >> dict.get(command)
-        context.help_tuples() >> to_options >> help_view.render(command)
+        task = self.collection >> Tasks.__getitem__(command)
+        doc = inspect.getdoc(task)
+        context.help_tuples() >> to_options << help_view.render(command, doc)
 
     def task_list_opener(_self, _name: str = "") -> str:
         return "Commands"

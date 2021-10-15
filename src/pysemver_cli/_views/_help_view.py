@@ -42,7 +42,11 @@ _console = Console()
 @deal.has("stdout")
 @deal.safe
 @utils.pipes
-def render(options: Sequence[Tuple[str, str, str]], command: str) -> None:
+def render(
+        command: str,
+        doc: str,
+        options: Sequence[Tuple[str, str, str]],
+        ) -> None:
     """Render the home view.
 
     Args:
@@ -51,8 +55,11 @@ def render(options: Sequence[Tuple[str, str, str]], command: str) -> None:
             descriptions, default values, for each command.
 
     Examples:
-        >>> render([('-f --flag', 'How?', 'Like that!')], "say-hi!")
-        ...say-hi!...-f --flag...How?...Like that!...
+        >>> command = "say-hi!"
+        >>> doc = "How to say hi."
+        >>> options = [("-f --flag", "How?", "Like that!")]
+        >>> render(command, doc, options)
+        ...say-hi!...How to say hi...-f --flag...How?...Like that!...
 
     .. versionadded:: 1.0.0
 
@@ -60,7 +67,7 @@ def render(options: Sequence[Tuple[str, str, str]], command: str) -> None:
 
     (
         options
-        >> _content
+        << _content(doc)
         << _main(command)
         >> _root
         >> _console.print
@@ -79,7 +86,7 @@ def _root(main: Panel) -> Layout:
         Layout: To render.
 
     Examples:
-        >>> content = _content(())
+        >>> content = _content("", ())
         >>> main = _main("command", content)
         >>> _root(main)
         Layout()
@@ -103,7 +110,7 @@ def _main(command: str, content: Table) -> Panel:
         The outer panel.
 
     Examples:
-        >>> content = _content(())
+        >>> content = _content("", ())
         >>> main = _main("command", content)
         >>> main.title
         ...command...
@@ -123,7 +130,7 @@ def _main(command: str, content: Table) -> Panel:
 
 @deal.pure
 @utils.pipes
-def _content(options: Sequence[Tuple[str, str, str]]) -> Table:
+def _content(doc: str, options: Sequence[Tuple[str, str, str]]) -> Table:
     """Inner usage instructions content.
 
     Args:
@@ -135,11 +142,13 @@ def _content(options: Sequence[Tuple[str, str, str]]) -> Table:
         The main content.
 
     Examples:
-        >>> content = _content([("-f --flag", "How?", "Like that!")])
+        >>> doc = "How to say hi."
+        >>> options = [("-f --flag", "How?", "Like that!")]
+        >>> content = _content(doc, options)
         >>> list(map(lambda option: option._cells, content.columns))
         [['-f --flag'], ['How?'], ['Like that!']]
 
-        >>> content = _content([("", "", "")])
+        >>> content = _content("", [("", "", "")])
         >>> list(map(lambda option: option._cells, content.columns))
         [[''], [''], ['']]
 
@@ -152,6 +161,7 @@ def _content(options: Sequence[Tuple[str, str, str]]) -> Table:
         padding = (0, 5, 1, 10),
         row_styles = [Theme.Console.ROW],
         style = Theme.Console.HEADER,
+        title = f"{doc}\n\n\n",
         )
 
     (
