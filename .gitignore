@@ -13,3 +13,6 @@
 .pytype
 dist
 docs/_build
+log.html
+output.xml
+report.html

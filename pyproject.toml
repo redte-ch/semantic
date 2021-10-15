@@ -53,6 +53,7 @@ sphinx-autodoc-typehints = "<2"
 typeguard = "<3"
 wemake-python-styleguide = "<1"
 xdoctest = "<1"
+robotframework = "<5"
 
 [tool.poetry.scripts]
 pysemver = 'pysemver_cli:main.run'
