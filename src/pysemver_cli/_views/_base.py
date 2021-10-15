@@ -15,12 +15,15 @@ are mostly repetitive, but it is yet too soon to refactor them.
 
 from __future__ import annotations
 
-import aenum
-from aenum import Enum
+import deal
 from rich.layout import Layout
 from rich.panel import Panel
 
+import pysemver_hypothesis
 from pysemver import utils
+
+pysemver_hypothesis.register(Layout(''))
+pysemver_hypothesis.register(Panel(''))
 
 _grid = utils.partial(Layout, " ", ratio = 2)
 """To fill around the terminal."""
@@ -29,6 +32,7 @@ _main = utils.partial(Layout, ratio = 5)
 """To render the main cli view."""
 
 
+@deal.pure
 @utils.pipes
 def rows(panel: Panel) -> Layout:
     """Splits the terminal horizontally."""
@@ -43,34 +47,16 @@ def rows(panel: Panel) -> Layout:
         )
 
 
+@deal.pure
 @utils.pipes
-def columns(panel: Layout) -> Layout:
+def columns(layout: Layout) -> Layout:
     """Splits the terminal vertically."""
 
     return (
         Layout()
         << utils.partial(Layout.split_row)
         >> utils.partial(_grid())
-        >> utils.partial(_main(panel))
+        >> utils.partial(_main(layout))
         >> utils.partial(_grid())
         >> utils.do
         )
-
-
-class Theme(Enum):
-
-    @aenum.skip
-    class Common(str, Enum):
-        FAIL = "red"
-        INFO = "cyan"
-        OKAY = "green"
-        TEXT = "white"
-        WARN = "yellow"
-        WORK = "magenta"
-
-    @aenum.skip
-    class Console(str, Enum):
-        BORDER = "cyan"
-        HEADER = "magenta"
-        ROW = "cyan"
-        TITLE = "bold green"

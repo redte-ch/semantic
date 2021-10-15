@@ -11,7 +11,7 @@
 
 from __future__ import annotations
 
-from typing import List, Tuple
+from typing import Sequence, Tuple
 
 import deal
 from rich.layout import Layout
@@ -20,15 +20,22 @@ from rich.table import Table
 from rich.text import Text
 
 import pysemver
+import pysemver_hypothesis
 from pysemver import utils
 
 from .. import __version__
-from ._base import columns, rows, Theme
+from ._base import columns, rows
+from ._theme import Theme
+
+pysemver_hypothesis.register(Layout(''))
+pysemver_hypothesis.register(Panel(''))
+pysemver_hypothesis.register(Table(''))
 
 _headers = "Command", "Description"
 """Main command headers."""
 
 
+@deal.pure
 @utils.pipes
 def _root(main: Panel) -> Layout:
     """Global home container.
@@ -40,14 +47,20 @@ def _root(main: Panel) -> Layout:
         Layout: To render.
 
     Examples:
-        >>> Home.root(Panel("Hey!"))
+        >>> content = _content(())
+        >>> main = _main(content)
+        >>> _root(main)
         Layout()
+
+    .. versionadded:: 1.0.0
 
     """
 
     return main >> rows >> columns
 
 
+@deal.pure
+@utils.pipes
 def _main(content: Table) -> Panel:
     """The main container, or panel.
 
@@ -58,7 +71,12 @@ def _main(content: Table) -> Panel:
         The outer panel.
 
     Examples:
-        >>> main()
+        >>> content = _content(())
+        >>> main = _main(content)
+        >>> main.title
+        ...pysemver...
+
+    .. versionadded:: 1.0.0
 
     """
 
@@ -73,13 +91,23 @@ def _main(content: Table) -> Panel:
 
 @deal.pure
 @utils.pipes
-def _content(tasks: List[Tuple[str, str]]) -> Table:
-    """Main cli content.
+def _content(tasks: Sequence[Tuple[str, str]]) -> Table:
+    """Inner usage instructions content.
+
+    Args:
+        tasks:
+            A sequence of tuples containing the commands and their
+            descriptions, default values, for each command.
+
+    Returns:
+        The main content.
 
     Examples:
+        >>> content = _content([("say-hi!", "HI!!! ❤ ❤ ❤")])
+        >>> list(map(lambda option: option._cells, content.columns))
+        [['say-hi!'], ['HI!!! ❤ ❤ ❤']]
 
-    >>> content()
-    "asd"
+    .. versionadded:: 1.0.0
 
     """
 
@@ -98,7 +126,7 @@ def _content(tasks: List[Tuple[str, str]]) -> Table:
 
     (
         tasks
-        << utils.dfp(table.add_row)
+        << utils.dmap(table.add_row)
         >> tuple
         )
 

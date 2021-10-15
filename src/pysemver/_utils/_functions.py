@@ -45,7 +45,7 @@ def _(x: T) -> Callable[..., T]:
     """Identity useful for noop.
 
     Examples:
-        >>> _(1)()
+        >>> _(1)
         1
 
     .. versionadded:: 1.0.0
@@ -89,6 +89,25 @@ def do(func: PartialLike) -> T:
 
 
 @deal.pure
+def cons(el: T, seq: Iterable[T]) -> Iterator[T]:
+    """The original cons.
+
+    Args:
+        el: An element.
+        seq: Any sequence.
+
+    Examples:
+        >>> list(cons(1, (2, 3)))
+        [1, 2, 3]
+
+    .. versionadded:: 1.0.0
+
+    """
+
+    return itertools.chain([el], seq)
+
+
+@deal.pure
 def dcons(seqs: Sequence[Tuple[T, Iterable[T]]]) -> Iterator[Tuple[T, ...]]:
     """Like the original cons but for cons of cons.
 
@@ -103,7 +122,7 @@ def dcons(seqs: Sequence[Tuple[T, Iterable[T]]]) -> Iterator[Tuple[T, ...]]:
 
     """
 
-    return (tuple(itertools.chain([el], seq)) for el, seq in seqs)
+    return (tuple(cons(el, seq)) for el, seq in seqs)
 
 
 @deal.pure

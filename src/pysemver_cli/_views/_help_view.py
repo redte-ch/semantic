@@ -24,9 +24,12 @@ import pysemver_hypothesis
 from pysemver import utils
 
 from .. import __version__
-from ._base import columns, rows, Theme
+from ._base import columns, rows
+from ._theme import Theme
 
+pysemver_hypothesis.register(Layout(''))
 pysemver_hypothesis.register(Panel(''))
+pysemver_hypothesis.register(Table(''))
 
 _headers = "Flags", "Description", "Default values"
 """Help command headers."""
@@ -36,6 +39,12 @@ _headers = "Flags", "Description", "Default values"
 @utils.pipes
 def _root(main: Panel) -> Layout:
     """Global help container.
+
+    Args:
+        main: Main container to wrap.
+
+    Returns:
+        Layout: To render.
 
     Examples:
         >>> content = _content(())
@@ -54,6 +63,12 @@ def _root(main: Panel) -> Layout:
 @utils.pipes
 def _main(command: str, content: Table) -> Panel:
     """Main help container.
+
+    Args:
+        content: The inner container.
+
+    Returns:
+        The outer panel.
 
     Examples:
         >>> content = _content(())
@@ -76,14 +91,25 @@ def _main(command: str, content: Table) -> Panel:
 
 @deal.pure
 @utils.pipes
-def _content(options: Sequence[Tuple[str, Tuple[str, str]]]) -> Table:
+def _content(options: Sequence[Tuple[str, str, str]]) -> Table:
     """Inner usage instructions content.
 
+    Args:
+        options:
+            A sequence of triples containing the flags, descriptions, and
+            default values, for each option.
+
+    Returns:
+        The main content.
+
     Examples:
-        >>> options = (("-f --flag", ("How?", "Like that!")),)
-        >>> content = _content(options)
+        >>> content = _content([("-f --flag", "How?", "Like that!")])
         >>> list(map(lambda option: option._cells, content.columns))
         [['-f --flag'], ['How?'], ['Like that!']]
+
+        >>> content = _content([("", "", "")])
+        >>> list(map(lambda option: option._cells, content.columns))
+        [[''], [''], ['']]
 
     .. versionadded:: 1.0.0
 
@@ -104,7 +130,6 @@ def _content(options: Sequence[Tuple[str, Tuple[str, str]]]) -> Table:
 
     (
         options
-        >> utils.dcons
         << utils.dmap(table.add_row)
         << tuple
         )
@@ -112,7 +137,7 @@ def _content(options: Sequence[Tuple[str, Tuple[str, str]]]) -> Table:
     return table
 
 
-@deal.has()
+@deal.pure
 @utils.pipes
 def _usage(command: str) -> Text:
     """Usage instructions.

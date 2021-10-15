@@ -5,15 +5,32 @@
 
 import classes
 from hypothesis import strategies
+from rich.layout import Layout
 from rich.panel import Panel
+from rich.table import Table
 
 from pysemver import domain
+
+layout_strategy = strategies.builds(
+    Layout,
+    strategies.text(),
+    name = strategies.text(),
+    size = strategies.integers(),
+    minimum_size = strategies.integers(),
+    ratio = strategies.integers(),
+    visible = strategies.booleans(),
+    )
 
 panel_strategy = strategies.builds(
     Panel,
     strategies.text(),
     title = strategies.text(),
     subtitle = strategies.text(),
+    )
+
+table_strategy = strategies.builds(
+    Table,
+    strategies.text(),
     )
 
 signature_strategy = strategies.builds(
@@ -39,6 +56,16 @@ def register(instance) -> None:
     """
 
 
+@register.instance(Layout)
+def _from_layout(instance: Layout) -> None:
+    strategies.register_type_strategy(Layout, layout_strategy)
+
+
 @register.instance(Panel)
 def _from_panel(instance: Panel) -> None:
     strategies.register_type_strategy(Panel, panel_strategy)
+
+
+@register.instance(Table)
+def _from_table(instance: Table) -> None:
+    strategies.register_type_strategy(Table, table_strategy)

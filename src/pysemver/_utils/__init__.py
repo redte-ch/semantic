@@ -8,6 +8,7 @@ from ._functions import (  # noqa: F401
     _,
     chain,
     compact,
+    cons,
     dcons,
     dmap,
     do,
