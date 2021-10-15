@@ -19,6 +19,8 @@ import inspect
 import itertools
 import textwrap
 
+from pysemver import domain
+
 
 class _PipeTransformer(ast.NodeTransformer):
 
@@ -91,15 +93,9 @@ def pipes(func_or_class):
     # The location of the decorator function name in these
     # nodes is slightly different.
     tree.body[0].decorator_list = [
-        node for node in tree.body[0].decorator_list
-        if isinstance(node, ast.Call)
-        and isinstance(node.func, ast.Attribute)
-        and node.func.attr != "pipes"
-        or isinstance(node, ast.Call)
-        and isinstance(node.func, ast.Name)
-        and node.func.id != "pipes"
-        or isinstance(node, ast.Name)
-        and node.id != "pipes"
+        node
+        for node in tree.body[0].decorator_list
+        if domain.to_value(node) != "pipes"
         ]
 
     # Apply the visit_BinOp transformation

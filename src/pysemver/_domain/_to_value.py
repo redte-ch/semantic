@@ -21,6 +21,9 @@ def to_value(instance) -> str:
         >>> to_value(ast.Attribute(attr = "hey!"))
         'hey!'
 
+        >>> to_value(ast.Call(func = "hey!"))
+        'hey!'
+
         >>> to_value(ast.Constant(value = "hey!"))
         'hey!'
 
@@ -46,7 +49,12 @@ def to_value(instance) -> str:
 
 @to_value.instance(ast.Attribute)
 def _from_ast_attribute(instance: ast.Attribute) -> str:
-    return instance.attr
+    return to_value(instance.attr)
+
+
+@to_value.instance(ast.Call)
+def _from_ast_call(instance: ast.Call) -> str:
+    return to_value(instance.func)
 
 
 @to_value.instance(ast.Constant)
@@ -61,7 +69,7 @@ def _from_ast_ellipsis(instance: ast.Ellipsis) -> str:
 
 @to_value.instance(ast.Name)
 def _from_ast_name(instance: ast.Name) -> str:
-    return instance.id
+    return to_value(instance.id)
 
 
 @to_value.instance(ast.NameConstant)
@@ -71,12 +79,12 @@ def _from_ast_name_constant(instance: ast.NameConstant) -> str:
 
 @to_value.instance(ast.Num)
 def _from_ast_num(instance: ast.Num) -> str:
-    return instance.n
+    return to_value(instance.n)
 
 
 @to_value.instance(ast.Str)
 def _from_ast_str(instance: ast.Str) -> str:
-    return instance.s
+    return to_value(instance.s)
 
 
 @to_value.instance(str)
