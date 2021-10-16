@@ -11,10 +11,8 @@ import inspect
 
 import typic
 from invoke import Program
-from invoke.parser.context import ParserContext
 
 import pysemver_cli
-from pysemver import utils
 
 from ._tasks import Tasks
 from ._views import help_view, home_view, to_options
@@ -36,30 +34,19 @@ class Main(Program):
             version = pysemver_cli.__version__,
             )
 
-    @utils.pipes
     def print_help(self) -> None:
         """Intercepts :mod:`.invoke` to print the home screen."""
 
-        return (
-            _tasks
-            >> self._make_pairs
-            >> home_view.render
-            )
+        return home_view.render(self._make_pairs(_tasks))
 
-    @utils.pipes
     def print_task_help(self, command: str) -> None:
         """Intercepts :mod:`.invoke` to print the help screen."""
 
-        return (
-            self.parser.contexts
-            >> dict.get(command)
-            >> ParserContext.help_tuples
-            >> to_options
-            << help_view.render(
-                command,
-                _tasks >> Tasks.__getitem__(command) >> inspect.getdoc,
-                )
-            )
+        doc = inspect.getdoc(_tasks[command])
+        context = self.parser.contexts[command]
+        options = to_options(context.help_tuples())
+
+        return help_view.render(command, doc, options)
 
     def task_list_opener(self, _command: str = "") -> str:
         """Intercepts :mod:`.invoke` to set the main header name."""
