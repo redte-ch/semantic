@@ -122,5 +122,5 @@ def test(session, numpy):
     session.install("typeguard", silent = True)
     session.install("xdoctest", silent = True)
     session.install(".", silent = True)
-    session.run("robot", "--outputdir", ".robot", "tests/functional")
     session.run("pytest", *(*rel_build, "tests"))
+    session.run("robot", "--outputdir", ".robot", "tests/functional")

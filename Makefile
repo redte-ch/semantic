@@ -7,6 +7,12 @@
 
 all: format bind lint type test ;
 
+%:
+	@${MAKE} bind-$*
+	@${MAKE} lint-$*
+	@${MAKE} type-$*
+	@${MAKE} test-$*
+
 install:
 	@pip install --upgrade pip wheel setuptools
 	@pip install --upgrade nox-poetry
@@ -28,19 +34,35 @@ bind: compile clean
 	@poetry run python -m deal test --count=100 src
 	@poetry run crosshair check src
 
+bind-%: compile clean
+	@poetry run python -m deal test --count=100 src/$*
+	@poetry run crosshair check src/$*
+
 lint: compile clean
 	@poetry run flake8 docs/conf.py src tests noxfile.py
 	@poetry run sphinx-build -b dummy -anqTW docs docs/_build
+
+lint-%: compile clean
+	@poetry run flake8 src/$*
 
 type: compile clean
 	@poetry run mypy docs/conf.py src noxfile.py
 	@poetry run pytype docs/conf.py src noxfile.py
 
+type-%: compile clean
+	@poetry run mypy src/$*
+	@poetry run pytype src/$*
+
 test: compile clean
-	@poetry run robot --outputdir .robot tests/functional
 	@poetry run pytest --cov
+	@poetry run robot --outputdir .robot tests/functional
 	@poetry run interrogate src
 	@poetry run sphinx-build -b doctest -anqTW docs docs/_build
+
+test-%: export COLUMNS = 200
+test-%: compile clean
+	@poetry run pytest src/$*
+	@poetry run interrogate src/$*
 
 release:
 	@nox -k "not coverage"

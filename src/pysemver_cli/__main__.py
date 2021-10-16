@@ -7,7 +7,9 @@ from __future__ import annotations
 
 import inspect
 
+import typic
 from invoke import Program
+from invoke.parser.context import ParserContext
 
 import pysemver_cli
 from pysemver import utils
@@ -15,30 +17,45 @@ from pysemver import utils
 from ._tasks import Tasks
 from ._views import help_view, home_view, to_options
 
+_tasks: Tasks = Tasks()
+"""The list of tasks."""
 
+_header: str = "Commands"
+"""The home screen header opener."""
+
+
+@typic.klass(always = True, strict = True)
 class Main(Program):
-
-    tasks = Tasks()
 
     def __init__(self) -> None:
         super().__init__(
-            namespace = self.tasks,
+            namespace = _tasks,
             version = pysemver_cli.__version__,
             )
 
     @utils.pipes
     def print_help(self) -> None:
-        self.scoped_collection >> self._make_pairs >> home_view.render
+        return (
+            _tasks
+            >> self._make_pairs
+            >> home_view.render
+            )
 
     @utils.pipes
     def print_task_help(self, command: str) -> None:
-        context = self.parser.contexts >> dict.get(command)
-        task = self.collection >> Tasks.__getitem__(command)
-        doc = inspect.getdoc(task)
-        context.help_tuples() >> to_options << help_view.render(command, doc)
+        return (
+            self.parser.contexts
+            >> dict.get(command)
+            >> ParserContext.help_tuples
+            >> to_options
+            << help_view.render(
+                command,
+                _tasks >> Tasks.__getitem__(command) >> inspect.getdoc,
+                )
+            )
 
-    def task_list_opener(_self, _name: str = "") -> str:
-        return "Commands"
+    def task_list_opener(_self, _command: str = "") -> str:
+        return _header
 
 
 main = Main()
