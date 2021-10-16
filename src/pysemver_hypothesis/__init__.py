@@ -3,6 +3,8 @@
 # Licensed under the EUPL-1.2-or-later
 # For details: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 
+"""Shared hypothesis strategies."""
+
 import classes
 from hypothesis import strategies
 from rich.layout import Layout
