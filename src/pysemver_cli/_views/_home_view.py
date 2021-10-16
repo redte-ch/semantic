@@ -40,7 +40,6 @@ _console = Console()
 
 @deal.has("stdout")
 @deal.safe
-@utils.pipes
 def render(tasks: Sequence[Tuple[str, str]]) -> None:
     """Render the home view.
 
@@ -60,17 +59,14 @@ def render(tasks: Sequence[Tuple[str, str]]) -> None:
 
     """
 
-    return (
-        tasks
-        >> _content
-        >> _main
-        >> _root
-        >> _console.print
-        )
+    content = _content(tasks)
+    main = _main(content)
+    root = _root(main)
+
+    _console.print(root)
 
 
 @deal.pure
-@utils.pipes
 def _root(main: Panel) -> Layout:
     """Global home container.
 
@@ -90,11 +86,10 @@ def _root(main: Panel) -> Layout:
 
     """
 
-    return main >> rows >> columns
+    return columns(rows(main))
 
 
 @deal.pure
-@utils.pipes
 def _main(content: Table) -> Panel:
     """The main container, or panel.
 
@@ -124,7 +119,6 @@ def _main(content: Table) -> Panel:
 
 
 @deal.pure
-@utils.pipes
 def _content(tasks: Sequence[Tuple[str, str]]) -> Table:
     """Inner usage instructions content.
 
@@ -152,23 +146,14 @@ def _content(tasks: Sequence[Tuple[str, str]]) -> Table:
         style = Theme.Console.HEADER,
         )
 
-    (
-        _headers
-        << map(table.add_column)
-        << tuple
-        )
+    list(map(table.add_column, _headers))
 
-    (
-        tasks
-        << utils.dmap(table.add_row)
-        >> tuple
-        )
+    list(utils.dmap(table.add_row, tasks))
 
     return table
 
 
 @deal.pure
-@utils.pipes
 def _usage() -> Text:
     """Usage instructions.
 
@@ -183,13 +168,8 @@ def _usage() -> Text:
 
     """
 
-    text = (
-        __name__
-        >> str.split(".")
-        >> utils.first
-        << str.format("Usage: {} [--help] <command> …")
-        >> Text
-        )
+    name = utils.first(__name__.split("."))
+    text = Text(f"Usage: {name} [--help] <command> …")
 
     text.stylize(Theme.Console.TITLE)
 
