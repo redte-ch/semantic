@@ -12,16 +12,16 @@ import textwrap
 import deal
 import typic
 
-from ._builder import SignatureBuilder
-from ._repo import Repo
-from ._types import What
-from .domain import Signature
+from .._domain import Signature
+from .._infra import files, versions
+from .._types import What
+from ._build_signatures import SignatureBuilder
 
-THIS: str = Repo.Version.this()
-THAT: str = Repo.Version.last()
+THIS: str = versions.this()
+THAT: str = versions.last()
 
 
-@typic.klass(always = True, slots = True, strict = True)
+# @typic.klass(always = True, slots = True, strict = True)
 class Parser:
     """Wrapper around the repo and the signature builder.
 
@@ -82,17 +82,17 @@ class Parser:
     builder: Optional[SignatureBuilder]
     signatures: Optional[Sequence[Signature]]
 
-    @deal.pure
+    # @deal.pure
     # @typic.al(strict = True)
     def __init__(self, *, this: str = THIS, that: str = THAT) -> None:
         self.this = this
         self.that = that
-        self.diff = Repo.File.diff(this, that)
+        self.diff = files.diff(this, that)
         self.current = None
         self.builder = None
         self.signatures = None
 
-    @deal.pure
+    # @deal.pure
     # @typic.al(strict = True)
     def __call__(self, *, what: What) -> Parser:
         # We try recover the revision (``this`` or ``that``). Fails otherwise.
@@ -101,12 +101,12 @@ class Parser:
         # And we return ourselves.
         return self
 
-    @deal.pure
+    # @deal.pure
     def __enter__(self) -> Generator[Tuple[int, ...], None, None]:
         # We recover the python files corresponding to ``revison``.
         files: Set[str] = {
             file
-            for file in Repo.File.tree(self.current)
+            for file in files.tree(self.current)
             if file.endswith(".py")
             }
 
@@ -120,7 +120,7 @@ class Parser:
         for file in self.builder.files:
 
             # We recover the contents of ``file`` at ``revision``.
-            content: str = Repo.File.show(self.current, file)
+            content: str = files.show(self.current, file)
 
             # We sanitize the source code.
             source: str = textwrap.dedent(content)
@@ -131,7 +131,7 @@ class Parser:
             # And we yield a counter to keep the user updated.
             yield self.builder.count, self.builder.total
 
-    @deal.pure
+    # @deal.pure
     def __exit__(self, *__: Any) -> None:
         # We save the signatures for upstream recovery.
         self.signatures = self.builder.signatures

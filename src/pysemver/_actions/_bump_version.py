@@ -10,8 +10,8 @@ import re
 import deal
 import typic
 
-from ._repo import Repo
-from .domain import Version
+from .. import _infra
+from .._domain import Version
 
 
 @typic.klass(always = True, slots = True, strict = True)
@@ -48,8 +48,8 @@ class Bumper:
 
     @deal.pure
     def __init__(self) -> None:
-        self.this = Repo.Version.this()
-        self.that = Repo.Version.last()
+        self.this = _infra.versions.this()
+        self.that = _infra.versions.last()
         self.what = Version.Int
         self.required = Version.Int.NONE
 

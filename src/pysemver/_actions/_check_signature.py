@@ -15,10 +15,8 @@ import deal
 import numpy
 import typic
 
-from pysemver import utils
-from pysemver.domain import Version
-
-from ...domain import Signature
+from .. import _utils as utils
+from .._domain import Signature, Version
 
 limit = 2e5
 """Just a random size/length sentinel."""

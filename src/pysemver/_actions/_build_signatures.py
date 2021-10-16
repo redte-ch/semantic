@@ -24,8 +24,8 @@ import pathlib
 import deal
 import typic
 
-from . import utils
-from .domain import Argument, default, Signature, Suffix, type_annotation
+from .. import _utils as utils
+from .._domain import Argument, Signature, Suffix, to_def, to_type
 
 
 # @typic.klass(always = True, strict = True)

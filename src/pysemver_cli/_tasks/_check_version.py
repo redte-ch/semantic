@@ -33,9 +33,12 @@ _task: Task = Task.transmute({
 
 
 @invoke.task(**_task.primitive())
-def check_version(_context, ignore = config.ignore):
+def check_version(_context, ignore):
     """Check if the actual version is valid."""
 
-    task = actions.CheckVersion(infra.logger)
+    if len(ignore) == 0:
+        ignore = config.ignore
+
+    task = actions.CheckVersion(infra.logs, ignore)
     task()
     sys.exit(task.exit.value)

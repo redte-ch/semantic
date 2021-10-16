@@ -5,27 +5,25 @@
 
 from __future__ import annotations
 
+from types import ModuleType
 from typing import Optional, Sequence, Set, TypeVar
 
 import deal
 import typic
 
-from ._bar import Bar
-from ._bumper import Bumper
-from ._config import config
-from ._parser import Parser
-from ._types import HasIndex, What
-from .domain import Exit, Signature
-from .services.signatures import CheckSignature
+from .. import _infra
+from .._domain import Exit, Signature
+from .._types import HasIndex, What
+from ._bump_version import Bumper
+from ._check_signature import CheckSignature
+from ._parse_files import Parser
 
 T = TypeVar("T", bound = "CheckVersion")
 
 PARSER = Parser(this = "HEAD")
 
-IGNORE = config.ignore
 
-
-@typic.klass(always = True, slots = True, strict = True)
+# @typic.klass(always = True, slots = True, strict = True)
 class CheckVersion:
     """Checks if the current version is acceptable.
 
@@ -33,25 +31,31 @@ class CheckVersion:
         bar: A progress bar.
         exit: An exit code.
         parser: A file parser.
-        bumper: A version bumper.
+        bump_version: A version bump_version.
 
     .. versionadded:: 36.1.0
 
     """
 
-    bar: Bar
-    exit: HasIndex
+    logs: ModuleType
+    exit: Exit
     parser: Parser
-    bumper: Bumper
+    ignore: Sequence[str]
+    bump_version: Bumper
 
     # @typic.al(strict = True)
-    def __init__(self, bar: Bar, parser: Parser = PARSER) -> None:
-        self.bar = bar
+    def __init__(
+            self,
+            logs: ModuleType,
+            ignore: Sequence[str],
+            parser: Parser = PARSER) -> None:
+        self.logs = logs
+        self.ignore = ignore
         self.exit = Exit.OK
         self.parser = parser
-        self.bumper = Bumper()
+        self.bump_version = Bumper()
 
-    @deal.pure
+    # @deal.pure
     def __call__(self) -> None:
         """Runs all the checks."""
 
@@ -61,57 +65,57 @@ class CheckVersion:
 
         (
             self
-            ._check_files(self.bumper, diff)
-            ._check_funcs(self.bumper, 2, this, that)
-            ._check_funcs(self.bumper, 3, that, this)
-            ._check_version_acceptable(self.bumper)
+            ._check_files(self.bump_version, diff)
+            ._check_funcs(self.bump_version, 2, this, that)
+            ._check_funcs(self.bump_version, 3, that, this)
+            ._check_version_acceptable(self.bump_version)
             .bar.then()
             )
 
-    @deal.pure
+    # @deal.pure
     # @typic.al(strict = True)
     def _parse(self, parser: Parser, what: What) -> Sequence[Signature]:
         """Updates status while the parser builds signatures."""
 
         with parser(what = what) as parsing:
-            self.bar.info(f"Parsing files from {parser.current}…\n")
-            self.bar.init()
+            self.logs.info(f"Parsing files from {parser.current}…\n")
+            self.logs.init()
 
             for count, total in parsing:
-                self.bar.push(count, total)
+                self.logs.push(count, total)
 
-            self.bar.wipe()
+            self.logs.wipe()
 
         return parser.signatures
 
-    @deal.pure
-    def _check_files(self: T, bumper: Bumper, files: Set[str]) -> T:
+    # @deal.pure
+    def _check_files(self: T, bump_version: Bumper, files: Set[str]) -> T:
         """Requires a bump if there's a diff in files."""
 
         what: int = 1
         total: int = len(files)
 
-        self.bar.info("Checking for functional changes…\n")
-        self.bar.init()
+        self.logs.info("Checking for functional changes…\n")
+        self.logs.init()
 
         for count, file in enumerate(files):
             if not self._is_functional(file):
                 continue
 
-            bumper(what)
-            self.exit = bumper.required
-            self.bar.wipe()
-            self.bar.warn(f"{str(bumper.what(what))} {file}\n")
-            self.bar.push(count, total)
+            bump_version(what)
+            self.exit = bump_version.required
+            self.logs.wipe()
+            self.logs.warn(f"{str(bump_version.what(what))} {file}\n")
+            self.logs.push(count, total)
 
-        self.bar.wipe()
+        self.logs.wipe()
 
         return self
 
-    @deal.pure
+    # @deal.pure
     def _check_funcs(
             self: T,
-            bumper: Bumper,
+            bump_version: Bumper,
             what: str,
             *files: Set[Signature],
             ) -> T:
@@ -121,15 +125,15 @@ class CheckVersion:
         diff: Set[Signature] = files[0] ^ files[1] & files[0]
         total: int = len(diff)
 
-        self.bar.info(f"Checking for {what} functions…\n")
-        self.bar.init()
+        self.logs.info(f"Checking for {what} functions…\n")
+        self.logs.init()
 
         for count, this in enumerate(diff):
             name: str
             that: Optional[Signature]
             checker: FuncChecker
 
-            self.bar.push(count, total)
+            self.logs.push(count, total)
 
             # If it is not a functional change, we move on.
             if this is None or not self._is_functional(this.file):
@@ -137,7 +141,7 @@ class CheckVersion:
 
             # We know we will fail already, but we still need to determine
             # the needed version bump.
-            self.exit = bumper.required
+            self.exit = bump_version.required
 
             # We will try to find a match between before/after signatures.
             name = this.name
@@ -146,42 +150,45 @@ class CheckVersion:
             # If we can't find a base signature with the same name, we can just
             # assume the function was added/removed, so minor/major.
             if that is None:
-                bumper(what)
-                self.bar.wipe()
-                self.bar.warn(f"{str(bumper.what(what))} {name} => {what}\n")
-                self.exit = bumper.required
+                bump_version(what)
+                self.logs.wipe()
+                self.logs.warn(
+                    f"{str(bump_version.what(what))} {name} => {what}\n")
+                self.exit = bump_version.required
                 continue
 
             # Now we do a ``small-print`` comparison between signatures.
             f = FuncChecker(this, that)
 
-            if f.score() == bumper.what(what).value:
-                bumper(what)
-                self.bar.wipe()
-                self.bar.warn(f"{str(bumper.what(what))} {name}: {f.reason}\n")
-                self.exit = bumper.required
+            if f.score() == bump_version.what(what).value:
+                bump_version(what)
+                self.logs.wipe()
+                self.logs.warn(
+                    f"{str(bump_version.what(what))} {name}: {f.reason}\n")
+                self.exit = bump_version.required
                 continue
 
-        self.bar.wipe()
+        self.logs.wipe()
 
         return self
 
-    @deal.pure
-    def _check_version_acceptable(self: T, bumper: Bumper) -> T:
+    # @deal.pure
+    def _check_version_acceptable(self: T, bump_version: Bumper) -> T:
         """Requires a bump if there current version is not acceptable."""
 
-        self.bar.info(f"Version bump required: {bumper.required.name}!\n")
-        self.bar.okay(f"Current version: {bumper.this}")
+        self.logs.info(
+            f"Version bump required: {bump_version.required.name}!\n")
+        self.logs.okay(f"Current version: {bump_version.this}")
 
-        if bumper.is_acceptable():
+        if bump_version.is_acceptable():
             self.exit = Exit.OK
             return self
 
-        self.bar.fail()
+        self.logs.fail()
 
         return self
 
-    @deal.pure
+    # @deal.pure
     # @typic.al(strict = True)
     def _is_functional(self, file: str) -> bool:
         """Checks if a given ``file`` is whitelisted as functional."""
