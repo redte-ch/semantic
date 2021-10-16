@@ -24,10 +24,10 @@ class _TupleListMeta(type):
         if not isinstance(arg, list):
             return False
 
-        elif not isinstance(arg[0], (list, tuple)):
+        elif not arg[0] or not isinstance(arg[0], (list, tuple)):
             return False
 
-        elif not isinstance(arg[0][0], str):
+        elif not arg[0][0] or not isinstance(arg[0][0], str):
             return False
 
         return True
@@ -40,10 +40,10 @@ class _TupleTupleMeta(type):
         if not isinstance(arg, tuple):
             return False
 
-        elif not isinstance(arg[0], (list, tuple)):
+        elif not arg[0] or not isinstance(arg[0], (list, tuple)):
             return False
 
-        elif not isinstance(arg[0][0], str):
+        elif not arg[0][0] or not isinstance(arg[0][0], str):
             return False
 
         return True
@@ -104,7 +104,8 @@ def _from_tuple_tuple(instance: TupleTupleType) -> OptionsType:
     return tuple(utils.dcons(instance))
 
 
-@deal.pure
+@deal.raises(NotImplementedError)
+@deal.has()
 @to_options.instance(protocol = Tuple)
 def _from_tuple(instance: Tuple[str, Tuple[str, str]]) -> OptionsType:
     return to_options([instance])
