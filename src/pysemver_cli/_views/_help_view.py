@@ -49,9 +49,16 @@ def render(
     """Render the home view.
 
     Args:
-        tasks:
+        command:
+            The name of the task.
+        doc:
+            The documentation of the task.
+        options:
             A sequence of tuples containing the commands and their
             descriptions, default values, for each command.
+
+    Returns:
+        Nothing.
 
     Examples:
         >>> command = "say-hi!"
@@ -103,6 +110,7 @@ def _main(command: str, content: Table) -> Panel:
     """Main help container.
 
     Args:
+        command: The name of the task.
         content: The inner container.
 
     Returns:
@@ -133,6 +141,8 @@ def _content(doc: str, options: Sequence[Tuple[str, str, str]]) -> Table:
     """Inner usage instructions content.
 
     Args:
+        doc:
+            The documentation of the task.
         options:
             A sequence of triples containing the flags, descriptions, and
             default values, for each option.
@@ -182,6 +192,12 @@ def _content(doc: str, options: Sequence[Tuple[str, str, str]]) -> Table:
 @utils.pipes
 def _usage(command: str) -> Text:
     """Usage instructions.
+
+    Args:
+        command: The name of the task.
+
+    Returns:
+        A formatted usage text.
 
     Examples:
         >>> _usage("command")
