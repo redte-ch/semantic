@@ -64,7 +64,7 @@ def render(
 
     """
 
-    (
+    return (
         options
         << _content(doc)
         << _main(command)

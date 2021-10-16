@@ -57,7 +57,7 @@ def render(tasks: Sequence[Tuple[str, str]]) -> None:
 
     """
 
-    (
+    return (
         tasks
         >> _content
         >> _main
