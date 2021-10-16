@@ -22,6 +22,7 @@ python = "~3.7 || ~3.8 || ~3.9"
 aenum = "<4"
 classes = "<1"
 deal = "<5"
+hypothesis = {extras = ["numpy"], version = "<7"}
 invoke = "<2"
 numpy = ">=1.7, <1.22"
 returns = "<1"
@@ -36,7 +37,6 @@ autopep8 = "<2"
 codecov = "<3"
 coverage = {extras = ["toml"], version = "<7"}
 crosshair-tool = "<1"
-hypothesis = {extras = ["numpy"], version = "<7"}
 interrogate = "<2"
 ipython = "<8"
 mypy = "<1"
