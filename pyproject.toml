@@ -22,7 +22,6 @@ python = "~3.7 || ~3.8 || ~3.9"
 aenum = "<4"
 classes = "<1"
 deal = "<5"
-hypothesis = {extras = ["numpy"], version = "<7"}
 invoke = "<2"
 numpy = ">=1.7, <1.22"
 returns = "<1"
@@ -37,6 +36,7 @@ autopep8 = "<2"
 codecov = "<3"
 coverage = {extras = ["toml"], version = "<7"}
 crosshair-tool = "<1"
+hypothesis = {extras = ["numpy"], version = "<7"}
 interrogate = "<2"
 ipython = "<8"
 mypy = "<1"
@@ -48,12 +48,12 @@ pytest-sugar = "<1"
 pytest-xdist = {extras = ["psutil"], version = "<3"}
 pytype = "^2021.10.4"
 pyupgrade = "<3"
+robotframework = "<5"
 Sphinx = "<5"
 sphinx-autodoc-typehints = "<2"
 typeguard = "<3"
 wemake-python-styleguide = "<1"
 xdoctest = "<1"
-robotframework = "<5"
 
 [tool.poetry.scripts]
 pysemver = 'pysemver_cli:main.run'

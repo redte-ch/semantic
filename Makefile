@@ -5,13 +5,12 @@
 
 .DEFAULT_GOAL := all
 
-# all: format bind lint type test ;
-all: format bind lint test ;
+all: format bind lint type test ;
 
 %:
 	@${MAKE} bind-$*
 	@${MAKE} lint-$*
-# 	@${MAKE} type-$*
+	@${MAKE} type-$*
 	@${MAKE} test-$*
 
 install:
