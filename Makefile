@@ -5,12 +5,13 @@
 
 .DEFAULT_GOAL := all
 
-all: format bind lint type test ;
+# all: format bind lint type test ;
+all: format bind lint test ;
 
 %:
 	@${MAKE} bind-$*
 	@${MAKE} lint-$*
-	@${MAKE} type-$*
+# 	@${MAKE} type-$*
 	@${MAKE} test-$*
 
 install:
@@ -65,7 +66,7 @@ test-%: compile clean
 	@poetry run interrogate src/$*
 
 release:
-	@nox -k "not coverage"
+	@nox -k "not coverage type"
 	@poetry run pip uninstall pysemver -y -q
 	@poetry install -q
 	@poetry run pysemver check-version \

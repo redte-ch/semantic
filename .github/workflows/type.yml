@@ -1,31 +1,31 @@
-name: type
+# name: type
 
-on: [ push ]
+# on: [ push ]
 
-jobs:
-  type:
-    strategy:
-      fail-fast: true
-      matrix:
-        python: [3.7.12, 3.8.12, 3.9.7]
-        numpy: [1.17.5, 1.18.5, 1.19.5, 1.20.3, 1.21.2]
+# jobs:
+#   type:
+#     strategy:
+#       fail-fast: true
+#       matrix:
+#         python: [3.7.12, 3.8.12, 3.9.7]
+#         numpy: [1.17.5, 1.18.5, 1.19.5, 1.20.3, 1.21.2]
 
-    runs-on: ubuntu-latest
+#     runs-on: ubuntu-latest
 
-    name: type-${{ matrix.python }}-${{ matrix.numpy }}
+#     name: type-${{ matrix.python }}-${{ matrix.numpy }}
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v2
 
-      - name: Python setup
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python }}
-          architecture: x64
+#       - name: Python setup
+#         uses: actions/setup-python@v2
+#         with:
+#           python-version: ${{ matrix.python }}
+#           architecture: x64
 
-      - name: Install dependencies
-        run: make install
+#       - name: Install dependencies
+#         run: make install
 
-      - name: Run type-checks
-        run: nox -s "type(${{ matrix.python }}/${{ matrix.numpy }})"
+#       - name: Run type-checks
+#         run: nox -s "type(${{ matrix.python }}/${{ matrix.numpy }})"
