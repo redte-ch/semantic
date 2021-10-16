@@ -16,4 +16,3 @@ from ._functions import (  # noqa: F401
     flatten,
     partial,
     )
-from ._pipeop import pipes  # noqa: F401
