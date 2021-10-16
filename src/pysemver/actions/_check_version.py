@@ -11,9 +11,9 @@ from typing import Optional, Sequence, Set, TypeVar
 import deal
 import typic
 
-from .. import _infra
-from .._domain import Exit, Signature
-from .._types import HasIndex, What
+from .. import infra
+from ..domain import Exit, Signature
+from ..types import What
 from ._bump_version import Bumper
 from ._check_signature import CheckSignature
 from ._parse_files import Parser

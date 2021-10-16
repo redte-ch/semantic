@@ -13,14 +13,14 @@ import textwrap
 import deal
 import typic
 
-from .. import _infra, _utils
-from .._domain import Exit
+from .. import infra, utils
+from ..domain import Exit
 
 _version: str
-_version = _infra.versions.last()
+_version = infra.repo.versions.last()
 
 _files: Sequence[str]
-_files = _infra.files.tree(_version)
+_files = infra.repo.files.tree(_version)
 
 
 # @typic.klass(always = True, strict = True)

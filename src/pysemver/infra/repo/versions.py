@@ -17,10 +17,10 @@ from typing import Sequence
 import deal
 import pkg_resources
 
-from . import _repo
+from ._base import run
 
 
-@deal.pure
+# @deal.pure
 def this() -> str:
     """Retrives the actual version.
 
@@ -28,12 +28,12 @@ def this() -> str:
         str: Representing the version.
 
     Examples:
-        >>> version = Repo.Version.this()
+        >>> version = this()
         >>> major, minor, patch, *rest = version.split(".")
         >>> major.isdecimal()
         True
 
-    .. versionadded:: 36.1.0
+    .. versionadded:: 1.0.0
 
     """
 
@@ -46,7 +46,7 @@ def this() -> str:
         )
 
 
-@deal.pure
+# @deal.pure
 def last() -> str:
     """Retrives the last tagged version.
 
@@ -54,7 +54,7 @@ def last() -> str:
         str: Representing the version.
 
     Examples:
-        >>> version = Repo.Version.last()
+        >>> version = last()
         >>> major, minor, patch, *rest = version.split(".")
         >>> major.isdecimal()
         True
@@ -65,4 +65,4 @@ def last() -> str:
 
     cmd: Sequence[str]
     cmd = ["git", "describe", "--tags", "--abbrev=0", "--first-parent"]
-    return _repo.run(cmd).split()[0]
+    return run(cmd).split()[0]

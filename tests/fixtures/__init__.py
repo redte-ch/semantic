@@ -9,5 +9,5 @@ from . import (  # noqa: F401
     func_with_defaults,
     func_with_more_args,
     func_with_more_defaults,
-    func_with_types,
+    func_withtypes,
     )

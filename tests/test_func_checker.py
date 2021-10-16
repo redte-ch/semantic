@@ -107,9 +107,9 @@ def test_when_changed_arg_names(this_builder, that_builder):
     assert checker.reason == "args-diff"
 
 
-def test_when_added_types(this_builder, that_builder):
+def test_when_addedtypes(this_builder, that_builder):
 
-    this_builder(inspect.getsource(fixtures.func_with_types))
+    this_builder(inspect.getsource(fixtures.func_withtypes))
     that_builder(inspect.getsource(fixtures.func))
 
     this, = this_builder.signatures
@@ -126,10 +126,10 @@ def test_when_added_types(this_builder, that_builder):
     assert checker.reason == "types-diff"
 
 
-def test_when_removed_types(this_builder, that_builder):
+def test_when_removedtypes(this_builder, that_builder):
 
     this_builder(inspect.getsource(fixtures.func))
-    that_builder(inspect.getsource(fixtures.func_with_types))
+    that_builder(inspect.getsource(fixtures.func_withtypes))
 
     this, = this_builder.signatures
     that, = that_builder.signatures

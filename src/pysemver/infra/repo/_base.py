@@ -17,9 +17,10 @@ from typing import Sequence
 import subprocess
 
 import deal
+from git import Repo
 
 
-@deal.pure
+# @deal.pure
 def run(cmd: Sequence[str]) -> str:
     """Runs a command an decodes the result.
 
@@ -30,7 +31,7 @@ def run(cmd: Sequence[str]) -> str:
         The decoded ``stdout``.
 
     Examples:
-        >>> Repo.run(["echo", "1"])
+        >>> run(["echo", "1"])
         '1\\n'
 
     .. versionadded:: 36.1.0

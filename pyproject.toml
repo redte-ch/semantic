@@ -101,7 +101,7 @@ doctest_optionflags = [
 [tool.mypy]
 ignore_missing_imports = true
 implicit_reexport = true
-install_types = true
+installtypes = true
 non_interactive = true
 plugins = ["deal.mypy", "typic.mypy", "returns.contrib.mypy.returns_plugin"]
 strict = false
@@ -113,7 +113,7 @@ group_by_package = true
 include_trailing_comma = true
 known_first_party = ["pysemver", "pysemver_cli", "pysemver_hypothesis"]
 known_typing = [
-    "_types",
+    "types",
     "mypy",
     "mypy_extensions",
     "types",

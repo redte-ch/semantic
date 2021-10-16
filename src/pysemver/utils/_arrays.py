@@ -10,7 +10,7 @@ import numpy
 
 import pysemver_hypothesis as st
 
-from .._domain import Signature
+from ..domain import Signature
 
 st.register(Signature, st.signatures)
 

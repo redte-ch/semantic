@@ -15,8 +15,8 @@ import deal
 import numpy
 import typic
 
-from .. import _utils as utils
-from .._domain import Signature, Version
+from .. import utils
+from ..domain import Signature, Version
 
 limit = 2e5
 """Just a random size/length sentinel."""

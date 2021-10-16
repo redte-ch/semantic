@@ -24,8 +24,8 @@ import pathlib
 import deal
 import typic
 
-from .. import _utils as utils
-from .._domain import Argument, Signature, Suffix, to_def, to_type
+from .. import utils
+from ..domain import Argument, Signature, Suffix, to_def, to_type
 
 
 # @typic.klass(always = True, strict = True)
@@ -249,7 +249,7 @@ class SignatureBuilder(ast.NodeVisitor):
         default: Optional[str]
         argument: Argument
 
-        types = self._build_arg_types(node)
+        types = self._build_argtypes(node)
         default = self._build_arg_default(len(acc), len(args), defaults)
 
         # todo: fix
@@ -262,7 +262,7 @@ class SignatureBuilder(ast.NodeVisitor):
 
     # @deal.pure
     # @typic.al(strict = True)
-    def _build_arg_types(self, node: ast.arg) -> Optional[Tuple[ArgType, ...]]:
+    def _build_argtypes(self, node: ast.arg) -> Optional[Tuple[ArgType, ...]]:
         """Builds the types of an argument."""
 
         # We try to build types from the type annotation of the node.

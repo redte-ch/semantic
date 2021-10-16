@@ -18,8 +18,8 @@ import deal
 from ._base import run
 
 
-@deal.pure
-def show(revision: str, file: str) -> str:
+@deal.has("stdin")
+def show(revision: str, file: str, repo: str = "") -> str:
     """Retrives the content of a file in a revision.
 
     Args:
@@ -30,22 +30,23 @@ def show(revision: str, file: str) -> str:
         str: The contents of the file.
 
     Examples:
-        >>> source = Repo.File.show(
-        ...     "0.5.0",
-        ...     "openfisca_core/calmar.py",
-        ...     )
-        >>> source.split("\\n")[3]
-        '# OpenFisca -- A versatile microsimulation software'
+        >>> import os
+        >>> from pathlib import Path
+
+        >>> repo = Path("./tests/fixtures").resolve()
+        >>> source = show("1.0.0", "func.py", str(repo))
+        >>> source
+        'def function(a, *, b, c, d):\\n    ...\\n'
 
     """
 
     cmd: Sequence[str]
-    cmd = ["git", "show", f"{revision}:{file}"]
+    cmd = ["git", "-C", repo, "show", f"{revision}:{file}"]
     return run(cmd)
 
 
-@deal.pure
-def tree(revision: str) -> Sequence[str]:
+@deal.has("stdin")
+def tree(revision: str, repo: str = "") -> Sequence[str]:
     """Retrives the list of tracked files in a revision.
 
     Args:
@@ -55,20 +56,24 @@ def tree(revision: str) -> Sequence[str]:
         A sequence with the files' names.
 
     Examples:
-        >>> Repo.File.tree("0.5.0")[13]
-        'openfisca_core/calmar.py'
+        >>> import os
+        >>> from pathlib import Path
 
-    .. versionadded:: 36.1.0
+        >>> repo = Path("./tests/fixtures").resolve()
+        >>> tree("1.0.0", str(repo))
+        ['.gitignore', '__init__.py', 'bar.py', 'func.py', 'func_with_chang...]
+
+    .. versionadded:: 1.0.0
 
     """
 
     cmd: Sequence[str]
-    cmd = ["git", "ls-tree", "-r", "--name-only", revision]
+    cmd = ["git", "-C", repo, "ls-tree", "-r", "--name-only", revision]
     return run(cmd).split()
 
 
-@deal.pure
-def diff(this: str, that: str) -> Sequence[str]:
+@deal.has("stdin")
+def diff(this: str, that: str, repo: str = "") -> Sequence[str]:
     """Retrives the list of changed files between two revisions.
 
     Args:
@@ -79,13 +84,16 @@ def diff(this: str, that: str) -> Sequence[str]:
         A sequence with the files' names.
 
     Examples:
-        >>> Repo.File.diff("0.5.0", "0.5.1")
-        ['.travis.yml', 'CHANGELOG.md', 'COPYING', 'Makefile', 'READ...
+        >>> from pathlib import Path
 
-    .. versionadded:: 36.1.0
+        >>> repo = Path("./tests/fixtures").resolve()
+        >>> diff("2.0.0", "1.0.0", str(repo))
+        ['func.py']
+
+    .. versionadded:: 1.0.0
 
     """
 
     cmd: Sequence[str]
-    cmd = ["git", "diff", "--name-only", f"{that}..{this}"]
+    cmd = ["git", "-C", repo, "diff", "--name-only", f"{that}..{this}"]
     return run(cmd).split()

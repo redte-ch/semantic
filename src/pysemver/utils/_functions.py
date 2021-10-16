@@ -30,7 +30,7 @@ import itertools
 import deal
 import returns.curry
 
-from .._types import PartialLike
+from ..types import PartialLike
 
 T = TypeVar("T")
 

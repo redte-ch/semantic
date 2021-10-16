@@ -12,9 +12,9 @@ import textwrap
 import deal
 import typic
 
-from .._domain import Signature
-from .._infra import files, versions
-from .._types import What
+from ..domain import Signature
+from ..infra.repo import files, versions
+from ..types import What
 from ._build_signatures import SignatureBuilder
 
 THIS: str = versions.this()
