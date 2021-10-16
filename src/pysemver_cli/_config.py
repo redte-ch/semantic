@@ -17,14 +17,11 @@ For example::
 
 """
 
-from typing import Any, Callable, MutableMapping, Sequence, Type, TypeVar
+from typing import Any, MutableMapping, Sequence, Type
 
 import deal
 import toml
 import typic
-
-T = TypeVar("T", bound = MutableMapping[str, Any])
-F = TypeVar("F", bound = Callable[[str], T])
 
 
 @typic.klass(frozen = True, slots = True, strict = True)
@@ -35,12 +32,12 @@ class Config:
 
 
 @deal.has("stdin")
-def build_config(loader: F, config: Type[Config]) -> Config:
+def build_config(config: Type[Config]) -> Config:
     """Builds the configuration."""
 
-    from_toml = loader.load("pyproject.toml")
+    from_toml: MutableMapping[str, Any] = toml.load("pyproject.toml")
 
     return config.transmute(from_toml["tool"]["pysemver"])
 
 
-config = build_config(toml, Config)
+config = build_config(Config)
