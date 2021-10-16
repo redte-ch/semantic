@@ -33,10 +33,10 @@ pysemver_hypothesis.register(Panel(''))
 pysemver_hypothesis.register(Table(''))
 
 _headers = "Command", "Description"
-"""Main command headers."""
+#: Main command headers.
 
 _console = Console()
-"""Internal function used to render."""
+#: Internal function used to render.
 
 
 @deal.has("stdout")

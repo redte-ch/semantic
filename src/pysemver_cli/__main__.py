@@ -18,10 +18,10 @@ from ._tasks import Tasks
 from ._views import help_view, home_view, to_options
 
 _tasks: Tasks = Tasks()
-"""The list of tasks."""
+#: The list of tasks.
 
 _header: str = "Commands"
-"""The home screen header opener."""
+#: The home screen header opener.
 
 
 @typic.klass(always = True, strict = True)

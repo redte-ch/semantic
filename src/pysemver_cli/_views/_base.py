@@ -26,10 +26,10 @@ pysemver_hypothesis.register(Layout(''))
 pysemver_hypothesis.register(Panel(''))
 
 _grid = utils.partial(Layout, " ", ratio = 2)
-"""To fill around the terminal."""
+#: To fill around the terminal.
 
 _main = utils.partial(Layout, ratio = 5)
-"""To render the main cli view."""
+#: To render the main cli view.
 
 
 @deal.pure

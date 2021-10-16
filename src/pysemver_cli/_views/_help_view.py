@@ -33,10 +33,10 @@ pysemver_hypothesis.register(Panel(''))
 pysemver_hypothesis.register(Table(''))
 
 _headers = "Flags", "Description", "Default values"
-"""Help command headers."""
+#: Help command headers.
 
 _console = Console()
-"""Internal function used to render."""
+#: Internal function used to render.
 
 
 @deal.has("stdout")
