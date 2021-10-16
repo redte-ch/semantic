@@ -7,6 +7,8 @@
 
 from __future__ import annotations
 
+from typing import cast, Tuple
+
 import inspect
 
 import typic
@@ -42,7 +44,10 @@ class Main(Program):
     def print_task_help(self, command: str) -> None:
         """Intercepts :mod:`.invoke` to print the help screen."""
 
-        doc = inspect.getdoc(_tasks[command])
+        doc: str
+        options: Tuple[Tuple[str, ...], ...]
+
+        doc = cast(str, inspect.getdoc(_tasks[command]))
         context = self.parser.contexts[command]
         options = to_options(context.help_tuples())
 

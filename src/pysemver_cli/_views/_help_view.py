@@ -11,7 +11,7 @@
 
 from __future__ import annotations
 
-from typing import Sequence, Tuple
+from typing import Tuple
 
 import deal
 from rich.console import Console
@@ -43,7 +43,7 @@ _console = Console()
 def render(
         command: str,
         doc: str,
-        options: Sequence[Tuple[str, str, str]],
+        options: Tuple[Tuple[str, ...], ...],
         ) -> None:
     """Render the home view.
 
@@ -128,7 +128,7 @@ def _main(command: str, content: Table) -> Panel:
 
 
 @deal.pure
-def _content(doc: str, options: Sequence[Tuple[str, str, str]]) -> Table:
+def _content(doc: str, options: Tuple[Tuple[str, ...], ...]) -> Table:
     """Inner usage instructions content.
 
     Args:

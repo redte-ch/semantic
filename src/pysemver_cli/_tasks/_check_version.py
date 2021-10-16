@@ -20,7 +20,7 @@ from pysemver import actions, infra
 from .._config import config
 from ._task import Task
 
-_task = Task.transmute({
+_task: Task = Task.transmute({
     "optional": ("ignore",),
     "help": {
         "ignore": (

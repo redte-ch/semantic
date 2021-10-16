@@ -11,7 +11,7 @@
 
 from __future__ import annotations
 
-from typing import Sequence, Tuple
+from typing import Tuple
 
 import deal
 from rich.console import Console
@@ -40,7 +40,7 @@ _console = Console()
 
 @deal.has("stdout")
 @deal.safe
-def render(tasks: Sequence[Tuple[str, str]]) -> None:
+def render(tasks: Tuple[Tuple[str, ...], ...]) -> None:
     """Render the home view.
 
     Args:
@@ -116,7 +116,7 @@ def _main(content: Table) -> Panel:
 
 
 @deal.pure
-def _content(tasks: Sequence[Tuple[str, str]]) -> Table:
+def _content(tasks: Tuple[Tuple[str, ...], ...]) -> Table:
     """Inner usage instructions content.
 
     Args:
