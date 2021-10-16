@@ -5,6 +5,7 @@
 
 from typing import Any, Callable, MutableMapping, Sequence, Type, TypeVar
 
+import deal
 import toml
 import typic
 
@@ -14,11 +15,12 @@ T = TypeVar("T", bound = MutableMapping[str, Any])
 F = TypeVar("F", bound = Callable[[str], T])
 
 
-@typic.klass(always = True, slots = True, strict = True)
+@typic.klass(frozen = True, slots = True, strict = True)
 class Config:
     ignore: Sequence[str]
 
 
+@deal.has("stdin")
 @utils.pipes
 def build_config(loader: F, config: Type[Config]) -> Config:
     return (
