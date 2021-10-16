@@ -28,3 +28,8 @@ Prints the help screen to the user.
 	Should Contain		${result.stdout}	Paths to ignore
 	Should Contain		${result.stdout}	.editorconfig, .github
 	Exit OK				${result.rc}
+
+Checks for required deprecations.
+	${result} =			Run PySemVer		check-deprecated
+	Wait For Process	pysemver
+	Exit OK				${result.rc}
