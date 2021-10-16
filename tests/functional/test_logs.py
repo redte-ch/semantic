@@ -7,16 +7,16 @@ import re
 
 import pytest
 
-from pysemver._bar import Bar
+from pysemver import infra
 
-COLORS = re.compile(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])")
+_colors = re.compile(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])")
 
 
-@pytest.fixture
-def bar():
-    """A progress bar."""
+# @pytest.fixture
+# def logs():
+#     """A progress logs."""
 
-    return Bar()
+#     return Bar()
 
 
 @pytest.fixture
@@ -25,54 +25,54 @@ def capture(capsys):
 
     def _capture():
         # We strip colors to test just content.
-        return COLORS.sub("", capsys.readouterr().out)
+        return _colors.sub("", capsys.readouterr().out)
 
     return _capture
 
 
-def test_init(bar, capture):
-    bar.init()
+def test_init(capture):
+    infra.logs.init()
     output = "[/] 0%   |··················································|\r"
     assert capture() == output
 
 
-def test_push(bar, capture):
-    bar.push(0, 2)
+def test_push(capture):
+    infra.logs.push(0, 2)
     output = "[/] 50%  |✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓·························|\r"
     assert capture() == output
 
 
-def test_okay(bar, capture):
-    bar.okay("Hello!")
+def test_okay(capture):
+    infra.logs.okay("Hello!")
     output = "[✓] Hello!"
     assert capture() == output
 
 
-def test_info(bar, capture):
-    bar.info("Hello!")
+def test_info(capture):
+    infra.logs.info("Hello!")
     output = "[i] Hello!"
     assert capture() == output
 
 
-def test_warn(bar, capture):
-    bar.warn("Hello!")
+def test_warn(capture):
+    infra.logs.warn("Hello!")
     output = "[!] Hello!"
     assert capture() == output
 
 
-def test_fail(bar, capture):
-    bar.fail()
+def test_fail(capture):
+    infra.logs.fail()
     output = "\r[x]"
     assert capture() == output
 
 
-def test_then(bar, capture):
-    bar.then()
+def test_then(capture):
+    infra.logs.then()
     output = "\n\r"
     assert capture() == output
 
 
-def test_wipe(bar, capture):
-    bar.wipe()
+def test_wipe(capture):
+    infra.logs.wipe()
     output = "                                                             \r"
     assert capture()[-62:] == output

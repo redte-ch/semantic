@@ -3,6 +3,13 @@
 # Licensed under the EUPL-1.2-or-later
 # For details: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 
+"""Provides a logger for tasks, with a progress bar!.
+
+.. versionadded:: 1.0.0
+
+"""
+
+
 from __future__ import annotations
 
 from typing import Sequence
@@ -12,111 +19,114 @@ import sys
 import deal
 import termcolor
 
-WORK_ICON: str = termcolor.colored("[/]", "cyan")
-INFO_ICON: str = termcolor.colored("[i]", "cyan")
-WARN_ICON: str = termcolor.colored("[!]", "yellow")
-OKAY_ICON: str = termcolor.colored("[✓]", "green")
-FAIL_ICON: str = termcolor.colored("[x]", "red")
+_work_icon: str = termcolor.colored("[/]", "cyan")
+_info_icon: str = termcolor.colored("[i]", "cyan")
+_warn_icon: str = termcolor.colored("[!]", "yellow")
+_okay_icon: str = termcolor.colored("[✓]", "green")
+_fail_icon: str = termcolor.colored("[x]", "red")
 
-BAR_ICON: str = termcolor.colored("|", "green")
-ACC_ICON: str = termcolor.colored("✓", "green")
-ETA_ICON: str = termcolor.colored("·", "green")
+_bar_icon: str = termcolor.colored("|", "green")
+_acc_icon: str = termcolor.colored("✓", "green")
+_eta_icon: str = termcolor.colored("·", "green")
 
-BAR_SIZE: int = 50
+_bar_size: int = 50
 
 
-class Bar:
-    """Provides a progress bar for tasks.
+@deal.safe
+@deal.has("stdout")
+def init() -> None:
+    """Initialises the progress bar."""
 
-    .. versionadded:: 1.0.0
+    sys.stdout.write(_init_message())
 
-    """
 
-    @deal.safe
-    @deal.has("stdout")
-    def init(self) -> None:
-        """Initialises the progress bar."""
+@deal.safe
+@deal.has("stdout")
+def push(count: int, total: int) -> None:
+    """Pushes progress to the ``stdout``."""
 
-        sys.stdout.write(self._init_message())
+    done: int = (count + 1) * 100 // total
+    sys.stdout.write(_push_message(done))
 
-    @deal.safe
-    @deal.has("stdout")
-    def push(self, count: int, total: int) -> None:
-        """Pushes progress to the ``stdout``."""
 
-        done: int = (count + 1) * 100 // total
-        sys.stdout.write(self._push_message(done))
+@deal.safe
+@deal.has("stdout")
+def okay(message: str) -> None:
+    """Prints an okay ``message``."""
 
-    @deal.safe
-    @deal.has("stdout")
-    def okay(self, message: str) -> None:
-        """Prints an okay ``message``."""
+    sys.stdout.write(f"{_okay_icon} {message}")
 
-        sys.stdout.write(f"{OKAY_ICON} {message}")
 
-    @deal.safe
-    @deal.has("stdout")
-    def info(self, message: str) -> None:
-        """Prints an info ``message``."""
+@deal.safe
+@deal.has("stdout")
+def info(message: str) -> None:
+    """Prints an info ``message``."""
 
-        sys.stdout.write(f"{INFO_ICON} {message}")
+    sys.stdout.write(f"{_info_icon} {message}")
 
-    @deal.safe
-    @deal.has("stdout")
-    def warn(self, message: str) -> None:
-        """Prints a warn ``message``."""
 
-        sys.stdout.write(f"{WARN_ICON} {message}")
+@deal.safe
+@deal.has("stdout")
+def warn(message: str) -> None:
+    """Prints a warn ``message``."""
 
-    @deal.safe
-    @deal.has("stdout")
-    def fail(self) -> None:
-        """Marks last printed message as failing."""
+    sys.stdout.write(f"{_warn_icon} {message}")
 
-        sys.stdout.write(f"\r{FAIL_ICON}")
 
-    @deal.safe
-    @deal.has("stdout")
-    def then(self) -> None:
-        """Prints a new line and resets the cursor position."""
+@deal.safe
+@deal.has("stdout")
+def fail() -> None:
+    """Marks last printed message as failing."""
 
-        sys.stdout.write("\n\r")
+    sys.stdout.write(f"\r{_fail_icon}")
 
-    @deal.safe
-    @deal.has("stdout")
-    def wipe(self) -> None:
-        """Cleans last printed message."""
 
-        sys.stdout.write(self._wipe_message())
+@deal.safe
+@deal.has("stdout")
+def then() -> None:
+    """Prints a new line and resets the cursor position."""
 
-    @deal.pure
-    def _init_message(self) -> str:
-        message: Sequence[str]
-        message = [
-            f"{WORK_ICON} 0%   {BAR_ICON}",
-            f"{ETA_ICON * BAR_SIZE}{BAR_ICON}\r",
-            ]
+    sys.stdout.write("\n\r")
 
-        return "".join(message)
 
-    @deal.pure
-    def _push_message(self, done: int) -> str:
-        message: Sequence[str]
-        spaces: str
+@deal.safe
+@deal.has("stdout")
+def wipe() -> None:
+    """Cleans last printed message."""
 
-        spaces = ""
-        spaces += [" ", ""][done >= BAR_SIZE * 2]
-        spaces += [" ", ""][done >= BAR_SIZE // 5]
+    sys.stdout.write(_wipe_message())
 
-        message = [
-            f"{WORK_ICON} {done}% {spaces}{BAR_ICON}"
-            f"{ACC_ICON * (done // 2)}"
-            f"{ETA_ICON * (BAR_SIZE - done // 2)}"
-            f"{BAR_ICON}\r"
-            ]
 
-        return "".join(message)
+@deal.pure
+def _init_message() -> str:
+    message: Sequence[str]
+    message = [
+        f"{_work_icon} 0%   {_bar_icon}",
+        f"{_eta_icon * _bar_size}{_bar_icon}\r",
+        ]
 
-    @deal.pure
-    def _wipe_message(self) -> str:
-        return f"{' ' * BAR_SIZE * 3}\r"
+    return "".join(message)
+
+
+@deal.pure
+def _push_message(done: int) -> str:
+    message: Sequence[str]
+    spaces: str
+
+    spaces = ""
+    spaces += [" ", ""][done >= _bar_size * 2]
+    spaces += [" ", ""][done >= _bar_size // 5]
+
+    message = [
+        f"{_work_icon} {done}% {spaces}{_bar_icon}"
+        f"{_acc_icon * (done // 2)}"
+        f"{_eta_icon * (_bar_size - done // 2)}"
+        f"{_bar_icon}\r"
+        ]
+
+    return "".join(message)
+
+
+@deal.pure
+def _wipe_message() -> str:
+    return f"{' ' * _bar_size * 3}\r"
