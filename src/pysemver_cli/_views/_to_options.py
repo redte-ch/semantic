@@ -11,14 +11,14 @@
 
 from __future__ import annotations
 
-from typing import List, Tuple, Union
+from typing import List, Tuple
 
 import classes
 import deal
 
 from pysemver import utils
 
-OptionsType = Tuple[Tuple[str, str, str], ...]
+OptionsType = Tuple[Tuple[str, ...], ...]
 TupleListType = List[Tuple[str, Tuple[str, str]]]
 TupleTupleType = Tuple[Tuple[str, Tuple[str, str]], ...]
 
@@ -85,12 +85,10 @@ def to_options(instance) -> OptionsType:
 
         >>> example4 = "-f --flag", ("How?", "Like that!")
         >>> to_options(example4)
-        (('-f --flag', 'How?', 'Like that!'),)
+        Traceback (most recent call last):
+        NotImplementedError: Missing matched typeclass instance for type: tuple
 
-        >>> to_options(*example4)
-        (('-f --flag', 'How?', 'Like that!'),)
-
-        >>> to_options((*example1, *example2, *example3, example4))
+        >>> to_options((*example1, *example2, *example3))
         (('-f --flag', 'How?', 'Like that!'), ('-f --flag', 'How?', 'Like ...))
 
     .. versionadded:: 1.0.0
@@ -108,17 +106,3 @@ def _from_tuple_list(instance: TupleListType) -> OptionsType:
 @to_options.instance(delegate = _TupleTuple)
 def _from_tuple_tuple(instance: TupleTupleType) -> OptionsType:
     return tuple(utils.dcons(instance))
-
-
-@deal.raises(NotImplementedError)
-@deal.has()
-@to_options.instance(protocol = Tuple)
-def _from_tuple(instance: Tuple[str, Tuple[str, str]]) -> OptionsType:
-    return to_options([instance])
-
-
-@deal.raises(NotImplementedError)
-@deal.has()
-@to_options.instance(str)
-def _from_str(*instance: Union[str, Tuple[str, str]]) -> OptionsType:
-    return to_options([instance])
