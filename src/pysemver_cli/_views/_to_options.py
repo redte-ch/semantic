@@ -95,6 +95,8 @@ def to_options(instance) -> OptionsType:
 
     """
 
+    ...  # pytype: disable=bad-return-type
+
 
 @deal.pure
 @to_options.instance(delegate = _TupleList)

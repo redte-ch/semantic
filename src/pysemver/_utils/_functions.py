@@ -15,6 +15,7 @@ AST and so on…
 from __future__ import annotations
 
 from typing import (
+    Any,
     Callable,
     Iterable,
     Iterator,
@@ -126,7 +127,7 @@ def dcons(seqs: Sequence[Tuple[T, Iterable[T]]]) -> Iterator[Tuple[T, ...]]:
 
 
 @deal.pure
-def dmap(func: Callable[[T], T], seqs: Sequence[Sequence[T]]) -> Iterator[T]:
+def dmap(func: Callable[[T], Any], seqs: Sequence[Sequence[T]]) -> Iterator[T]:
     """Applies a function to a sequence of sequences.
 
     Args:
