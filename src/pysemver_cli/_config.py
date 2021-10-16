@@ -23,8 +23,6 @@ import deal
 import toml
 import typic
 
-from pysemver import utils
-
 T = TypeVar("T", bound = MutableMapping[str, Any])
 F = TypeVar("F", bound = Callable[[str], T])
 
@@ -37,17 +35,12 @@ class Config:
 
 
 @deal.has("stdin")
-@utils.pipes
 def build_config(loader: F, config: Type[Config]) -> Config:
     """Builds the configuration."""
 
-    return (
-        "pyproject.toml"
-        >> loader.load
-        >> dict.get("tool")
-        >> dict.get("pysemver")
-        >> config.transmute
-        )
+    from_toml = loader.load("pyproject.toml")
+
+    return config.transmute(from_toml["tool"]["pysemver"])
 
 
 config = build_config(toml, Config)
