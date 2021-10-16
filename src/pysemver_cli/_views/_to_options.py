@@ -18,6 +18,7 @@ TupleTupleType = Tuple[Tuple[str, Tuple[str, str]], ...]
 
 
 class _TupleListMeta(type):
+    """Metaclass to check for a list of tuples."""
 
     def __instancecheck__(self, arg: object) -> bool:
         if not isinstance(arg, list):
@@ -33,6 +34,7 @@ class _TupleListMeta(type):
 
 
 class _TupleTupleMeta(type):
+    """Metaclass to check for a tuple of tuples."""
 
     def __instancecheck__(self, arg: object) -> bool:
         if not isinstance(arg, tuple):
@@ -48,11 +50,11 @@ class _TupleTupleMeta(type):
 
 
 class _TupleList(List[tuple], metaclass = _TupleListMeta):
-    ...
+    """A list of tuples."""
 
 
 class _TupleTuple(Tuple[tuple], metaclass = _TupleTupleMeta):
-    ...
+    """A tuple of tuples."""
 
 
 @classes.typeclass
