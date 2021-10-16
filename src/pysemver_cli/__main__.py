@@ -3,6 +3,8 @@
 # Licensed under the EUPL-1.2-or-later
 # For details: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 
+"""Main cli initialiser."""
+
 from __future__ import annotations
 
 import inspect
@@ -26,6 +28,7 @@ _header: str = "Commands"
 
 @typic.klass(always = True, strict = True)
 class Main(Program):
+    """Interfaces with :mod:`.invoke`."""
 
     def __init__(self) -> None:
         super().__init__(
@@ -35,6 +38,8 @@ class Main(Program):
 
     @utils.pipes
     def print_help(self) -> None:
+        """Intercepts :mod:`.invoke` to print the home screen."""
+
         return (
             _tasks
             >> self._make_pairs
@@ -43,6 +48,8 @@ class Main(Program):
 
     @utils.pipes
     def print_task_help(self, command: str) -> None:
+        """Intercepts :mod:`.invoke` to print the help screen."""
+
         return (
             self.parser.contexts
             >> dict.get(command)
@@ -54,7 +61,9 @@ class Main(Program):
                 )
             )
 
-    def task_list_opener(_self, _command: str = "") -> str:
+    def task_list_opener(self, _command: str = "") -> str:
+        """Intercepts :mod:`.invoke` to set the main header name."""
+
         return _header
 
 
