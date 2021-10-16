@@ -41,7 +41,7 @@ partial = returns.curry.partial
 
 
 @deal.pure
-def _(x: T) -> Callable[..., T]:
+def _(x: T) -> T:
     """Identity useful for noop.
 
     Examples:

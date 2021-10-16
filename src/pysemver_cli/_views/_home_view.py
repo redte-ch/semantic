@@ -20,16 +20,16 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 
-import pysemver_hypothesis
+import pysemver_hypothesis as st
 from pysemver import __name__, utils
 
 from .. import __version__
 from ._base import columns, rows
 from ._theme import Theme
 
-pysemver_hypothesis.register(Layout(""))
-pysemver_hypothesis.register(Panel(""))
-pysemver_hypothesis.register(Table(""))
+st.register(Layout, st.layouts)
+st.register(Panel, st.panels)
+st.register(Table, st.tables)
 
 _headers = "Command", "Description"
 #: Main command headers.

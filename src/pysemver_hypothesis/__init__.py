@@ -5,69 +5,74 @@
 
 """Shared hypothesis strategies."""
 
-import classes
-from hypothesis import strategies
-from rich.layout import Layout
-from rich.panel import Panel
-from rich.table import Table
+from __future__ import annotations
 
-from pysemver import domain
+from typing import Any, Callable, Type
 
-layout_strategy = strategies.builds(
-    Layout,
-    strategies.text(),
-    name = strategies.text(),
-    size = strategies.integers(),
-    minimum_size = strategies.integers(),
-    ratio = strategies.integers(),
-    visible = strategies.booleans(),
-    )
+from hypothesis import strategies as st
 
-panel_strategy = strategies.builds(
-    Panel,
-    strategies.text(),
-    title = strategies.text(),
-    subtitle = strategies.text(),
-    )
-
-table_strategy = strategies.builds(
-    Table,
-    strategies.text(),
-    )
-
-signature_strategy = strategies.builds(
-    domain.Signature,
-    name = strategies.text(),
-    file = strategies.text(),
-    )
+F = Callable[..., Any]
 
 
-@classes.typeclass
-def register(instance) -> None:
+def layouts(layout: Type[object]) -> st.SearchStrategy[object]:
+    """A strategy for layouts."""
+
+    return st.builds(
+        layout,
+        st.text(),
+        name = st.text(),
+        size = st.integers(),
+        minimum_size = st.integers(),
+        ratio = st.integers(),
+        visible = st.booleans(),
+        )
+
+
+def panels(panel: Type[object]) -> st.SearchStrategy[object]:
+    """A strategy for panels."""
+
+    return st.builds(
+        panel,
+        st.text(),
+        title = st.text(),
+        subtitle = st.text(),
+        )
+
+
+def tables(table: Type[object]) -> st.SearchStrategy[object]:
+    """A strategy for tables."""
+
+    return st.builds(
+        table,
+        st.text(),
+        )
+
+
+def signatures(signature: Type[object]) -> st.SearchStrategy[object]:
+    """A strategy for signatures."""
+
+    return st.builds(
+        signature,
+        name = st.text(),
+        file = st.text(),
+        )
+
+
+def register(what: Type[object], strategy: F) -> None:
     """Register an hypothesis strategy.
 
     Args:
-        instance: The strategy to register.
+        what: What to register a strategy for.
+        strategy: The strategy to register.
 
     Examples:
-        >>> register(Panel(str()))
+        >>> from rich.panel import Panel
+
+        >>> register(Panel, panels)
         None
 
     .. versionadded:: 1.0.0
 
     """
 
-
-@register.instance(Layout)
-def _from_layout(instance: Layout) -> None:
-    strategies.register_type_strategy(Layout, layout_strategy)
-
-
-@register.instance(Panel)
-def _from_panel(instance: Panel) -> None:
-    strategies.register_type_strategy(Panel, panel_strategy)
-
-
-@register.instance(Table)
-def _from_table(instance: Table) -> None:
-    strategies.register_type_strategy(Table, table_strategy)
+    st.register_type_strategy(what, strategy)

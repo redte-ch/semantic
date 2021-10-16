@@ -15,11 +15,11 @@ import deal
 from rich.layout import Layout
 from rich.panel import Panel
 
-import pysemver_hypothesis
+import pysemver_hypothesis as st
 from pysemver import utils
 
-pysemver_hypothesis.register(Layout(""))
-pysemver_hypothesis.register(Panel(""))
+st.register(Layout, st.layouts)
+st.register(Panel, st.panels)
 
 _grid = utils.partial(Layout, " ", ratio = 2)
 #: To fill around the terminal.

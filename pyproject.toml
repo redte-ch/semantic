@@ -104,7 +104,7 @@ implicit_reexport = true
 install_types = true
 non_interactive = true
 plugins = ["deal.mypy", "typic.mypy", "returns.contrib.mypy.returns_plugin"]
-strict = false
+strict = true
 
 [tool.isort]
 case_sensitive = true
