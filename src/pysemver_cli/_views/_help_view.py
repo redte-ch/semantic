@@ -27,9 +27,9 @@ from .. import __version__
 from ._base import columns, rows
 from ._theme import Theme
 
-pysemver_hypothesis.register(Layout(''))
-pysemver_hypothesis.register(Panel(''))
-pysemver_hypothesis.register(Table(''))
+pysemver_hypothesis.register(Layout(""))
+pysemver_hypothesis.register(Panel(""))
+pysemver_hypothesis.register(Table(""))
 
 _headers = "Flags", "Description", "Default values"
 #: Help command headers.

@@ -12,6 +12,7 @@ from ._check_version import check_version
 
 
 class Tasks(Collection):
+    """Interfaces with :mod:`.invoke` to register tasks."""
 
     def __init__(self) -> None:
         super().__init__()

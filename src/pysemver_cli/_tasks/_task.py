@@ -12,5 +12,7 @@ import typic
 
 @typic.klass(frozen = True, slots = True, strict = True)
 class Task:
+    """Represents a task."""
+
     optional: Tuple[str]
     help: MutableMapping[str, Tuple[str, ...]]

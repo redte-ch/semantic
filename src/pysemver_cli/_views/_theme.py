@@ -9,9 +9,12 @@ from aenum import Enum, skip
 
 
 class Theme(Enum):
+    """CLI theme."""
 
     @skip
     class Common(str, Enum):
+        """Common theme for the whole cli."""
+
         FAIL = "red"
         INFO = "cyan"
         OKAY = "green"
@@ -21,6 +24,8 @@ class Theme(Enum):
 
     @skip
     class Console(str, Enum):
+        """Specific rendering theme for instruction screens."""
+
         BORDER = "cyan"
         HEADER = "magenta"
         ROW = "cyan"

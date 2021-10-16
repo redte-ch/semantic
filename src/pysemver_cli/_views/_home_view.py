@@ -27,9 +27,9 @@ from .. import __version__
 from ._base import columns, rows
 from ._theme import Theme
 
-pysemver_hypothesis.register(Layout(''))
-pysemver_hypothesis.register(Panel(''))
-pysemver_hypothesis.register(Table(''))
+pysemver_hypothesis.register(Layout(""))
+pysemver_hypothesis.register(Panel(""))
+pysemver_hypothesis.register(Table(""))
 
 _headers = "Command", "Description"
 #: Main command headers.
@@ -48,6 +48,9 @@ def render(tasks: Sequence[Tuple[str, str]]) -> None:
         tasks:
             A sequence of tuples containing the commands and their
             descriptions, default values, for each command.
+
+    Returns:
+        Nothing.
 
     Examples:
         >>> render([("say-hi!", "HI!!! ❤ ❤ ❤")])
@@ -169,9 +172,14 @@ def _content(tasks: Sequence[Tuple[str, str]]) -> Table:
 def _usage() -> Text:
     """Usage instructions.
 
+    Returns:
+        A formatted usage text.
+
     Examples:
         >>> _usage()
         <text 'Usage: pysemver [--help] <command> …' ...>
+
+    .. versionadded:: 1.0.0
 
     """
 
