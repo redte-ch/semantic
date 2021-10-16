@@ -5,13 +5,12 @@
 
 from __future__ import annotations
 
-import aenum
-from aenum import Enum
+from aenum import Enum, skip
 
 
 class Theme(Enum):
 
-    @aenum.skip
+    @skip
     class Common(str, Enum):
         FAIL = "red"
         INFO = "cyan"
@@ -20,7 +19,7 @@ class Theme(Enum):
         WARN = "yellow"
         WORK = "magenta"
 
-    @aenum.skip
+    @skip
     class Console(str, Enum):
         BORDER = "cyan"
         HEADER = "magenta"

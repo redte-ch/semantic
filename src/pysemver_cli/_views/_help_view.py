@@ -20,9 +20,8 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 
-import pysemver
 import pysemver_hypothesis
-from pysemver import utils
+from pysemver import __name__, utils
 
 from .. import __version__
 from ._base import columns, rows
@@ -193,7 +192,7 @@ def _usage(command: str) -> Text:
     """
 
     return (
-        pysemver.__name__
+        __name__
         << str.format("Usage: {1} {0} [--options] …", command)
         >> Text
         << utils.partial(Text.stylize)
