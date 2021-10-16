@@ -14,7 +14,7 @@ from pysemver import actions, infra
 from .._config import config
 from ._task import Task
 
-task = Task.transmute({
+_task = Task.transmute({
     "optional": ("ignore",),
     "help": {
         "ignore": (
@@ -25,7 +25,7 @@ task = Task.transmute({
     })
 
 
-@invoke.task(**task.primitive())
+@invoke.task(**_task.primitive())
 def check_deprecated(_context, ignore = config.ignore):
     """Check if there are features to deprecate."""
 
