@@ -24,10 +24,10 @@ class _TupleListMeta(type):
         if not isinstance(arg, list):
             return False
 
-        if not isinstance(arg[0], (list, tuple)):
+        elif not isinstance(arg[0], (list, tuple)):
             return False
 
-        if not arg[0] or not isinstance(arg[0][0], str):
+        elif not isinstance(arg[0][0], str):
             return False
 
         return True
@@ -40,10 +40,10 @@ class _TupleTupleMeta(type):
         if not isinstance(arg, tuple):
             return False
 
-        if not isinstance(arg[0], (list, tuple)):
+        elif not isinstance(arg[0], (list, tuple)):
             return False
 
-        if not arg[0] or not isinstance(arg[0][0], str):
+        elif not isinstance(arg[0][0], str):
             return False
 
         return True
