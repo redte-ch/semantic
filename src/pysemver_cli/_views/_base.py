@@ -29,30 +29,22 @@ _main = utils.partial(Layout, ratio = 5)
 
 
 @deal.pure
-@utils.pipes
 def rows(panel: Panel) -> Layout:
     """Splits the terminal horizontally."""
 
-    return (
-        Layout()
-        << utils.partial(Layout.split_column)
-        >> utils.partial(_grid())
-        >> utils.partial(_main(panel))
-        >> utils.partial(_grid())
-        >> utils.do
-        )
+    layout = Layout()
+
+    layout.split_column(_grid(), _main(panel), _grid())
+
+    return layout
 
 
 @deal.pure
-@utils.pipes
-def columns(layout: Layout) -> Layout:
+def columns(panel: Layout) -> Layout:
     """Splits the terminal vertically."""
 
-    return (
-        Layout()
-        << utils.partial(Layout.split_row)
-        >> utils.partial(_grid())
-        >> utils.partial(_main(layout))
-        >> utils.partial(_grid())
-        >> utils.do
-        )
+    layout = Layout()
+
+    layout.split_row(_grid(), _main(panel), _grid())
+
+    return layout
