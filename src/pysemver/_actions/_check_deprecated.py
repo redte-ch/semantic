@@ -3,6 +3,7 @@
 # Licensed under the EUPL-1.2-or-later
 # For details: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 
+from types import ModuleType
 from typing import Sequence
 
 import ast
@@ -12,19 +13,17 @@ import textwrap
 import deal
 import typic
 
-from ._bar import Bar
-from ._repo import Repo
-from ._types import HasIndex
-from .domain import Exit
+from .. import _infra, _utils
+from .._domain import Exit
 
-VERSION: str
-VERSION = Repo.Version.last()
+_version: str
+_version = _infra.versions.last()
 
-FILES: Sequence[str]
-FILES = Repo.File.tree(VERSION)
+_files: Sequence[str]
+_files = _infra.files.tree(_version)
 
 
-@typic.klass(always = True, strict = True)
+# @typic.klass(always = True, strict = True)
 class CheckDeprecated(ast.NodeVisitor):
     """Prints the list of features marked as deprecated.
 
@@ -52,43 +51,52 @@ class CheckDeprecated(ast.NodeVisitor):
 
     """
 
-    bar: Bar
+    logs: ModuleType
     count: int
-    exit: HasIndex
+    exit: Exit
     files: Sequence[str]
     nodes: Sequence[ast.Module]
     total: int
     version: str
+    ignore: Sequence[str]
 
-    @deal.pure
+    # @deal.pure
     # @typic.al(strict = True)
     def __init__(
             self,
-            bar: Bar,
-            files: Sequence[str] = FILES,
-            version: str = VERSION,
+            logs: ModuleType,
+            files: Sequence[str] = _files,
+            ignore: Sequence[str] = [],
+            version: str = _version,
             ) -> None:
-        self.bar = bar
+        self.logs = logs
         self.exit = Exit.OK
-        self.files = files
-        self.nodes = [self._node(file) for file in self.files]
+        self.ignore = ignore
+
+        self.files = [
+            file for file in files
+            if self._is_functional(file) and self._is_python(file)
+            ]
+
+        self.nodes = tuple(_utils.compact(
+            [self._node(file) for file in self.files]))
         self.total = len(self.nodes)
         self.version = version
 
-    @deal.pure
+    # @deal.pure
     def __call__(self) -> None:
-        self.bar.init()
+        self.logs.init()
 
         # We use ``count`` to link each ``node`` with the corresponding
         # ``file``.
         for count, node in enumerate(self.nodes):
             self.count = count
             self.visit(node)
-            self.bar.push(self.count, self.total)
+            self.logs.push(self.count, self.total)
 
-        self.bar.wipe()
+        self.logs.wipe()
 
-    @deal.pure
+    # @deal.pure
     def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
         """Defines the ``visit()`` function to inspect the ``node``.
 
@@ -166,26 +174,37 @@ class CheckDeprecated(ast.NodeVisitor):
                 f"(current: {self.version}).",
                 ]
 
-            self.bar.warn(f"{' '.join(message)}")
+            self.logs.warn(f"{' '.join(message)}")
 
             # If there is at least one expired deprecation, the handler
             # will exit with an error.
             if self._isthis(expires):
                 self.exit = Exit.KO
-                self.bar.fail()
+                self.logs.fail()
 
-            self.bar.then()
+            self.logs.then()
 
-    @deal.pure
+    # @deal.pure
     # @typic.al(strict = True)
     def _isthis(self, version: str) -> bool:
         return self.version == version
 
-    @deal.pure
+    # @deal.pure
     # @typic.al(strict = True)
     def _node(self, file: str) -> ast.Module:
         source: str
 
-        with open(file) as f:
-            source = textwrap.dedent(f.read())
-            return ast.parse(source, file, "exec")
+        if pathlib.Path(file).resolve().exists():
+            with open(file) as f:
+                source = textwrap.dedent(f.read())
+                return ast.parse(source, file, "exec")
+
+    def _is_functional(self, file: str) -> bool:
+        """Checks if a given ``file`` is whitelisted as functional."""
+
+        return not any(ignore in file for ignore in self.ignore)
+
+    def _is_python(self, file: str) -> bool:
+        """Checks if a given ``file`` is a python file."""
+
+        return file.endswith(".py")

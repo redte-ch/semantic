@@ -20,5 +20,6 @@ import typic
 class Task:
     """Represents a task."""
 
+    iterable: Tuple[str]
     optional: Tuple[str]
     help: MutableMapping[str, Tuple[str, ...]]

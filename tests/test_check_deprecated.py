@@ -9,8 +9,7 @@ import tempfile
 
 import pytest
 
-from pysemver._bar import Bar
-from pysemver._check_deprecated import CheckDeprecated
+from pysemver import actions, infra
 
 
 class Module:
@@ -38,21 +37,16 @@ class Module:
 
 
 @pytest.fixture
-def bar():
-    return Bar()
+def warn(mocker):
+    return mocker.spy(infra.logs, "warn")
 
 
 @pytest.fixture
-def warn(mocker, bar):
-    return mocker.spy(bar, "warn")
+def fail(mocker):
+    return mocker.spy(infra.logs, "fail")
 
 
-@pytest.fixture
-def fail(mocker, bar):
-    return mocker.spy(bar, "fail")
-
-
-def test_check_deprecated(warn, bar):
+def test_check_deprecated(warn):
     """Prints out the features marked as deprecated."""
 
     lineno = 6
@@ -61,8 +55,8 @@ def test_check_deprecated(warn, bar):
         lineno -= 1
 
     with Module() as (file, name):
-        checker = CheckDeprecated([file.name])
-        checker(bar)
+        checker = actions.CheckDeprecated(infra.logs, [file.name])
+        checker()
 
     with pytest.raises(SystemExit) as exit:
         sys.exit(checker.exit.value)
@@ -72,14 +66,15 @@ def test_check_deprecated(warn, bar):
     assert exit.value.code == os.EX_OK
 
 
-def test_find_deprecated_when_expired(fail, bar):
+def test_find_deprecated_when_expired(fail):
     """Raises an error when at least one deprecation has expired."""
 
     version = "1.0.0"
 
     with Module(version) as (file, _):
-        checker = CheckDeprecated([file.name], version)
-        checker(bar)
+        checker = actions.CheckDeprecated(
+            infra.logs, [file.name], version = version)
+        checker()
 
     with pytest.raises(SystemExit) as exit:
         sys.exit(checker.exit.value)

@@ -21,6 +21,7 @@ from .._config import config
 from ._task import Task
 
 _task: Task = Task.transmute({
+    "iterable": ("ignore",),
     "optional": ("ignore",),
     "help": {
         "ignore": (

@@ -9,9 +9,10 @@ import deal
 import numpy
 
 import pysemver_hypothesis as st
-from pysemver import domain
 
-st.register(domain.Signature, st.signatures)
+from .._domain import Signature
+
+st.register(Signature, st.signatures)
 
 limit = 2e5
 """Just a random size/length sentinel."""
@@ -115,7 +116,7 @@ def pop(this: int, that: int, what: int) -> numpy.ndarray:
 
 @deal.pre(lambda _: limit > _.this >= 0 and limit > _.that >= 0)
 @deal.pure
-def fill(this: int, that: int, what: domain.Signature) -> numpy.ndarray:
+def fill(this: int, that: int, what: Signature) -> numpy.ndarray:
     """Fill a numpy array with anything.
 
     Args:

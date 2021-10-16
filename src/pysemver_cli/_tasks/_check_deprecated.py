@@ -21,6 +21,7 @@ from .._config import config
 from ._task import Task
 
 _task: Task = Task.transmute({
+    "iterable": ("ignore",),
     "optional": ("ignore",),
     "help": {
         "ignore": (
@@ -32,9 +33,12 @@ _task: Task = Task.transmute({
 
 
 @invoke.task(**_task.primitive())
-def check_deprecated(_context, ignore = config.ignore):
+def check_deprecated(_context, ignore):
     """Check if there are features to deprecate."""
 
-    task = actions.CheckDeprecated(infra.logger)
+    if len(ignore) == 0:
+        ignore = config.ignore
+
+    task = actions.CheckDeprecated(infra.logs, ignore = ignore)
     task()
     sys.exit(task.exit.value)
