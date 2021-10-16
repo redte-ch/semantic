@@ -32,11 +32,11 @@ format: $(shell git ls-files "*.py")
 	@poetry run pyupgrade $? --py36-plus --keep-runtime-typing
 
 bind: compile clean
-	@poetry run python -m deal test --count=100 src
+	@poetry run python -m deal test --count=10 src
 	@poetry run crosshair check src
 
 bind-%: compile clean
-	@poetry run python -m deal test --count=100 src/$*
+	@poetry run python -m deal test --count=10 src/$*
 	@poetry run crosshair check src/$*
 
 lint: compile clean

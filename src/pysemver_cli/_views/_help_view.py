@@ -40,7 +40,6 @@ _console = Console()
 
 @deal.has("stdout")
 @deal.safe
-@utils.pipes
 def render(
         command: str,
         doc: str,
@@ -57,9 +56,6 @@ def render(
             A sequence of tuples containing the commands and their
             descriptions, default values, for each command.
 
-    Returns:
-        Nothing.
-
     Examples:
         >>> command = "say-hi!"
         >>> doc = "How to say hi."
@@ -71,17 +67,14 @@ def render(
 
     """
 
-    return (
-        options
-        << _content(doc)
-        << _main(command)
-        >> _root
-        >> _console.print
-        )
+    content = _content(doc, options)
+    main = _main(command, content)
+    root = _root(main)
+
+    _console.print(root)
 
 
 @deal.pure
-@utils.pipes
 def _root(main: Panel) -> Layout:
     """Global help container.
 
@@ -101,11 +94,10 @@ def _root(main: Panel) -> Layout:
 
     """
 
-    return main >> rows >> columns
+    return columns(rows(main))
 
 
 @deal.pure
-@utils.pipes
 def _main(command: str, content: Table) -> Panel:
     """Main help container.
 
@@ -136,7 +128,6 @@ def _main(command: str, content: Table) -> Panel:
 
 
 @deal.pure
-@utils.pipes
 def _content(doc: str, options: Sequence[Tuple[str, str, str]]) -> Table:
     """Inner usage instructions content.
 
@@ -173,23 +164,14 @@ def _content(doc: str, options: Sequence[Tuple[str, str, str]]) -> Table:
         title = f"{doc}\n\n\n",
         )
 
-    (
-        _headers
-        << map(table.add_column)
-        << tuple
-        )
+    list(map(table.add_column, _headers))
 
-    (
-        options
-        << utils.dmap(table.add_row)
-        << tuple
-        )
+    list(utils.dmap(table.add_row, options))
 
     return table
 
 
 @deal.pure
-@utils.pipes
 def _usage(command: str) -> Text:
     """Usage instructions.
 
@@ -207,11 +189,8 @@ def _usage(command: str) -> Text:
 
     """
 
-    return (
-        __name__
-        << str.format("Usage: {1} {0} [--options] …", command)
-        >> Text
-        << utils.partial(Text.stylize)
-        >> utils.partial(Theme.Console.TITLE)
-        >> utils.do
-        )
+    text = Text(f"Usage: {__name__} {command} [--options] …")
+
+    text.stylize(Theme.Console.TITLE)
+
+    return text

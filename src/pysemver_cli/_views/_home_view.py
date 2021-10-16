@@ -48,9 +48,6 @@ def render(tasks: Sequence[Tuple[str, str]]) -> None:
             A sequence of tuples containing the commands and their
             descriptions, default values, for each command.
 
-    Returns:
-        Nothing.
-
     Examples:
         >>> render([("say-hi!", "HI!!! ❤ ❤ ❤")])
         ...say-hi!...HI!!! ❤ ❤ ❤...
