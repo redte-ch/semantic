@@ -17,7 +17,7 @@ import invoke
 
 from pysemver import actions, infra
 
-from .._config import config
+from ..config import config
 from ._task import Task
 
 _task: Task = Task.transmute({

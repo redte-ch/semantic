@@ -7,29 +7,16 @@ from __future__ import annotations
 
 from typing import Any
 
-import abc
 import sys
 
 if sys.version_info >= (3, 8):
-    from typing import Literal, Protocol
+    from typing import Literal
 
 else:
-    from typing_extensions import Literal, Protocol
+    from typing_extensions import Literal
 
 
 What = Literal["this", "that"]
-
-
-class HasIndex(Protocol):
-    index: int
-
-
-class HasExit(Protocol):
-    exit: HasIndex
-
-    @abc.abstractmethod
-    def __call__(self) -> None:
-        ...
 
 
 # TODO: fix this (move to pysemver_hypothesis)

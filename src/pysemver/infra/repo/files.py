@@ -15,7 +15,7 @@ from typing import Sequence
 
 import deal
 
-from . import _repo
+from ._base import run
 
 
 @deal.pure
@@ -41,7 +41,7 @@ def show(revision: str, file: str) -> str:
 
     cmd: Sequence[str]
     cmd = ["git", "show", f"{revision}:{file}"]
-    return _repo.run(cmd)
+    return run(cmd)
 
 
 @deal.pure
@@ -64,7 +64,7 @@ def tree(revision: str) -> Sequence[str]:
 
     cmd: Sequence[str]
     cmd = ["git", "ls-tree", "-r", "--name-only", revision]
-    return _repo.run(cmd).split()
+    return run(cmd).split()
 
 
 @deal.pure
@@ -88,4 +88,4 @@ def diff(this: str, that: str) -> Sequence[str]:
 
     cmd: Sequence[str]
     cmd = ["git", "diff", "--name-only", f"{that}..{this}"]
-    return _repo.run(cmd).split()
+    return run(cmd).split()

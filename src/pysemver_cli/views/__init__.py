@@ -13,6 +13,4 @@ are mostly repetitive, but it is yet too soon to refactor them.
 
 """
 
-from . import _help_view as help_view  # noqa: F401
-from . import _home_view as home_view  # noqa: F401
 from ._to_options import to_options  # noqa: F401

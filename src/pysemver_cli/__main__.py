@@ -16,8 +16,8 @@ from invoke import Program
 
 import pysemver_cli
 
-from ._tasks import Tasks
-from ._views import help_view, home_view, to_options
+from .tasks import Tasks
+from .views import help_view, home_view, to_options
 
 _tasks: Tasks = Tasks()
 #: The list of tasks.
