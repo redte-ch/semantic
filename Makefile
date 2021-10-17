@@ -31,12 +31,10 @@ format: $(shell git ls-files "*.py")
 	@poetry run pyupgrade $? --py36-plus --keep-runtime-typing
 
 bind: compile clean
-	@poetry run python -m deal test --count=10 src
-	@poetry run crosshair check src
+	@poetry run python -m deal test --count=25 src
 
 bind-%: compile clean
-	@poetry run python -m deal test --count=10 src/$*
-	@poetry run crosshair check src/$*
+	@poetry run python -m deal test --count=100 src/$*
 
 lint: compile clean
 	@poetry run flake8 docs/conf.py src tests noxfile.py

@@ -19,6 +19,9 @@ import sys
 import deal
 import termcolor
 
+limit = 2e5
+"""Just a random size/length sentinel."""
+
 _work_icon: str = termcolor.colored("[/]", "cyan")
 _info_icon: str = termcolor.colored("[i]", "cyan")
 _warn_icon: str = termcolor.colored("[!]", "yellow")
@@ -32,16 +35,16 @@ _eta_icon: str = termcolor.colored("·", "green")
 _bar_size: int = 50
 
 
-# @deal.safe
-# @deal.has("stdout")
+@deal.safe
+@deal.has("stdout")
 def init() -> None:
     """Initialises the progress bar."""
 
     sys.stdout.write(_init_message())
 
 
-# @deal.safe
-# @deal.has("stdout")
+@deal.pre(lambda count, total: limit > count >= 0 and limit > total >= 0)
+@deal.has("stdout")
 def push(count: int, total: int) -> None:
     """Pushes progress to the ``stdout``."""
 
@@ -49,55 +52,55 @@ def push(count: int, total: int) -> None:
     sys.stdout.write(_push_message(done))
 
 
-# @deal.safe
-# @deal.has("stdout")
+@deal.safe
+@deal.has("stdout")
 def okay(message: str) -> None:
     """Prints an okay ``message``."""
 
     sys.stdout.write(f"{_okay_icon} {message}")
 
 
-# @deal.safe
-# @deal.has("stdout")
+@deal.safe
+@deal.has("stdout")
 def info(message: str) -> None:
     """Prints an info ``message``."""
 
     sys.stdout.write(f"{_info_icon} {message}")
 
 
-# @deal.safe
-# @deal.has("stdout")
+@deal.safe
+@deal.has("stdout")
 def warn(message: str) -> None:
     """Prints a warn ``message``."""
 
     sys.stdout.write(f"{_warn_icon} {message}")
 
 
-# @deal.safe
-# @deal.has("stdout")
+@deal.safe
+@deal.has("stdout")
 def fail() -> None:
     """Marks last printed message as failing."""
 
     sys.stdout.write(f"\r{_fail_icon}")
 
 
-# @deal.safe
-# @deal.has("stdout")
+@deal.safe
+@deal.has("stdout")
 def then() -> None:
     """Prints a new line and resets the cursor position."""
 
     sys.stdout.write("\n\r")
 
 
-# @deal.safe
-# @deal.has("stdout")
+@deal.safe
+@deal.has("stdout")
 def wipe() -> None:
     """Cleans last printed message."""
 
     sys.stdout.write(_wipe_message())
 
 
-# @deal.pure
+@deal.pure
 def _init_message() -> str:
     message: Sequence[str]
     message = [
@@ -108,7 +111,8 @@ def _init_message() -> str:
     return "".join(message)
 
 
-# @deal.pure
+@deal.pre(lambda done: limit > done >= 0)
+@deal.has()
 def _push_message(done: int) -> str:
     message: Sequence[str]
     spaces: str
@@ -127,6 +131,6 @@ def _push_message(done: int) -> str:
     return "".join(message)
 
 
-# @deal.pure
+@deal.pure
 def _wipe_message() -> str:
     return f"{' ' * _bar_size * 3}\r"

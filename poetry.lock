@@ -200,23 +200,6 @@ tomli = {version = "*", optional = true, markers = "extra == \"toml\""}
 toml = ["tomli"]
 
 [[package]]
-name = "crosshair-tool"
-version = "0.0.18"
-description = "Analyze Python code for correctness using symbolic execution."
-category = "dev"
-optional = false
-python-versions = ">=3.7"
-
-[package.dependencies]
-importlib-metadata = ">=4.0.0"
-typing-extensions = ">=3.10.0"
-typing-inspect = ">=0.7.1"
-z3-solver = "4.8.9.0"
-
-[package.extras]
-dev = ["autodocsumm (>=0.2.2,<1)", "black (==20.8b1)", "deal (>=4.13.0)", "flake8", "hypothesis (>=6.0.0)", "icontract (>=2.4.0)", "mypy (==0.902)", "numpy", "pydantic", "pydocstyle (==5.1.1)", "pytest", "sphinx (>=3.4.3,<4)", "sphinx-autodoc-typehints (>=1.11.1)", "sphinx-rtd-theme (>=0.5.1,<1)", "types-pkg-resources", "wheel"]
-
-[[package]]
 name = "darglint"
 version = "1.8.0"
 description = "A utility for ensuring Google-style docstrings stay up to date with the source code."
@@ -1622,7 +1605,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "~3.7 || ~3.8 || ~3.9"
-content-hash = "739692f14d85ca9ed6be957dcff62234497280bc5ea32cf73d13a8c25cc2f6c7"
+content-hash = "35df0b469e1cfcc51e5c283390638e6f8a1ea4b6ee7ad36291325c6c90b19697"
 
 [metadata.files]
 aenum = [
@@ -1733,10 +1716,6 @@ coverage = [
     {file = "coverage-6.0.2-pp36-none-any.whl", hash = "sha256:7092eab374346121805fb637572483270324407bf150c30a3b161fc0c4ca5164"},
     {file = "coverage-6.0.2-pp37-none-any.whl", hash = "sha256:30922626ce6f7a5a30bdba984ad21021529d3d05a68b4f71ea3b16bda35b8895"},
     {file = "coverage-6.0.2.tar.gz", hash = "sha256:6807947a09510dc31fa86f43595bf3a14017cd60bf633cc746d52141bfa6b149"},
-]
-crosshair-tool = [
-    {file = "crosshair-tool-0.0.18.tar.gz", hash = "sha256:d37ed629da62296cf542dcdab08b60bbd76b974b0fc098a9ad6484cf8c8077b8"},
-    {file = "crosshair_tool-0.0.18-py3-none-any.whl", hash = "sha256:09a83ae42cddf8cc88507dcfb82594a0c9510b0c3eca9e382d9b6934882a72df"},
 ]
 darglint = [
     {file = "darglint-1.8.0-py3-none-any.whl", hash = "sha256:ac6797bcc918cd8d8f14c168a4a364f54e1aeb4ced59db58e7e4c6dfec2fe15c"},
