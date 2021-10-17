@@ -101,7 +101,19 @@ def _build_argument(
         args: Sequence[Any],
         defaults: Sequence[Any],
         ) -> Sequence[Argument]:
-    """Builds an argument."""
+    """Builds an argument.
+
+    Examples:
+        >>> acc = []
+        >>> node = ast.arg(arg = "arg")
+        >>> args = [node]
+        >>> defaults = []
+        >>> _build_argument(acc, node, args, defaults)
+        (Argument(name='arg', types=None, default=None),)
+
+    .. versionadded:: 1.0.0
+
+    """
 
     types: Optional[Tuple[str, ...]]
     default: Optional[str]
