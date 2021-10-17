@@ -28,8 +28,7 @@ from .. import utils
 from ..domain import Argument, Signature, Suffix, to_def, to_type
 
 
-# @deal.pure
-# @typic.al(strict = True)
+@deal.pure
 def _build_unique_name(
         path: Path,
         node: ast.FunctionDef,
@@ -68,8 +67,7 @@ def _build_unique_name(
     return _build_unique_name(path, node, suffixes)
 
 
-# @deal.pure
-# @typic.al(strict = True)
+@deal.pure
 def _build_posarg(node: ast.FunctionDef) -> Callable[..., Any]:
     """Curryfies the positional arguments builder."""
 
@@ -80,8 +78,7 @@ def _build_posarg(node: ast.FunctionDef) -> Callable[..., Any]:
         )
 
 
-# @deal.pure
-# @typic.al(strict = True)
+@deal.pure
 def _build_keyarg(node: ast.FunctionDef) -> Callable[..., Any]:
     """Curryfies the keyword arguments builder."""
 
@@ -91,10 +88,8 @@ def _build_keyarg(node: ast.FunctionDef) -> Callable[..., Any]:
         defaults = node.args.kw_defaults,
         )
 
+
 # @deal.pure
-# @typic.al(strict = True)
-
-
 def _build_argument(
         acc: Sequence[Argument],
         node: ast.arg,
@@ -126,6 +121,7 @@ def _build_argument(
     return (*acc, argument)
 
 
+@deal.pure
 def _build_argtypes(node: ast.arg) -> Optional[Tuple[str, ...]]:
     """Builds the types of an argument.
 
@@ -146,6 +142,8 @@ def _build_argtypes(node: ast.arg) -> Optional[Tuple[str, ...]]:
     return _build(node.annotation, to_type)
 
 
+# @deal.raises(IndexError)
+# @deal.has()
 def _build_arg_default(
         n_acc: int,
         n_arg: int,
@@ -190,6 +188,7 @@ def _build_arg_default(
     return _build(defaults[index], to_def)
 
 
+@deal.pure
 def _build_returns(node: ast.FunctionDef) -> Tuple[to_type, ...]:
     """Builds a return type.
 
@@ -210,6 +209,7 @@ def _build_returns(node: ast.FunctionDef) -> Tuple[to_type, ...]:
     return _build(node.returns, to_type)
 
 
+@deal.has()
 def _build(
         node: Optional[Union[ast.expr, ast.slice]],
         builder: Callable[..., Any] = utils._,
@@ -232,6 +232,7 @@ def _build(
     raise TypeError(ast.dump(node))
 
 
+@deal.pure
 def _is_unique(seq: Sequence[Signature], name: str) -> bool:
     """Check if a signature's name is unique or not.
 
@@ -253,6 +254,7 @@ def _is_unique(seq: Sequence[Signature], name: str) -> bool:
     return is_unique
 
 
+@deal.pure
 def _where(seq: Sequence[Signature], name: str) -> Generator[bool, None, None]:
     """Iterates over signatures to find the names named ``name``.
 
@@ -272,7 +274,7 @@ def _where(seq: Sequence[Signature], name: str) -> Generator[bool, None, None]:
     return (True for el in seq if el.name == name)
 
 
-# @typic.klass(always = True, strict = True)
+@typic.klass(always = True, strict = True)
 @dataclasses.dataclass
 class SignatureBuilder(ast.NodeVisitor):
     """Builds signatures from the abstract syntax-tree of a revision.
@@ -294,7 +296,6 @@ class SignatureBuilder(ast.NodeVisitor):
     count: int = 0
     signatures: Tuple[Signature, ...] = ()
 
-    # @deal.pure
     @property
     def total(self) -> int:
         """The total number of files to build signatures from.
@@ -313,8 +314,6 @@ class SignatureBuilder(ast.NodeVisitor):
 
         return len(self.files)
 
-    # @deal.pure
-    # @typic.al(strict = True)
     def __call__(self, source: str) -> None:
         """Builds all signatures from the passed source code.
 
@@ -366,7 +365,6 @@ class SignatureBuilder(ast.NodeVisitor):
         self.visit(node)
         self.count += 1
 
-    # @deal.pure
     def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
         """An :obj:`ast` node visitor."""
 
