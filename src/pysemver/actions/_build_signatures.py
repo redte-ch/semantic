@@ -177,6 +177,9 @@ def _build(node: Optional[Union[ast.expr, ast.slice]]) -> Any:
     #         for key, value in tuple(zip(node.keys, node.values))
     #         )
 
+    if node is None:
+        return None
+
     try:
         return to_value(node)
     except NotImplementedError:

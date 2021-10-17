@@ -119,11 +119,11 @@ def _from_type(instance: int) -> int:
     return str(instance)
 
 
-@to_value.instance(str)
-def _from_str(instance: str) -> str:
-    return instance
-
-
 @to_value.instance(None)
 def _from_none(instance: None) -> str:
+    return str(instance)
+
+
+@to_value.instance(str)
+def _from_str(instance: str) -> str:
     return instance
