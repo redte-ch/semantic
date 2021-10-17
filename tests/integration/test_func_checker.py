@@ -16,7 +16,8 @@ from pysemver.actions.check_signature import (
     diff_hash,
     diff_name,
     )
-from tests import fixtures
+
+from .. import fixtures
 
 
 @pytest.fixture
