@@ -6,55 +6,34 @@
 [![PyPI](https://img.shields.io/pypi/v/pysemver.svg)](https://pypi.org/project/pysemver/)
 [![Coverage](https://codecov.io/gh/maukoquiroga/pysemver/branch/master/graph/badge.svg)](https://codecov.io/gh/maukoquiroga/pysemver)
 
+# PySemver
+
+Command-line tools to facilitate semantic versioning!
+
+## Demo
+
+![pysemver](https://user-images.githubusercontent.com/329236/137640522-1673fc7e-8d88-4418-b10a-29e1e4a1408a.gif)
+
+## Installation
+
+```
+git clone https://github.com/maukoquiroga/pysemver
+cd pysemver
+make install
+poetry install
+```
+
+## Usage
+
+```
+poetry run pysemver
+poetry run pysemver --help check-version
+poetry run pysemver check-version
+```
+
+## License
+
 Copyleft (ɔ) 2021 Mauko Quiroga <mauko@pm.me>
 
 Licensed under the EUPL-1.2-or-later
 For details: [https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12](https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12)
-
-### TODO
-
-- [ ] Structure package
-  - [ ] Domain
-    - [ ] Entities (contracts, has an ID)
-    - [ ] Value objects (return types, arguments, ... , don't have meaning, or ID)
-    - [ ] Aggregates / aggregate root (where the invariants go ...)
-      - [ ] An aggregate is a collection on entity and value objects that are ONLY accessed through an aggregate root.
-      - [ ] An aggregate root (AR) is an entity through which the outside world interacts with an aggregate.
-      - [ ] An aggregate is a consistency boundary. All of the aggregate is loaded and stored together.
-    - [ ] Domain rules
-      - [ ] Contracts, en gros
-      - [ ] internes
-      - [ ] externes ?
-  - [ ] App / application / services
-    - [ ] Commands
-    - [ ] Queries
-    - [ ] Views ?
-    - [ ] (app/domain) Services ?
-  - [ ] Intra / infrastructure
-    - [ ] Bar / logging
-    - [ ] git/repo
-    - [ ] cache
-    - [ ] adapters ... 
-  - [ ] Interface (cli)
-    - [ ] Controllers ?
-    - [ ] CLI ?
-    - [ ] Main ... 
-    - [ ] Views ?
-  - [ ] utils
-    - [ ] fn.py ...
-
-- src
-  - pysemver
-    - __init__.py
-    - __main__.py (entrypoint)
-    - config.py
-    - infra
-      - repo.py
-    - domain
-      - models
-      - rules (deal/contract)
-    - services
-      - couche applicative
-    - cli
-      - views/controlleurs (render)
-    - utils
