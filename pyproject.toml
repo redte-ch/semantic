@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pysemver"
-version = "0.3.0"
+version = "1.0.0"
 description = "Command-line tools to facilitate semantic versioning."
 license = "EUPL-1.2-or-later"
 authors = ["Mauko Quiroga <mauko@pm.me>"]
