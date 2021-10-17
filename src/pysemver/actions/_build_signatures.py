@@ -121,11 +121,6 @@ def _build_argument(
 
     types = _build_argtypes(node)
     default = _build_arg_default(len(acc), len(args), defaults)
-
-    # todo: fix
-    if isinstance(default, tuple):
-        default = utils.first(default)
-
     argument = Argument(node.arg, types, default)
 
     return (*acc, argument)
@@ -346,7 +341,7 @@ class SignatureBuilder(ast.NodeVisitor):
             'file.py'
 
             >>> signature.arguments
-            (Argument(name='n', types=('List', 'int'), default='1'),)
+            (Argument(name='n', types=('List', 'int'), default=[1]),)
 
             >>> argument.name
             'n'
@@ -355,7 +350,7 @@ class SignatureBuilder(ast.NodeVisitor):
             ('List', 'int')
 
             >>> argument.default
-            '1'
+            [1]
 
             >>> signature.returns
             'int'
