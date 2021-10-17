@@ -83,8 +83,6 @@ class ParseFiles:
     builder: Optional[BuildSignatures]
     signatures: Optional[Tuple[Signature, ...]]
 
-    # @deal.pure
-    # @typic.al(strict = True)
     def __init__(self, *, this: str = _this, that: str = _that) -> None:
         self.this = this
         self.that = that
