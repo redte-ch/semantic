@@ -5,7 +5,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Optional, Tuple
+from typing import Any, Optional, Tuple, Union
 
 import typic
 
@@ -49,5 +49,5 @@ class Argument:
     """
 
     name: str
-    types: Optional[Tuple[str, ...]] = None
+    types: Optional[Union[str, Tuple[str, ...]]] = None
     default: Optional[Any] = None

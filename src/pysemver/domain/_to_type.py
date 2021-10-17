@@ -34,6 +34,11 @@ def to_type(instance) -> str:
     """
 
 
+@to_type.instance(ast.Attribute)
+def _from_ast_attribute(instance: ast.Attribute) -> str:
+    return to_type(instance.attr)
+
+
 @to_type.instance(ast.Constant)
 def _from_ast_constant(instance: ast.Constant) -> str:
     return to_type(instance.value)

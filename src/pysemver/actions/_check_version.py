@@ -16,11 +16,11 @@ from ..domain import Exit, Signature
 from ..types import What
 from ._bump_version import Bumper
 from ._check_signature import CheckSignature
-from ._parse_files import Parser
+from ._parse_files import ParseFiles
 
 T = TypeVar("T", bound = "CheckVersion")
 
-PARSER = Parser(this = "HEAD")
+PARSER = ParseFiles(this = "HEAD")
 
 
 # @typic.klass(always = True, slots = True, strict = True)
@@ -39,7 +39,7 @@ class CheckVersion:
 
     logs: ModuleType
     exit: Exit
-    parser: Parser
+    parser: ParseFiles
     ignore: Sequence[str]
     bump_version: Bumper
 
@@ -48,7 +48,7 @@ class CheckVersion:
             self,
             logs: ModuleType,
             ignore: Sequence[str],
-            parser: Parser = PARSER) -> None:
+            parser: ParseFiles = PARSER) -> None:
         self.logs = logs
         self.ignore = ignore
         self.exit = Exit.OK
@@ -74,7 +74,7 @@ class CheckVersion:
 
     # @deal.pure
     # @typic.al(strict = True)
-    def _parse(self, parser: Parser, what: What) -> Sequence[Signature]:
+    def _parse(self, parser: ParseFiles, what: What) -> Sequence[Signature]:
         """Updates status while the parser builds signatures."""
 
         with parser(what = what) as parsing:

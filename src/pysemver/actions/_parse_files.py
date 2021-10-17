@@ -9,20 +9,19 @@ from typing import Any, Generator, Optional, Sequence, Set, Tuple
 
 import textwrap
 
-import deal
 import typic
 
 from ..domain import Signature
-from ..infra.repo import files, versions
+from ..infra import repo
 from ..types import What
 from ._build_signatures import SignatureBuilder
 
-THIS: str = versions.this()
-THAT: str = versions.last()
+_this: str = repo.versions.this()
+_that: str = repo.versions.last()
 
 
-# @typic.klass(always = True, slots = True, strict = True)
-class Parser:
+@typic.klass(always = True, slots = True)
+class ParseFiles:
     """Wrapper around the repo and the signature builder.
 
     Attributes:
@@ -40,22 +39,22 @@ class Parser:
         that: The revision to compare ``this`` with, defaults to last version.
 
     Examples:
-        >>> parser = Parser(this = "0.4.0", that = "0.2.0")
+        >>> parser = ParseFiles(this = "0.3.0", that = "0.2.0")
 
         >>> parser.diff
-        ['.gitignore', '.python-version', 'Makefile', 'noxfile.py', 'poetry...
+        ['.gitignore', '.python-version', '2', 'Makefile', 'noxfile.py', 'p...]
 
         >>> with parser(what = "this") as parsing:
         ...     list(parsing)
         ...
-        [(1, 7), (2, 7), (3, 7), (4, 7), (5, 7), (6, 7), (7, 7)]
+        [(1, 10), (2, 10), (3, 10), (4, 10), (5, 10), (6, 10), (7, 10), (8,...]
 
         >>> this = set(parser.signatures)
 
         >>> with parser(what = "that") as parsing:
         ...     list(parsing)
         ...
-        [(1, 6), (2, 6), (3, 6), (4, 6), (5, 6), (6, 6)]
+        [(1, 9), (2, 9), (3, 9), (4, 9), (5, 9), (6, 9), (7, 9), (8, 9), (9...]
 
         >>> that = set(parser.signatures)
 
@@ -63,7 +62,7 @@ class Parser:
         ...     print("wut!")
         ...
         Traceback (most recent call last):
-        AttributeError: 'Parser' object has no attribute 'thus'
+        AttributeError: 'ParseFiles' object has no attribute 'thus'
 
         >>> next(iter(this ^ that & this))  # Added functions…
         Signature(name='...', ...
@@ -71,7 +70,7 @@ class Parser:
         >>> next(iter(that ^ this & that))  # Removed functions…
         Signature(name='...', ...
 
-    .. versionadded:: 36.1.0
+    .. versionadded:: 1.0.0
 
     """
 
@@ -84,29 +83,26 @@ class Parser:
 
     # @deal.pure
     # @typic.al(strict = True)
-    def __init__(self, *, this: str = THIS, that: str = THAT) -> None:
+    def __init__(self, *, this: str = _this, that: str = _that) -> None:
         self.this = this
         self.that = that
-        self.diff = files.diff(this, that)
+        self.diff = repo.files.diff(this, that)
         self.current = None
         self.builder = None
         self.signatures = None
 
-    # @deal.pure
-    # @typic.al(strict = True)
-    def __call__(self, *, what: What) -> Parser:
+    def __call__(self, *, what: What) -> ParseFiles:
         # We try recover the revision (``this`` or ``that``). Fails otherwise.
         self.current: str = self.__getattribute__(what)
 
         # And we return ourselves.
         return self
 
-    # @deal.pure
     def __enter__(self) -> Generator[Tuple[int, ...], None, None]:
         # We recover the python files corresponding to ``revison``.
         files: Set[str] = {
             file
-            for file in files.tree(self.current)
+            for file in repo.files.tree(self.current)
             if file.endswith(".py")
             }
 
@@ -114,13 +110,13 @@ class Parser:
         to_parse: Set[str] = files & set(self.diff)
 
         # We create a builder with the selected files.
-        self.builder: SignatureBuilder(tuple(to_parse))
+        self.builder = SignatureBuilder(tuple(to_parse))
 
         # And finally we iterate over the files…
         for file in self.builder.files:
 
             # We recover the contents of ``file`` at ``revision``.
-            content: str = files.show(self.current, file)
+            content: str = repo.files.show(self.current, file)
 
             # We sanitize the source code.
             source: str = textwrap.dedent(content)
@@ -131,7 +127,6 @@ class Parser:
             # And we yield a counter to keep the user updated.
             yield self.builder.count, self.builder.total
 
-    # @deal.pure
     def __exit__(self, *__: Any) -> None:
         # We save the signatures for upstream recovery.
         self.signatures = self.builder.signatures

@@ -10,6 +10,7 @@ from typing import (
     Callable,
     Generator,
     Iterator,
+    List,
     Optional,
     Sequence,
     Tuple,
@@ -28,7 +29,6 @@ from .. import utils
 from ..domain import Argument, Signature, Suffix, to_def, to_type
 
 
-@deal.pure
 def _build_unique_name(
         path: Path,
         node: ast.FunctionDef,
@@ -64,7 +64,7 @@ def _build_unique_name(
         return name
 
     # Otherwise, we retry…
-    return _build_unique_name(path, node, suffixes)
+    return _build_unique_name(path, node, suffixes, signatures)
 
 
 @deal.pure
@@ -292,7 +292,7 @@ class SignatureBuilder(ast.NodeVisitor):
 
     """
 
-    files: Sequence[str]
+    files: Union[List[str], Tuple[str, ...]]
     count: int = 0
     signatures: Tuple[Signature, ...] = ()
 

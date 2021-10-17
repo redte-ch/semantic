@@ -48,6 +48,11 @@ def _from_ast_list(instance: ast.List) -> str:
     return list(to_def(item) for item in instance.elts)
 
 
+@to_def.instance(ast.Name)
+def _from_ast_name(instance: ast.Name) -> str:
+    return to_def(instance.id)
+
+
 @to_def.instance(int)
 def _from_int(instance: int) -> int:
     return instance
