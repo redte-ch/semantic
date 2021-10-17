@@ -11,7 +11,6 @@ from ._functions import (  # noqa: F401
     cons,
     dcons,
     dmap,
-    do,
     first,
     flatten,
     partial,

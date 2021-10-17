@@ -57,39 +57,6 @@ def _(x: T) -> T:
 
 
 @deal.pure
-def do(func: PartialLike) -> T:
-    """Do something on something, then return something.
-
-    Args:
-        func: Something.
-
-    Returns:
-        Any: The original thing.
-
-    Examples:
-        >>> def double(x: str) -> None:
-        ...     return x * 2
-
-        >>> x = "hey!"
-        >>> func = partial(double, x)
-        >>> do(func)
-        'hey!'
-
-    Todo:
-        Fix types.
-
-    .. versionadded:: 1.0.0
-
-    """
-
-    self, *args = func.args  # type: ignore
-
-    func.func(self, *args, **func.keywords)  # type: ignore
-
-    return self
-
-
-@deal.pure
 def cons(el: T, seq: Iterable[T]) -> Iterator[T]:
     """The original cons.
 
