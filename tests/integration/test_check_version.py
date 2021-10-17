@@ -17,7 +17,7 @@ from pysemver.infra import logs
 def checker():
     """A version checker."""
 
-    checker = CheckVersion(logs())
+    checker = CheckVersion(logs)
     checker.parser = type(checker.parser)(this = "0.2.0", that = "0.2.0")
     checker.bumper.this = "0.2.0"
     checker.bumper.that = "0.2.0"

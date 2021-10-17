@@ -16,7 +16,13 @@ from pysemver.actions.check_signature import (
     diff_hash,
     diff_name,
     )
-from tests.fixtures import func
+from tests.fixtures import (
+    func,
+    func_with_changed_args,
+    func_with_defaults,
+    func_with_more_args,
+    func_with_more_defaults,
+    )
 
 
 @pytest.fixture
@@ -99,42 +105,6 @@ def test_when_changed_arg_names(this_builder, that_builder):
     assert_equal(diff_defs(checker.this, checker.that), [0, 0, 0, 0])
     assert checker.score() == 3
     assert checker.reason == "args-diff"
-
-
-def test_when_addedtypes(this_builder, that_builder):
-
-    this_builder(inspect.getsource(func_withtypes))
-    that_builder(inspect.getsource(func))
-
-    this, = this_builder.signatures
-    that, = that_builder.signatures
-
-    checker = CheckSignature(this, that)
-
-    assert_equal(diff_hash(checker.this, checker.that), [1, 1, 1, 1])
-    assert_equal(diff_args(checker.this, checker.that), [0, 0, 0, 0])
-    assert_equal(diff_name(checker.this, checker.that), [0, 0, 0, 0])
-    assert_equal(diff_defs(checker.this, checker.that), [0, 0, 0, 0])
-    assert checker.score() == 1
-    assert checker.reason == "types-diff"
-
-
-def test_when_removedtypes(this_builder, that_builder):
-
-    this_builder(inspect.getsource(func))
-    that_builder(inspect.getsource(func_withtypes))
-
-    this, = this_builder.signatures
-    that, = that_builder.signatures
-
-    checker = CheckSignature(this, that)
-
-    assert_equal(diff_hash(checker.this, checker.that), [1, 1, 1, 1])
-    assert_equal(diff_args(checker.this, checker.that), [0, 0, 0, 0])
-    assert_equal(diff_name(checker.this, checker.that), [0, 0, 0, 0])
-    assert_equal(diff_defs(checker.this, checker.that), [0, 0, 0, 0])
-    assert checker.score() == 1
-    assert checker.reason == "types-diff"
 
 
 def test_when_added_defaults(this_builder, that_builder):
