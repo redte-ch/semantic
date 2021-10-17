@@ -56,7 +56,6 @@ class Signature:
     name: str
     file: str
     arguments: Tuple[Argument] = ()
-    returns: Union[str, Tuple[str, Tuple[Any]]] = None
 
     def __len__(self) -> int:
         return len(self.arguments)

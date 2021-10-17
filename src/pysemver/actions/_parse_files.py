@@ -14,7 +14,7 @@ import typic
 from ..domain import Signature
 from ..infra import repo
 from ..types import What
-from ._build_signatures import SignatureBuilder
+from ._build_signatures import BuildSignatures
 
 _this: str = repo.versions.this()
 _that: str = repo.versions.last()
@@ -78,7 +78,7 @@ class ParseFiles:
     that: str
     current: Optional[str]
     diff: Sequence[str]
-    builder: Optional[SignatureBuilder]
+    builder: Optional[BuildSignatures]
     signatures: Optional[Sequence[Signature]]
 
     # @deal.pure
@@ -110,7 +110,7 @@ class ParseFiles:
         to_parse: Set[str] = files & set(self.diff)
 
         # We create a builder with the selected files.
-        self.builder = SignatureBuilder(tuple(to_parse))
+        self.builder = BuildSignatures(tuple(to_parse))
 
         # And finally we iterate over the files…
         for file in self.builder.files:

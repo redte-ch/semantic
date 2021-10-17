@@ -49,5 +49,4 @@ class Argument:
     """
 
     name: str
-    types: Optional[Union[str, Tuple[str, ...]]] = None
     default: Optional[Any] = None

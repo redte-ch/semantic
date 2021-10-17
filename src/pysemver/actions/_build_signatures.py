@@ -110,36 +110,13 @@ def _build_argument(
 
     """
 
-    types: Optional[Tuple[str, ...]]
     default: Optional[str]
     argument: Argument
 
-    types = _build_argtypes(node)
     default = _build_arg_default(len(acc), len(args), defaults)
-    argument = Argument(node.arg, types, default)
+    argument = Argument(node.arg, default)
 
     return (*acc, argument)
-
-
-# @deal.pure
-def _build_argtypes(node: ast.arg) -> Optional[Tuple[str, ...]]:
-    """Builds the types of an argument.
-
-    Examples:
-        >>> argtype = ast.Constant(value = "int")
-        >>> node = ast.arg(annotation = argtype)
-        >>> _build_argtypes(node)
-        'int'
-
-        >>> node = ast.arg()
-        >>> _build_argtypes(node)
-        None
-
-    .. versionadded:: 1.0.0
-
-    """
-
-    return _build(node.annotation, to_type)
 
 
 # @deal.raises(IndexError)
@@ -186,27 +163,6 @@ def _build_arg_default(
     index = n_def + n_acc - n_arg
 
     return _build(defaults[index], to_def)
-
-
-# @deal.pure
-def _build_returns(node: ast.FunctionDef) -> Tuple[to_type, ...]:
-    """Builds a return type.
-
-    Examples:
-        >>> returns = ast.Constant(value = "int")
-        >>> node = ast.FunctionDef(returns = returns)
-        >>> _build_returns(node)
-        'int'
-
-        >>> node = ast.FunctionDef()
-        >>> _build_returns(node)
-        None
-
-    .. versionadded:: 1.0.0
-
-    """
-
-    return _build(node.returns, to_type)
 
 
 @deal.has()
@@ -276,7 +232,7 @@ def _where(seq: Sequence[Signature], name: str) -> Generator[bool, None, None]:
 
 @typic.klass(always = True, strict = True)
 @dataclasses.dataclass
-class SignatureBuilder(ast.NodeVisitor):
+class BuildSignatures(ast.NodeVisitor):
     """Builds signatures from the abstract syntax-tree of a revision.
 
     Attributes:
@@ -285,8 +241,8 @@ class SignatureBuilder(ast.NodeVisitor):
         signatures: The built signatures.
 
     Examples:
-        >>> SignatureBuilder(["file.py"])
-        SignatureBuilder(files=['file.py'], count=0, signatures=())
+        >>> BuildSignatures(["file.py"])
+        BuildSignatures(files=['file.py'], count=0, signatures=())
 
     .. versionadded:: 36.1.0
 
@@ -304,7 +260,7 @@ class SignatureBuilder(ast.NodeVisitor):
             int: The number of files.
 
         Examples:
-            >>> builder = SignatureBuilder(["file.py"])
+            >>> builder = BuildSignatures(["file.py"])
             >>> builder.total
             1
 
@@ -321,7 +277,7 @@ class SignatureBuilder(ast.NodeVisitor):
             source: The source code to build signatures from.
 
         Examples:
-            >>> builder = SignatureBuilder(["file.py"])
+            >>> builder = BuildSignatures(["file.py"])
             >>> source = [
             ...     "def function(n: List[int] = [1]) -> int:",
             ...     "    return next(iter(n))",
@@ -375,7 +331,6 @@ class SignatureBuilder(ast.NodeVisitor):
         kwds: Sequence[ast.arg]
         posargs: Tuple[Argument, ...]
         keyargs: Tuple[Argument, ...]
-        returns: Tuple[to_type, ...]
         signature: Signature
 
         # We look for the corresponding ``file``.
@@ -406,11 +361,8 @@ class SignatureBuilder(ast.NodeVisitor):
         kwds = node.args.kwonlyargs
         keyargs = functools.reduce(_build_keyarg(node), kwds, ())
 
-        # We build the return types.
-        returns = _build_returns(node)
-
         # We build the signature.
-        signature = Signature(name, file, posargs + keyargs, returns)
+        signature = Signature(name, file, posargs + keyargs)
 
         # And we add it to the list of signatures.
         self.signatures = self.signatures + (signature,)

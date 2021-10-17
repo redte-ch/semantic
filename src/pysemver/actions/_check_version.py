@@ -15,8 +15,8 @@ from .. import infra
 from ..domain import Exit, Signature
 from ..types import What
 from ._bump_version import Bumper
-from ._check_signature import CheckSignature
 from ._parse_files import ParseFiles
+from .check_signature import CheckSignature
 
 T = TypeVar("T", bound = "CheckVersion")
 

@@ -8,27 +8,25 @@ import inspect
 import pytest
 from numpy.testing import assert_equal
 
-from pysemver._builder import SignatureBuilder
-from pysemver.services.signatures import (
+from pysemver.actions import BuildSignatures
+from pysemver.actions.check_signature import (
     CheckSignature,
     diff_args,
     diff_defs,
     diff_hash,
     diff_name,
-    diff_type,
     )
-
-from . import fixtures
+from tests import fixtures
 
 
 @pytest.fixture
 def this_builder():
-    return SignatureBuilder(["file.py"])
+    return BuildSignatures(["file.py"])
 
 
 @pytest.fixture
 def that_builder():
-    return SignatureBuilder(["file.py"])
+    return BuildSignatures(["file.py"])
 
 
 def test(this_builder, that_builder):
@@ -44,7 +42,6 @@ def test(this_builder, that_builder):
     assert_equal(diff_hash(checker.this, checker.that), [0, 0, 0, 0])
     assert_equal(diff_args(checker.this, checker.that), [0, 0, 0, 0])
     assert_equal(diff_name(checker.this, checker.that), [0, 0, 0, 0])
-    assert_equal(diff_type(checker.this, checker.that), [0, 0, 0, 0])
     assert_equal(diff_defs(checker.this, checker.that), [0, 0, 0, 0])
     assert checker.score() == 0
     assert checker.reason is None
@@ -63,7 +60,6 @@ def test_when_added_args(this_builder, that_builder):
     assert_equal(diff_hash(checker.this, checker.that), [1, 1, 1, 1, 1, 1])
     assert_equal(diff_args(checker.this, checker.that), [2, 2, 2, 2, 2, 2])
     assert_equal(diff_name(checker.this, checker.that), [0, 0, 0, 0, 2, 2])
-    assert_equal(diff_type(checker.this, checker.that), [0, 0, 0, 0, 0, 0])
     assert_equal(diff_defs(checker.this, checker.that), [0, 0, 0, 0, 3, 3])
     assert checker.score() == 3
     assert checker.reason == "args-diff"
@@ -82,7 +78,6 @@ def test_when_removed_args(this_builder, that_builder):
     assert_equal(diff_hash(checker.this, checker.that), [1, 1, 1, 1, 1, 1])
     assert_equal(diff_args(checker.this, checker.that), [3, 3, 3, 3, 3, 3])
     assert_equal(diff_name(checker.this, checker.that), [0, 0, 0, 0, 2, 2])
-    assert_equal(diff_type(checker.this, checker.that), [0, 0, 0, 0, 0, 0])
     assert_equal(diff_defs(checker.this, checker.that), [0, 0, 0, 0, 2, 2])
     assert checker.score() == 3
     assert checker.reason == "args-diff"
@@ -101,7 +96,6 @@ def test_when_changed_arg_names(this_builder, that_builder):
     assert_equal(diff_hash(checker.this, checker.that), [1, 1, 1, 1])
     assert_equal(diff_args(checker.this, checker.that), [0, 0, 0, 0])
     assert_equal(diff_name(checker.this, checker.that), [0, 3, 3, 0])
-    assert_equal(diff_type(checker.this, checker.that), [0, 0, 0, 0])
     assert_equal(diff_defs(checker.this, checker.that), [0, 0, 0, 0])
     assert checker.score() == 3
     assert checker.reason == "args-diff"
@@ -120,7 +114,6 @@ def test_when_addedtypes(this_builder, that_builder):
     assert_equal(diff_hash(checker.this, checker.that), [1, 1, 1, 1])
     assert_equal(diff_args(checker.this, checker.that), [0, 0, 0, 0])
     assert_equal(diff_name(checker.this, checker.that), [0, 0, 0, 0])
-    assert_equal(diff_type(checker.this, checker.that), [1, 1, 0, 0])
     assert_equal(diff_defs(checker.this, checker.that), [0, 0, 0, 0])
     assert checker.score() == 1
     assert checker.reason == "types-diff"
@@ -139,7 +132,6 @@ def test_when_removedtypes(this_builder, that_builder):
     assert_equal(diff_hash(checker.this, checker.that), [1, 1, 1, 1])
     assert_equal(diff_args(checker.this, checker.that), [0, 0, 0, 0])
     assert_equal(diff_name(checker.this, checker.that), [0, 0, 0, 0])
-    assert_equal(diff_type(checker.this, checker.that), [1, 1, 0, 0])
     assert_equal(diff_defs(checker.this, checker.that), [0, 0, 0, 0])
     assert checker.score() == 1
     assert checker.reason == "types-diff"
@@ -158,7 +150,6 @@ def test_when_added_defaults(this_builder, that_builder):
     assert_equal(diff_hash(checker.this, checker.that), [1, 1, 1, 1])
     assert_equal(diff_args(checker.this, checker.that), [0, 0, 0, 0])
     assert_equal(diff_name(checker.this, checker.that), [0, 0, 0, 0])
-    assert_equal(diff_type(checker.this, checker.that), [0, 0, 0, 0])
     assert_equal(diff_defs(checker.this, checker.that), [0, 0, 2, 2])
     assert checker.score() == 2
     assert checker.reason == "defaults-diff"
@@ -177,7 +168,6 @@ def test_when_removed_defaults(this_builder, that_builder):
     assert_equal(diff_hash(checker.this, checker.that), [1, 1, 1, 1])
     assert_equal(diff_args(checker.this, checker.that), [0, 0, 0, 0])
     assert_equal(diff_name(checker.this, checker.that), [0, 0, 0, 0])
-    assert_equal(diff_type(checker.this, checker.that), [0, 0, 0, 0])
     assert_equal(diff_defs(checker.this, checker.that), [0, 0, 3, 3])
     assert checker.score() == 3
     assert checker.reason == "defaults-diff"
@@ -196,7 +186,6 @@ def test_when_added_args_and_defs(this_builder, that_builder):
     assert_equal(diff_hash(checker.this, checker.that), [1, 1, 1, 1, 1, 1])
     assert_equal(diff_args(checker.this, checker.that), [2, 2, 2, 2, 2, 2])
     assert_equal(diff_name(checker.this, checker.that), [0, 0, 0, 0, 2, 2])
-    assert_equal(diff_type(checker.this, checker.that), [0, 0, 0, 0, 0, 0])
     assert_equal(diff_defs(checker.this, checker.that), [0, 0, 0, 0, 0, 0])
     assert checker.score() == 2
     assert checker.reason == "args/defaults-diff"
@@ -215,7 +204,6 @@ def test_when_removed_args_and_defs(this_builder, that_builder):
     assert_equal(diff_hash(checker.this, checker.that), [1, 1, 1, 1, 1, 1])
     assert_equal(diff_args(checker.this, checker.that), [3, 3, 3, 3, 3, 3])
     assert_equal(diff_name(checker.this, checker.that), [0, 0, 0, 0, 2, 2])
-    assert_equal(diff_type(checker.this, checker.that), [0, 0, 0, 0, 0, 0])
     assert_equal(diff_defs(checker.this, checker.that), [0, 0, 0, 0, 0, 0])
     assert checker.score() == 3
     assert checker.reason == "args-diff"

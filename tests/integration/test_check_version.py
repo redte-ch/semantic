@@ -6,18 +6,18 @@
 import os
 import sys
 
-import pipeop
 import pytest
 
-from pysemver._bar import Bar
-from pysemver._check_version import CheckVersion
+from pysemver import utils
+from pysemver.actions import CheckVersion
+from pysemver.infra import logs
 
 
 @pytest.fixture
 def checker():
     """A version checker."""
 
-    checker = CheckVersion(Bar())
+    checker = CheckVersion(logs())
     checker.parser = type(checker.parser)(this = "0.2.0", that = "0.2.0")
     checker.bumper.this = "0.2.0"
     checker.bumper.that = "0.2.0"
@@ -45,16 +45,13 @@ def okay(mocker, checker):
 
 
 @pytest.fixture
-@pipeop.pipes
 def calls(warn):
     def _calls():
-        return (
-            warn.call_args_list
-            >> cytoolz.flatten
-            << cytoolz.map(cytoolz.first)
-            >> cytoolz.compact
-            >> tuple
-            )
+        calls = warn.call_args_list
+        calls = utils.flatten(calls)
+        calls = map(utils.first, calls)
+        calls = utils.compact(calls)
+        return tuple(calls)
 
     return _calls
 
@@ -159,7 +156,6 @@ def test_funcs_when_no_diff(info, warn, fail, okay, checker):
     assert exit.value.code == os.EX_OK
 
 
-@pipeop.pipes
 def test_funcs_when_added(info, warn, fail, calls, checker):
     """Requires a minor bump when a function is added."""
 
@@ -176,7 +172,6 @@ def test_funcs_when_added(info, warn, fail, calls, checker):
     assert exit.value.code != os.EX_OK
 
 
-@pipeop.pipes
 def test_funcs_when_removed(info, warn, fail, calls, checker):
     """Requires a major bump when a function is removed."""
 
