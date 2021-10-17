@@ -51,6 +51,7 @@ type-%: compile clean
 	@poetry run mypy src/$*
 	@poetry run pytype src/$*
 
+test: export COLUMNS = 200
 test: compile clean
 	@poetry run pytest --cov
 	@poetry run robot --outputdir .robot tests/functional

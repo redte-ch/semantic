@@ -15,7 +15,7 @@ from ..domain import Version
 
 
 @typic.klass(always = True, slots = True, strict = True)
-class Bumper:
+class BumpVersion:
     """Determines the required version bump.
 
     Attributes:
@@ -25,17 +25,17 @@ class Bumper:
         required: The required version bump.
 
     Examples:
-        >>> bumper = Bumper()
+        >>> bumper = BumpVersion()
 
         >>> bumper.required
         <Int.NONE: 0>
 
         >>> bumper.what(3)
-        <Version.MAJOR: 3>
+        <Int.MAJOR: 3>
 
         >>> bumper(3)
         >>> bumper.required
-        <Version.MAJOR: 3>
+        <Int.MAJOR: 3>
 
     .. versionadded:: 36.1.0
 
