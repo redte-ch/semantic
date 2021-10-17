@@ -5,6 +5,8 @@
 
 from __future__ import annotations
 
+import ast
+
 import classes
 
 
@@ -30,6 +32,16 @@ def to_type(instance) -> str:
     .. versionadded:: 1.0.0
 
     """
+
+
+@to_type.instance(ast.Name)
+def _from_ast_name(instance: ast.Name) -> str:
+    return to_type(instance.id)
+
+
+@to_type.instance(ast.Subscript)
+def _from_ast_subscript(instance: ast.Subscript) -> str:
+    return (to_type(instance.value), to_type(instance.slice))
 
 
 @to_type.instance(str)

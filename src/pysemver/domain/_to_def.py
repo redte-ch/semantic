@@ -5,6 +5,8 @@
 
 from __future__ import annotations
 
+import ast
+
 import classes
 
 
@@ -34,6 +36,21 @@ def to_def(instance) -> str:
     .. versionadded:: 1.0.0
 
     """
+
+
+@to_def.instance(ast.Constant)
+def _from_ast_constant(instance: ast.Constant) -> str:
+    return to_def(instance.value)
+
+
+@to_def.instance(ast.List)
+def _from_ast_list(instance: ast.List) -> str:
+    return tuple(to_def(item) for item in instance.elts)
+
+
+@to_def.instance(int)
+def _from_int(instance: int) -> str:
+    return str(instance)
 
 
 @to_def.instance(str)
