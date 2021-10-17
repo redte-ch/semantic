@@ -5,12 +5,12 @@
 
 from __future__ import annotations
 
-from typing import Any, Optional, Tuple, Union
+from typing import Any, Optional
 
 import typic
 
 
-@typic.klass(frozen = True, slots = True)
+@typic.klass(frozen = True, slots = True, strict = True)
 class Argument:
     """An argument.
 
@@ -21,26 +21,15 @@ class Argument:
 
     Examples:
         >>> Argument("count")
-        Argument(name='count', types=None, default=None)
+        Argument(name='count', default=None)
 
-        >>> Argument("count", ("int",))
-        Argument(name='count', types=('int',), default=None)
+        >>> Argument("count", "None")
+        Argument(name='count', default='None')
 
-        >>> Argument("count", "int")
-        Traceback (most recent call last):
-        typic.constraints.error.ConstraintValueError...
+        >>> Argument("count", "1")
+        Argument(name='count', default='1')
 
-        >>> Argument("count", int)
-        Traceback (most recent call last):
-        typic.constraints.error.ConstraintValueError...
-
-        >>> Argument("count", ("int",), "None")
-        Argument(name='count', types=('int',), default='None')
-
-        >>> Argument("count", ("int",), "1")
-        Argument(name='count', types=('int',), default='1')
-
-        >>> Argument("count", ("int",), 1)
+        >>> Argument("count", 1)
         Traceback (most recent call last):
         typic.constraints.error.ConstraintValueError...
 

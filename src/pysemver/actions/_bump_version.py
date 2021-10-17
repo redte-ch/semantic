@@ -28,7 +28,7 @@ class Bumper:
         >>> bumper = Bumper()
 
         >>> bumper.required
-        <Version.NONE: 0>
+        <Int.NONE: 0>
 
         >>> bumper.what(3)
         <Version.MAJOR: 3>
