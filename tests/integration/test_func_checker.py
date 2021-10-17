@@ -16,7 +16,7 @@ from pysemver.actions.check_signature import (
     diff_hash,
     diff_name,
     )
-from tests import fixtures
+from tests.fixtures import func
 
 
 @pytest.fixture
@@ -31,8 +31,8 @@ def that_builder():
 
 def test(this_builder, that_builder):
 
-    this_builder(inspect.getsource(fixtures.func))
-    that_builder(inspect.getsource(fixtures.func))
+    this_builder(inspect.getsource(func))
+    that_builder(inspect.getsource(func))
 
     this, = this_builder.signatures
     that, = that_builder.signatures
@@ -49,8 +49,8 @@ def test(this_builder, that_builder):
 
 def test_when_added_args(this_builder, that_builder):
 
-    this_builder(inspect.getsource(fixtures.func_with_more_args))
-    that_builder(inspect.getsource(fixtures.func))
+    this_builder(inspect.getsource(func_with_more_args))
+    that_builder(inspect.getsource(func))
 
     this, = this_builder.signatures
     that, = that_builder.signatures
@@ -67,8 +67,8 @@ def test_when_added_args(this_builder, that_builder):
 
 def test_when_removed_args(this_builder, that_builder):
 
-    this_builder(inspect.getsource(fixtures.func))
-    that_builder(inspect.getsource(fixtures.func_with_more_args))
+    this_builder(inspect.getsource(func))
+    that_builder(inspect.getsource(func_with_more_args))
 
     this, = this_builder.signatures
     that, = that_builder.signatures
@@ -85,8 +85,8 @@ def test_when_removed_args(this_builder, that_builder):
 
 def test_when_changed_arg_names(this_builder, that_builder):
 
-    this_builder(inspect.getsource(fixtures.func_with_changed_args))
-    that_builder(inspect.getsource(fixtures.func))
+    this_builder(inspect.getsource(func_with_changed_args))
+    that_builder(inspect.getsource(func))
 
     this, = this_builder.signatures
     that, = that_builder.signatures
@@ -103,8 +103,8 @@ def test_when_changed_arg_names(this_builder, that_builder):
 
 def test_when_addedtypes(this_builder, that_builder):
 
-    this_builder(inspect.getsource(fixtures.func_withtypes))
-    that_builder(inspect.getsource(fixtures.func))
+    this_builder(inspect.getsource(func_withtypes))
+    that_builder(inspect.getsource(func))
 
     this, = this_builder.signatures
     that, = that_builder.signatures
@@ -121,8 +121,8 @@ def test_when_addedtypes(this_builder, that_builder):
 
 def test_when_removedtypes(this_builder, that_builder):
 
-    this_builder(inspect.getsource(fixtures.func))
-    that_builder(inspect.getsource(fixtures.func_withtypes))
+    this_builder(inspect.getsource(func))
+    that_builder(inspect.getsource(func_withtypes))
 
     this, = this_builder.signatures
     that, = that_builder.signatures
@@ -139,8 +139,8 @@ def test_when_removedtypes(this_builder, that_builder):
 
 def test_when_added_defaults(this_builder, that_builder):
 
-    this_builder(inspect.getsource(fixtures.func_with_defaults))
-    that_builder(inspect.getsource(fixtures.func))
+    this_builder(inspect.getsource(func_with_defaults))
+    that_builder(inspect.getsource(func))
 
     this, = this_builder.signatures
     that, = that_builder.signatures
@@ -157,8 +157,8 @@ def test_when_added_defaults(this_builder, that_builder):
 
 def test_when_removed_defaults(this_builder, that_builder):
 
-    this_builder(inspect.getsource(fixtures.func))
-    that_builder(inspect.getsource(fixtures.func_with_defaults))
+    this_builder(inspect.getsource(func))
+    that_builder(inspect.getsource(func_with_defaults))
 
     this, = this_builder.signatures
     that, = that_builder.signatures
@@ -175,8 +175,8 @@ def test_when_removed_defaults(this_builder, that_builder):
 
 def test_when_added_args_and_defs(this_builder, that_builder):
 
-    this_builder(inspect.getsource(fixtures.func_with_more_defaults))
-    that_builder(inspect.getsource(fixtures.func))
+    this_builder(inspect.getsource(func_with_more_defaults))
+    that_builder(inspect.getsource(func))
 
     this, = this_builder.signatures
     that, = that_builder.signatures
@@ -193,8 +193,8 @@ def test_when_added_args_and_defs(this_builder, that_builder):
 
 def test_when_removed_args_and_defs(this_builder, that_builder):
 
-    this_builder(inspect.getsource(fixtures.func))
-    that_builder(inspect.getsource(fixtures.func_with_more_defaults))
+    this_builder(inspect.getsource(func))
+    that_builder(inspect.getsource(func_with_more_defaults))
 
     this, = this_builder.signatures
     that, = that_builder.signatures

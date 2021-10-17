@@ -22,7 +22,7 @@ limit = 2e5
 """Just a random size/length sentinel."""
 
 
-@deal.pure
+# @deal.pure
 def diff_hash(this: DataclassLike, that: DataclassLike) -> numpy.ndarray:
     """Check if two signatures have a different ``hashes``.
 
@@ -60,7 +60,7 @@ def diff_hash(this: DataclassLike, that: DataclassLike) -> numpy.ndarray:
     return numpy.where(these != those, patch, nones)
 
 
-@deal.pure
+# @deal.pure
 def diff_args(this: DataclassLike, that: DataclassLike) -> numpy.ndarray:
     """Check if two signatures have a diferent arguments.
 
@@ -104,7 +104,7 @@ def diff_args(this: DataclassLike, that: DataclassLike) -> numpy.ndarray:
     return numpy.select(conds, takes)
 
 
-@deal.pure
+# @deal.pure
 def diff_name(this: DataclassLike, that: DataclassLike) -> numpy.ndarray:
     """Check if two signatures have a different argument names.
 
@@ -160,54 +160,7 @@ def diff_name(this: DataclassLike, that: DataclassLike) -> numpy.ndarray:
         ])
 
 
-@deal.pure
-def diff_type(this: DataclassLike, that: DataclassLike) -> numpy.ndarray:
-    """Check if two signatures have a different types.
-
-    Args:
-        this: A signature.
-        that: Another signature.
-
-    Examples:
-        >>> from pysemver.domain import Argument
-
-        >>> argument = Argument("count")
-        >>> this = Signature("greet", "file.py", (argument,))
-        >>> that = Signature("greet", "file.py", (argument,))
-
-        >>> diff_type(this, that)
-        array([0])
-
-        >>> argument = Argument("count", types = ("List", "int"))
-        >>> this = Signature("greet", "file.py", (argument,))
-
-        >>> diff_type(this, that)
-        array([1])
-
-        >>> diff_type(that, this)
-        array([1])
-
-    .. versionadded:: 1.0.0
-
-    """
-
-    these = numpy.array([a.types is None for a in this.arguments])
-    those = numpy.array([a.types is None for a in that.arguments])
-    glued = tuple(zip(these, those))
-
-    conds = [[this != that for this, that in glued], True]
-    takes = [
-        utils.pre(len(this), len(that), Version.Int.PATCH),
-        utils.pre(len(this), len(that), Version.Int.NONE),
-        ]
-
-    return numpy.array([
-        *numpy.select(conds, takes),
-        *utils.rep(len(this), len(that), Version.Int.NONE),
-        ])
-
-
-@deal.pure
+# @deal.pure
 def diff_defs(this: DataclassLike, that: DataclassLike) -> numpy.ndarray:
     major = utils.pop(len(this), len(that), Version.Int.MAJOR)
     minor = utils.pop(len(this), len(that), Version.Int.MINOR)
@@ -265,67 +218,28 @@ class CheckSignature:
     that: Signature
     reason: Optional[str] = None
 
-    def __post_init__(self) -> None:
-        self.this_len: int = len(self.this.arguments)
-        self.that_len: int = len(self.that.arguments)
-        self.size_max: int = max(self.this_len, self.that_len)
-        self.size_min: int = min(self.this_len, self.that_len)
-
-    # @deal.pure
-    # @typic.al(strict = True)
-    @property
-    def nones(self) -> numpy.ndarray:
-        return numpy.repeat(Version.Int.NONE.value, self.size_min)
-
-    # @deal.pure
-    # @typic.al(strict = True)
-    @property
-    def patch(self) -> numpy.ndarray:
-        return numpy.repeat(Version.Int.PATCH.value, self.size_min)
-
-    # @deal.pure
-    # @typic.al(strict = True)
-    @property
-    def minor(self) -> numpy.ndarray:
-        return numpy.repeat(Version.Int.MINOR.value, self.size_min)
-
-    # @deal.pure
-    # @typic.al(strict = True)
-    @property
-    def major(self) -> numpy.ndarray:
-        return numpy.repeat(Version.Int.MAJOR.value, self.size_min)
-
-    # @deal.pure
-    # @typic.al(strict = True)
-
-    # @deal.pure
-    # @typic.al(strict = True)
     def score(self) -> int:
-        if max(self.diff_args()) == 2:
+        hash_score = max(diff_hash(self.this, self.that))
+        args_score = max(diff_args(self.this, self.that))
+        name_score = max(diff_name(self.this, self.that))
+        defs_score = max(diff_defs(self.this, self.that))
+
+        if args_score == 2:
             self.reason = "args-diff"
 
-        if max(self.diff_args()) == 3:
+        if args_score == 3:
             self.reason = "args-diff"
 
-        if max(self.diff_name()) == 3:
+        if name_score == 3:
             self.reason = "args-diff"
 
-        if max(self.diff_type()) == 1:
-            self.reason = "types-diff"
-
-        if max(self.diff_args()) == 0 and max(self.diff_defs()) == 2:
+        if args_score == 0 and defs_score == 2:
             self.reason = "defaults-diff"
 
-        if max(self.diff_args()) == 0 and max(self.diff_defs()) == 3:
+        if args_score == 0 and defs_score == 3:
             self.reason = "defaults-diff"
 
-        if max(self.diff_args()) == 2 and max(self.diff_defs()) == 0:
+        if args_score == 2 and defs_score == 0:
             self.reason = "args/defaults-diff"
 
-        return max(
-            max(diff_hash(self.this, self.that)),
-            max(diff_args(self.this, self.that)),
-            max(diff_name(self.this, self.that)),
-            max(diff_type(self.this, self.that)),
-            max(diff_defs(self.this, self.that)),
-            )
+        return max(hash_score, args_score, name_score, defs_score)

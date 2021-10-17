@@ -78,7 +78,7 @@ class CheckDeprecated(ast.NodeVisitor):
             if self._is_functional(file) and self._is_python(file)
             ]
 
-        self.nodes = tuple(_utils.compact(
+        self.nodes = tuple(utils.compact(
             [self._node(file) for file in self.files]))
         self.total = len(self.nodes)
         self.version = version
