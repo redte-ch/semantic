@@ -5,7 +5,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Tuple
+from typing import Any, Tuple, Union
 
 import typic
 
@@ -56,7 +56,7 @@ class Signature:
     name: str
     file: str
     arguments: Tuple[Argument] = ()
-    returns: Tuple[str, Tuple[Any]] = None
+    returns: Union[str, Tuple[str, Tuple[Any]]] = None
 
     def __len__(self) -> int:
         return len(self.arguments)

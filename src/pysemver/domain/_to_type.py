@@ -34,6 +34,11 @@ def to_type(instance) -> str:
     """
 
 
+@to_type.instance(ast.Constant)
+def _from_ast_constant(instance: ast.Constant) -> str:
+    return to_type(instance.value)
+
+
 @to_type.instance(ast.Name)
 def _from_ast_name(instance: ast.Name) -> str:
     return to_type(instance.id)
@@ -46,4 +51,9 @@ def _from_ast_subscript(instance: ast.Subscript) -> str:
 
 @to_type.instance(str)
 def _from_str(instance: str) -> str:
+    return instance
+
+
+@to_type.instance(None)
+def _from_none(instance: None) -> None:
     return instance

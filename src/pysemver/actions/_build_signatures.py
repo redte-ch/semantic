@@ -159,16 +159,23 @@ def _build_arg_default(
 
 
 def _build_returns(node: ast.FunctionDef) -> Tuple[to_type, ...]:
-    """Builds a return type."""
+    """Builds a return type.
 
-    # We try to build return types from the returns of the node.
-    returns = _build(node.returns, to_type)
+    Examples:
+        >>> returns = ast.Constant(value = "int")
+        >>> node = ast.FunctionDef(returns = returns)
+        >>> _build_returns(node)
+        'int'
 
-    # We do always return a tuple of types, or None.
-    if returns is not None and not isinstance(returns, tuple):
-        returns = returns,
+        >>> node = ast.FunctionDef()
+        >>> _build_returns(node)
+        None
 
-    return returns
+    .. versionadded:: 1.0.0
+
+    """
+
+    return _build(node.returns, to_type)
 
 
 def _build(
@@ -193,7 +200,7 @@ def _build(
     raise TypeError(ast.dump(node))
 
 
-def _is_unique(seq, name: str) -> bool:
+def _is_unique(seq: Sequence[Signature], name: str) -> bool:
     """Check if a signature's name is unique or not.
 
     Examples:
@@ -214,7 +221,7 @@ def _is_unique(seq, name: str) -> bool:
     return is_unique
 
 
-def _where(seq, name: str) -> Generator[bool, None, None]:
+def _where(seq: Sequence[Signature], name: str) -> Generator[bool, None, None]:
     """Iterates over signatures to find the names named ``name``.
 
     Examples:
@@ -314,7 +321,7 @@ class SignatureBuilder(ast.NodeVisitor):
             '1'
 
             >>> signature.returns
-            ('int',)
+            'int'
 
             >>> builder.count
             1
