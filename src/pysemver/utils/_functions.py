@@ -91,7 +91,6 @@ def dcons(seqs: Sequence[Tuple[T, Iterable[T]]]) -> Iterator[Tuple[T, ...]]:
     return (tuple(cons(el, seq)) for el, seq in seqs)
 
 
-@deal.pure
 def dmap(func: Callable[[T], Any], seqs: Sequence[Sequence[T]]) -> Iterator[T]:
     """Applies a function to a sequence of sequences.
 

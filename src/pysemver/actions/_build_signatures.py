@@ -28,6 +28,46 @@ from .. import utils
 from ..domain import Argument, Signature, Suffix, to_def, to_type
 
 
+def _is_unique(seq, name: str) -> bool:
+    """Check if a signature's name is unique or not.
+
+    Examples:
+        >>> signature = Signature("name", "file.py")
+        >>> seq = [signature]
+        >>> _is_unique(seq, "nom")
+        True
+
+        >>> _is_unique(seq, "name")
+        False
+
+    .. versionadded:: 1.0.0
+
+    """
+
+    is_unique: bool = not next(_where(seq, name), False)
+
+    return is_unique
+
+
+def _where(seq, name: str) -> Generator[bool, None, None]:
+    """Iterates over signatures to find the names named ``name``.
+
+    Examples:
+        >>> signature = Signature("name", "file.py")
+        >>> seq = [signature]
+        >>> list(_where(seq, "name"))
+        [True]
+
+        >>> list(_where(seq, "nom"))
+        []
+
+    .. versionadded:: 1.0.0
+
+    """
+
+    return (True for el in seq if el.name == name)
+
+
 # @typic.klass(always = True, strict = True)
 @dataclasses.dataclass
 class SignatureBuilder(ast.NodeVisitor):
@@ -97,24 +137,24 @@ class SignatureBuilder(ast.NodeVisitor):
             'file.py'
 
             >>> signature.arguments
-            (Argument(name='n', types=(ArgType(name='List'), ArgType(name='i...
+            (Argument(name='n', types=('List', 'int'), default='1'),)
 
             >>> argument.name
             'n'
 
             >>> argument.types
-            (ArgType(name='List'), ArgType(name='int'))
+            ('List', 'int')
 
             >>> argument.default
-            ('1',)
+            '1'
 
             >>> signature.returns
-            (type_annotation(name='int'),)
+            ('int',)
 
             >>> builder.count
             1
 
-        .. versionadded:: 36.1.0
+        .. versionadded:: 1.0.0
 
         """
 
@@ -133,7 +173,7 @@ class SignatureBuilder(ast.NodeVisitor):
         kwds: Sequence[ast.arg]
         posargs: Tuple[Argument, ...]
         keyargs: Tuple[Argument, ...]
-        returns: Tuple[type_annotation, ...]
+        returns: Tuple[to_type, ...]
         signature: Signature
 
         # We look for the corresponding ``file``.
@@ -206,7 +246,7 @@ class SignatureBuilder(ast.NodeVisitor):
         name = f"{name}{next(suffixes).value}"
 
         # If there are no duplicates, we continue.
-        if self._is_unique(name):
+        if _is_unique(self.signatures, name):
             return name
 
         # Otherwise, we retry…
@@ -266,7 +306,7 @@ class SignatureBuilder(ast.NodeVisitor):
         """Builds the types of an argument."""
 
         # We try to build types from the type annotation of the node.
-        types = self._build(node.annotation, type_annotation)
+        types = self._build(node.annotation, to_type)
 
         # We do always return a tuple of types, or None.
         if types is not None and not isinstance(types, tuple):
@@ -298,16 +338,16 @@ class SignatureBuilder(ast.NodeVisitor):
         # We define the defaults index based on the current visited argument.
         index = n_def + n_acc - n_arg
 
-        return self._build(defaults[index], default)
+        return self._build(defaults[index], to_def)
 
     # @deal.pure
     # @typic.al(strict = True)
     def _build_returns(
-            self, node: ast.FunctionDef) -> Tuple[type_annotation, ...]:
+            self, node: ast.FunctionDef) -> Tuple[to_type, ...]:
         """Builds a return type."""
 
         # We try to build return types from the returns of the node.
-        returns = self._build(node.returns, type_annotation)
+        returns = self._build(node.returns, to_type)
 
         # We do always return a tuple of types, or None.
         if returns is not None and not isinstance(returns, tuple):
@@ -379,16 +419,3 @@ class SignatureBuilder(ast.NodeVisitor):
 
     # @deal.pure
     # @typic.al(strict = True)
-    def _is_unique(self, name: str) -> bool:
-        """Check if a signature's name is unique or not."""
-
-        # We add a default value to avoid a StopIteration.
-        is_unique: bool = not next(self._find(name), False)
-
-        return is_unique
-
-    # @deal.pure
-    def _find(self, name: str) -> Generator[bool, None, None]:
-        """Check if there is a signature with ``name``."""
-
-        return (True for signature in self.signatures if signature.name == name)
