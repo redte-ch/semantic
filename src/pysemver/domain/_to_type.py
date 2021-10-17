@@ -44,6 +44,11 @@ def _from_ast_constant(instance: ast.Constant) -> str:
     return to_type(instance.value)
 
 
+@to_type.instance(type(Ellipsis))
+def _from_ast_ellipsis(instance: ast.Ellipsis) -> str:
+    return "..."
+
+
 @to_type.instance(ast.Name)
 def _from_ast_name(instance: ast.Name) -> str:
     return to_type(instance.id)
@@ -52,6 +57,16 @@ def _from_ast_name(instance: ast.Name) -> str:
 @to_type.instance(ast.Subscript)
 def _from_ast_subscript(instance: ast.Subscript) -> str:
     return (to_type(instance.value), to_type(instance.slice))
+
+
+@to_type.instance(ast.List)
+def _from_ast_list(instance: ast.Tuple) -> str:
+    return tuple(to_type(item) for item in instance.elts)
+
+
+@to_type.instance(ast.Tuple)
+def _from_ast_tuple(instance: ast.Tuple) -> str:
+    return tuple(to_type(item) for item in instance.elts)
 
 
 @to_type.instance(str)

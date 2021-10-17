@@ -69,7 +69,7 @@ class CheckVersion:
             ._check_funcs(self.bump_version, 2, this, that)
             ._check_funcs(self.bump_version, 3, that, this)
             ._check_version_acceptable(self.bump_version)
-            .bar.then()
+            .logs.then()
             )
 
     # @deal.pure
@@ -193,4 +193,4 @@ class CheckVersion:
     def _is_functional(self, file: str) -> bool:
         """Checks if a given ``file`` is whitelisted as functional."""
 
-        return not any(exclude in file for exclude in IGNORE)
+        return not any(exclude in file for exclude in self.ignore)

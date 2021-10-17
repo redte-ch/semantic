@@ -67,7 +67,7 @@ def _build_unique_name(
     return _build_unique_name(path, node, suffixes, signatures)
 
 
-@deal.pure
+# @deal.pure
 def _build_posarg(node: ast.FunctionDef) -> Callable[..., Any]:
     """Curryfies the positional arguments builder."""
 
@@ -78,7 +78,7 @@ def _build_posarg(node: ast.FunctionDef) -> Callable[..., Any]:
         )
 
 
-@deal.pure
+# @deal.pure
 def _build_keyarg(node: ast.FunctionDef) -> Callable[..., Any]:
     """Curryfies the keyword arguments builder."""
 
@@ -121,7 +121,7 @@ def _build_argument(
     return (*acc, argument)
 
 
-@deal.pure
+# @deal.pure
 def _build_argtypes(node: ast.arg) -> Optional[Tuple[str, ...]]:
     """Builds the types of an argument.
 
@@ -188,7 +188,7 @@ def _build_arg_default(
     return _build(defaults[index], to_def)
 
 
-@deal.pure
+# @deal.pure
 def _build_returns(node: ast.FunctionDef) -> Tuple[to_type, ...]:
     """Builds a return type.
 

@@ -10,7 +10,7 @@ from typing import Any, Optional, Tuple, Union
 import typic
 
 
-@typic.klass(frozen = True, slots = True, strict = True)
+@typic.klass(frozen = True, slots = True)
 class Argument:
     """An argument.
 

@@ -12,7 +12,7 @@ import typic
 from ._argument import Argument
 
 
-@typic.klass(frozen = True, slots = True, strict = True)
+@typic.klass(frozen = True, slots = True)
 class Signature:
     """A signature.
 
