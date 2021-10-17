@@ -42,6 +42,21 @@ def to_value(instance) -> str:
         >>> to_value(ast.Str(s = "hey!"))
         'hey!'
 
+        >>> to_value(ast.List(elts=[ast.Constant(value = "hey!")]))
+        ['hey!']
+
+        >>> to_value(ast.Tuple(elts=[ast.Constant(value = "hey!")]))
+        ('hey!',)
+
+        >>> to_value(1)
+        '1'
+
+        >>> to_value('1')
+        '1'
+
+        >>> to_value(None)
+        None
+
     .. versionadded:: 1.0.0
 
     """
@@ -87,6 +102,26 @@ def _from_ast_str(instance: ast.Str) -> str:
     return to_value(instance.s)
 
 
+@to_value.instance(ast.List)
+def _from_ast_list(instance: ast.List) -> str:
+    return list(to_value(el) for el in instance.elts)
+
+
+@to_value.instance(ast.Tuple)
+def _from_ast_tuple(instance: ast.Tuple) -> str:
+    return tuple(to_value(el) for el in instance.elts)
+
+
+@to_value.instance(int)
+def _from_type(instance: int) -> str:
+    return str(instance)
+
+
 @to_value.instance(str)
 def _from_str(instance: str) -> str:
+    return instance
+
+
+@to_value.instance(None)
+def _from_none(instance: None) -> str:
     return instance
