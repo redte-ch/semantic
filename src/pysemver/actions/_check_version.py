@@ -10,10 +10,9 @@ from __future__ import annotations
 from types import ModuleType
 from typing import Optional, Set, Tuple, TypeVar
 
-import deal
 import typic
 
-from ..domain import Exit, Signature
+from ..domain import Signature, Version
 from ..types import What
 from ._bump_version import BumpVersion
 from ._parse_files import ParseFiles
@@ -24,7 +23,7 @@ T = TypeVar("T", bound = "CheckVersion")
 PARSER = ParseFiles(this = "HEAD")
 
 
-# @typic.klass(always = True, slots = True, strict = True)
+@typic.klass(always = True, slots = True, strict = True)
 class CheckVersion:
     """Checks if the current version is acceptable.
 
@@ -39,12 +38,11 @@ class CheckVersion:
     """
 
     logs: ModuleType
-    exit: Exit
+    exit: Version.Int
     parser: ParseFiles
     ignore: Tuple[str, ...]
     bump_version: BumpVersion
 
-    # @typic.al(strict = True)
     def __init__(
             self,
             logs: ModuleType,
@@ -52,11 +50,10 @@ class CheckVersion:
             parser: ParseFiles = PARSER) -> None:
         self.logs = logs
         self.ignore = ignore
-        self.exit = Exit.OK
+        self.exit = Version.Int.NONE
         self.parser = parser
         self.bump_version = BumpVersion()
 
-    # @deal.pure
     def __call__(self) -> None:
         """Runs all the checks."""
 
@@ -73,8 +70,6 @@ class CheckVersion:
             .logs.then()
             )
 
-    # @deal.pure
-    # @typic.al(strict = True)
     def _parse(self, parser: ParseFiles, what: What) -> Tuple[Signature, ...]:
         """Updates status while the parser builds signatures."""
 
@@ -89,7 +84,6 @@ class CheckVersion:
 
         return parser.signatures
 
-    # @deal.pure
     def _check_files(self: T, bump_version: BumpVersion, files: Set[str]) -> T:
         """Requires a bump if there's a diff in files."""
 
@@ -113,7 +107,6 @@ class CheckVersion:
 
         return self
 
-    # @deal.pure
     def _check_funcs(
             self: T,
             bump_version: BumpVersion,
@@ -173,7 +166,6 @@ class CheckVersion:
 
         return self
 
-    # @deal.pure
     def _check_version_acceptable(self: T, bump_version: BumpVersion) -> T:
         """Requires a bump if there current version is not acceptable."""
 
@@ -182,15 +174,13 @@ class CheckVersion:
         self.logs.okay(f"Current version: {bump_version.this}")
 
         if bump_version.is_acceptable():
-            self.exit = Exit.OK
+            self.exit = Version.Int.NONE
             return self
 
         self.logs.fail()
 
         return self
 
-    # @deal.pure
-    # @typic.al(strict = True)
     def _is_functional(self, file: str) -> bool:
         """Checks if a given ``file`` is whitelisted as functional."""
 

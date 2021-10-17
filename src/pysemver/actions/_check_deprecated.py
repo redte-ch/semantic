@@ -6,13 +6,12 @@
 """Deprecation checker."""
 
 from types import ModuleType
-from typing import Sequence
+from typing import Sequence, Tuple
 
 import ast
 import pathlib
 import textwrap
 
-import deal
 import typic
 
 from .. import infra, utils
@@ -21,11 +20,11 @@ from ..domain import Exit
 _version: str
 _version = infra.repo.versions.last()
 
-_files: Sequence[str]
+_files: Tuple[str, ...]
 _files = infra.repo.files.tree(_version)
 
 
-# @typic.klass(always = True, strict = True)
+@typic.klass(always = True, strict = True)
 class CheckDeprecated(ast.NodeVisitor):
     """Prints the list of features marked as deprecated.
 
@@ -57,13 +56,11 @@ class CheckDeprecated(ast.NodeVisitor):
     count: int
     exit: Exit
     files: Sequence[str]
-    nodes: Sequence[ast.Module]
+    nodes: Tuple[ast.Module, ...]
     total: int
     version: str
-    ignore: Sequence[str]
+    ignore: Tuple[str, ...]
 
-    # @deal.pure
-    # @typic.al(strict = True)
     def __init__(
             self,
             logs: ModuleType,
@@ -85,7 +82,6 @@ class CheckDeprecated(ast.NodeVisitor):
         self.total = len(self.nodes)
         self.version = version
 
-    # @deal.pure
     def __call__(self) -> None:
         """Check fro deprecated features."""
 
@@ -100,7 +96,6 @@ class CheckDeprecated(ast.NodeVisitor):
 
         self.logs.wipe()
 
-    # @deal.pure
     def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
         """Defines the ``visit()`` function to inspect the ``node``.
 
@@ -129,7 +124,7 @@ class CheckDeprecated(ast.NodeVisitor):
 
         """
 
-        keywords: Sequence[str]
+        keywords: Tuple[str, ...]
         file: str
         path: pathlib.Path
         module: str
@@ -188,13 +183,9 @@ class CheckDeprecated(ast.NodeVisitor):
 
             self.logs.then()
 
-    # @deal.pure
-    # @typic.al(strict = True)
     def _isthis(self, version: str) -> bool:
         return self.version == version
 
-    # @deal.pure
-    # @typic.al(strict = True)
     def _node(self, file: str) -> ast.Module:
         source: str
 
