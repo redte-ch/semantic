@@ -37,7 +37,7 @@ def check_deprecated(_context, ignore):
     """Check if there are features to deprecate."""
 
     if len(ignore) == 0:
-        ignore = config.ignore
+        ignore = tuple(config.ignore)
 
     task = actions.CheckDeprecated(infra.logs, ignore = ignore)
     task()

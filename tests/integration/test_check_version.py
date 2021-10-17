@@ -92,7 +92,7 @@ def test_files_when_no_diff(info, warn, fail, okay, checker):
 def test_files_when_diff_is_not_functional(info, warn, fail, okay, checker):
     """Does not require a version bump files are not functional."""
 
-    checker.parser.diff = ["README.md"]
+    checker.parser.diff = ("README.md",)
     checker()
 
     with pytest.raises(SystemExit) as exit:
@@ -108,7 +108,7 @@ def test_files_when_diff_is_not_functional(info, warn, fail, okay, checker):
 def test_files_when_diff_is_functional(info, warn, fail, checker):
     """Requires a patch bump when there are file diffs."""
 
-    checker.parser.diff = ["file.py"]
+    checker.parser.diff = ("file.py",)
     checker()
 
     with pytest.raises(SystemExit) as exit:
@@ -166,8 +166,8 @@ def test_funcs_when_added(info, warn, fail, calls, checker):
         sys.exit(checker.exit.value)
 
     info.assert_called_with("Version bump required: MINOR!\n")
-    assert calls() << cytoolz.select(r"\+") >> len == 1
-    assert calls() << cytoolz.select(r"\-") >> len == 0
+    assert len(list(map(lambda c: c.startswith("+"), calls()))) == 1
+    assert len(list(map(lambda c: c.startswith("-"), calls()))) == 0
     fail.assert_called()
     assert exit.value.code != os.EX_OK
 

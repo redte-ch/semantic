@@ -12,7 +12,6 @@ from typing import (
     Iterator,
     List,
     Optional,
-    Sequence,
     Tuple,
     Union,
     )
@@ -32,7 +31,7 @@ def _build_unique_name(
         path: Path,
         node: ast.FunctionDef,
         suffixes: Iterator[Suffix],
-        signatures: Sequence[Signature],
+        signatures: Tuple[Signature, ...],
         ) -> str:
     """Builds an unique signature name."""
 
@@ -90,11 +89,11 @@ def _build_keyarg(node: ast.FunctionDef) -> Callable[..., Any]:
 
 # @deal.pure
 def _build_argument(
-        acc: Sequence[Argument],
+        acc: Tuple[Argument, ...],
         node: ast.arg,
-        args: Sequence[Any],
-        defaults: Sequence[Any],
-        ) -> Sequence[Argument]:
+        args: Tuple[Any, ...],
+        defaults: Tuple[Any, ...],
+        ) -> Tuple[Argument, ...]:
     """Builds an argument.
 
     Examples:
@@ -123,7 +122,7 @@ def _build_argument(
 def _build_arg_default(
         n_acc: int,
         n_arg: int,
-        defaults: Sequence[Any],
+        defaults: Tuple[Any, ...],
         ) -> Optional[str]:
     """Builds the default value of an argument.
 
@@ -185,7 +184,7 @@ def _build(node: Optional[Union[ast.expr, ast.slice]]) -> Any:
 
 
 @deal.pure
-def _is_unique(seq: Sequence[Signature], name: str) -> bool:
+def _is_unique(seq: Tuple[Signature, ...], name: str) -> bool:
     """Check if a signature's name is unique or not.
 
     Examples:
@@ -207,7 +206,7 @@ def _is_unique(seq: Sequence[Signature], name: str) -> bool:
 
 
 @deal.pure
-def _where(seq: Sequence[Signature], name: str) -> Generator[bool, None, None]:
+def _where(seq: Tuple[Signature, ...], name: str) -> Generator[bool, None, None]:
     """Iterates over signatures to find the names named ``name``.
 
     Examples:
@@ -292,7 +291,7 @@ class BuildSignatures(ast.NodeVisitor):
             'file.py'
 
             >>> signature.arguments
-            (Argument(name='n', default=['1']),)
+            (Argument(name='n', default=[1]),)
 
             >>> argument.name
             'n'
@@ -317,8 +316,8 @@ class BuildSignatures(ast.NodeVisitor):
         file: str
         path: Path
         name: str
-        args: Sequence[ast.arg]
-        kwds: Sequence[ast.arg]
+        args: Tuple[ast.arg, ...]
+        kwds: Tuple[ast.arg, ...]
         posargs: Tuple[Argument, ...]
         keyargs: Tuple[Argument, ...]
         signature: Signature

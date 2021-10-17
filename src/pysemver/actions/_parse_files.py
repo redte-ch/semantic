@@ -5,7 +5,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Generator, Optional, Sequence, Set, Tuple
+from typing import Any, Generator, Optional, Set, Tuple
 
 import textwrap
 
@@ -20,7 +20,7 @@ _this: str = repo.versions.this()
 _that: str = repo.versions.last()
 
 
-@typic.klass(always = True, slots = True)
+@typic.klass(always = True, slots = True, strict = True)
 class ParseFiles:
     """Wrapper around the repo and the signature builder.
 
@@ -77,9 +77,9 @@ class ParseFiles:
     this: str
     that: str
     current: Optional[str]
-    diff: Sequence[str]
+    diff: Tuple[str, ...]
     builder: Optional[BuildSignatures]
-    signatures: Optional[Sequence[Signature]]
+    signatures: Optional[Tuple[Signature, ...]]
 
     # @deal.pure
     # @typic.al(strict = True)

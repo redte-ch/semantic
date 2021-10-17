@@ -6,7 +6,7 @@
 from __future__ import annotations
 
 from types import ModuleType
-from typing import Optional, Sequence, Set, TypeVar
+from typing import Optional, Tuple, Set, TypeVar
 
 import deal
 import typic
@@ -39,14 +39,14 @@ class CheckVersion:
     logs: ModuleType
     exit: Exit
     parser: ParseFiles
-    ignore: Sequence[str]
+    ignore: Tuple[str, ...]
     bump_version: BumpVersion
 
     # @typic.al(strict = True)
     def __init__(
             self,
             logs: ModuleType,
-            ignore: Sequence[str],
+            ignore: Tuple[str, ...],
             parser: ParseFiles = PARSER) -> None:
         self.logs = logs
         self.ignore = ignore
@@ -73,7 +73,7 @@ class CheckVersion:
 
     # @deal.pure
     # @typic.al(strict = True)
-    def _parse(self, parser: ParseFiles, what: What) -> Sequence[Signature]:
+    def _parse(self, parser: ParseFiles, what: What) -> Tuple[Signature, ...]:
         """Updates status while the parser builds signatures."""
 
         with parser(what = what) as parsing:

@@ -11,7 +11,7 @@
 
 from __future__ import annotations
 
-from typing import Sequence
+from typing import Tuple
 
 import deal
 from git import Repo
@@ -55,7 +55,7 @@ def show(revision: str, file: str, repo: str = "") -> str:
 @deal.pre(lambda _: len(_.revision) > 0)
 @deal.raises(TypeError, ValueError)
 @deal.has()
-def tree(revision: str, repo: str = "") -> Sequence[str]:
+def tree(revision: str, repo: str = "") -> Tuple[str, ...]:
     """Retrives the list of tracked files in a revision.
 
     Args:
@@ -70,13 +70,13 @@ def tree(revision: str, repo: str = "") -> Sequence[str]:
 
         >>> repo = Path("./tests/fixtures").resolve()
         >>> tree("1.0.0", str(repo))
-        ['.gitignore', '__init__.py', 'bar.py', 'func.py', 'func_with_chang...]
+        ('.gitignore', '__init__.py', 'bar.py', 'func.py', 'func_with_chang...)
 
     .. versionadded:: 1.0.0
 
     """
     try:
-        return (
+        return tuple(
             Repo(repo)
             .git
             .ls_tree("-r", "--name-only", revision)
@@ -89,7 +89,7 @@ def tree(revision: str, repo: str = "") -> Sequence[str]:
 @deal.pre(lambda _: len(_.this) > 0 and len(_.that) > 0)
 @deal.raises(TypeError, ValueError)
 @deal.has()
-def diff(this: str, that: str, repo: str = "") -> Sequence[str]:
+def diff(this: str, that: str, repo: str = "") -> Tuple[str, ...]:
     """Retrives the list of changed files between two revisions.
 
     Args:
@@ -111,7 +111,7 @@ def diff(this: str, that: str, repo: str = "") -> Sequence[str]:
     """
 
     try:
-        return (
+        return tuple(
             Repo(repo)
             .git
             .diff("--name-only", f"{that}..{this}")

@@ -104,7 +104,7 @@ def _from_ast_str(instance: ast.Str) -> str:
 
 @to_value.instance(ast.List)
 def _from_ast_list(instance: ast.List) -> str:
-    return list(to_value(el) for el in instance.elts)
+    return tuple(to_value(el) for el in instance.elts)
 
 
 @to_value.instance(ast.Tuple)
@@ -113,7 +113,7 @@ def _from_ast_tuple(instance: ast.Tuple) -> str:
 
 
 @to_value.instance(int)
-def _from_type(instance: int) -> str:
+def _from_type(instance: int) -> int:
     return str(instance)
 
 
