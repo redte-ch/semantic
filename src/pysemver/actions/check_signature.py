@@ -253,17 +253,11 @@ def diff_defs(this: Signature, that: Signature) -> numpy.ndarray:
     these = numpy.array([a.default is None for a in this.arguments], int)
     those = numpy.array([a.default is None for a in that.arguments], int)
 
-    # If no arguments, we continue…
     if len(these) == 0 and len(those) == 0:
         return numpy.array([], int)
 
-    # If there are no arguments after, we populate.
-    if len(these) == 0:
-        these = utils.pop(len(this), len(that), Version.Int.NONE)
-
-    # Inversely as well.
-    if len(those) == 0:
-        those = utils.pop(len(this), len(that), Version.Int.NONE)
+    these.resize((major.size,), refcheck = False)
+    those.resize((major.size,), refcheck = False)
 
     glued = tuple(zip(these, those))
 

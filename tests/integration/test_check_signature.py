@@ -53,7 +53,6 @@ def test(this_builder, that_builder):
     assert checker.reason is None
 
 
-@pytest.mark.skip
 def test_when_added_args(this_builder, that_builder):
 
     this_builder(inspect.getsource(func_with_more_args))
@@ -72,7 +71,6 @@ def test_when_added_args(this_builder, that_builder):
     assert checker.reason == "args-diff"
 
 
-@pytest.mark.skip
 def test_when_removed_args(this_builder, that_builder):
 
     this_builder(inspect.getsource(func))
@@ -145,7 +143,6 @@ def test_when_removed_defaults(this_builder, that_builder):
     assert checker.reason == "defaults-diff"
 
 
-@pytest.mark.skip
 def test_when_added_args_and_defs(this_builder, that_builder):
 
     this_builder(inspect.getsource(func_with_more_defaults))
@@ -164,7 +161,6 @@ def test_when_added_args_and_defs(this_builder, that_builder):
     assert checker.reason == "args/defaults-diff"
 
 
-@pytest.mark.skip
 def test_when_removed_args_and_defs(this_builder, that_builder):
 
     this_builder(inspect.getsource(func))
