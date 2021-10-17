@@ -65,11 +65,11 @@ def test_check_version(info, okay, checker):
         sys.exit(checker.exit.value)
 
     info.assert_any_call(f"Parsing files from {checker.parser.this}…\n")
-    info.assert_any_call(f"Parsing files from {checker.parser.that}…\n"),
-    info.assert_any_call("Checking for functional changes…\n"),
-    info.assert_any_call("Checking for 2 functions…\n"),
-    info.assert_any_call("Checking for 3 functions…\n"),
-    info.assert_any_call("Version bump required: NONE!\n"),
+    info.assert_any_call(f"Parsing files from {checker.parser.that}…\n")
+    info.assert_any_call("Checking for functional changes…\n")
+    info.assert_any_call("Checking for 2 functions…\n")
+    info.assert_any_call("Checking for 3 functions…\n")
+    info.assert_any_call("Version bump required: NONE!\n")
     okay.assert_called_once_with(f"Current version: {checker.parser.this}")
     assert exit.value.code == os.EX_OK
 
