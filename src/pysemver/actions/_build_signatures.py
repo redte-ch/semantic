@@ -25,8 +25,7 @@ from pathlib import Path
 import deal
 import typic
 
-from .. import utils
-from ..domain import Argument, Signature, Suffix, to_def, to_type
+from ..domain import Argument, Signature, Suffix, to_value
 
 
 def _build_unique_name(
@@ -162,14 +161,11 @@ def _build_arg_default(
     # We define the defaults index based on the current visited argument.
     index = n_def + n_acc - n_arg
 
-    return _build(defaults[index], to_def)
+    return _build(defaults[index])
 
 
 @deal.has()
-def _build(
-        node: Optional[Union[ast.expr, ast.slice]],
-        builder: Callable[..., Any] = utils._,
-        ) -> Any:
+def _build(node: Optional[Union[ast.expr, ast.slice]]) -> Any:
     """Generic builder."""
 
     # Finally, if we have a dict, we have to both traverse recursively
@@ -181,9 +177,9 @@ def _build(
     #         )
 
     try:
-        return builder(node)
+        return to_value(node)
     except NotImplementedError:
-        raise ValueError(f"{ast.dump(node)}, {builder}")
+        raise ValueError(f"{ast.dump(node)}")
 
     raise TypeError(ast.dump(node))
 

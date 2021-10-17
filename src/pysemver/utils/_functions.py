@@ -40,21 +40,6 @@ partial = returns.curry.partial
 
 
 @deal.pure
-def _(x: T) -> T:
-    """Identity useful for noop.
-
-    Examples:
-        >>> _(1)
-        1
-
-    .. versionadded:: 1.0.0
-
-    """
-
-    return x
-
-
-@deal.pure
 def cons(el: T, seq: Iterable[T]) -> Iterator[T]:
     """The original cons.
 

@@ -5,7 +5,6 @@
 
 from ._arrays import add, fill, pop, pre, rep  # noqa: F401
 from ._functions import (  # noqa: F401
-    _,
     chain,
     compact,
     cons,
