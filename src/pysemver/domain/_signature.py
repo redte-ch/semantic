@@ -5,14 +5,14 @@
 
 from __future__ import annotations
 
-from typing import Any, Tuple, Union
+from typing import Tuple
 
 import typic
 
 from ._argument import Argument
 
 
-@typic.klass(frozen = True, slots = True)
+@typic.klass(frozen = True, slots = True, strict = True)
 class Signature:
     """A signature.
 
@@ -55,7 +55,7 @@ class Signature:
 
     name: str
     file: str
-    arguments: Tuple[Argument] = ()
+    arguments: Tuple[Argument, ...] = ()
 
     def __len__(self) -> int:
         return len(self.arguments)

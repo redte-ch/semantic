@@ -22,8 +22,8 @@ limit = 2e5
 """Just a random size/length sentinel."""
 
 
-# @deal.pure
-def diff_hash(this: DataclassLike, that: DataclassLike) -> numpy.ndarray:
+@deal.pure
+def diff_hash(this: Signature, that: Signature) -> numpy.ndarray:
     """Check if two signatures have a different ``hashes``.
 
     Args:
@@ -60,8 +60,8 @@ def diff_hash(this: DataclassLike, that: DataclassLike) -> numpy.ndarray:
     return numpy.where(these != those, patch, nones)
 
 
-# @deal.pure
-def diff_args(this: DataclassLike, that: DataclassLike) -> numpy.ndarray:
+@deal.pure
+def diff_args(this: Signature, that: Signature) -> numpy.ndarray:
     """Check if two signatures have a diferent arguments.
 
     Args:
@@ -87,6 +87,22 @@ def diff_args(this: DataclassLike, that: DataclassLike) -> numpy.ndarray:
         >>> diff_args(that, this)
         array([3, 3])
 
+        >>> this = Signature("greet", "file.py")
+
+        >>> diff_args(this, that)
+        array([3])
+
+        >>> diff_args(that, this)
+        array([2])
+
+        >>> that = Signature("greet", "file.py")
+
+        >>> diff_args(this, that)
+        array([]...)
+
+        >>> diff_args(that, this)
+        array([]...)
+
     .. versionadded:: 1.0.0
 
     """
@@ -104,8 +120,8 @@ def diff_args(this: DataclassLike, that: DataclassLike) -> numpy.ndarray:
     return numpy.select(conds, takes)
 
 
-# @deal.pure
-def diff_name(this: DataclassLike, that: DataclassLike) -> numpy.ndarray:
+@deal.pure
+def diff_name(this: Signature, that: Signature) -> numpy.ndarray:
     """Check if two signatures have a different argument names.
 
     Args:
@@ -140,28 +156,96 @@ def diff_name(this: DataclassLike, that: DataclassLike) -> numpy.ndarray:
         >>> diff_name(that, this)
         array([3])
 
+        >>> this = Signature("greet", "file.py")
+
+        >>> diff_name(this, that)
+        array([2])
+
+        >>> diff_name(that, this)
+        array([2])
+
+        >>> that = Signature("greet", "file.py")
+
+        >>> diff_name(this, that)
+        array([]...)
+
+        >>> diff_name(that, this)
+        array([]...)
+
     .. versionadded:: 1.0.0
 
     """
 
     these = numpy.array([a.name for a in this.arguments])
     those = numpy.array([a.name for a in that.arguments])
+
+    # If no arguments, we continue…
+    if len(these) == 0 and len(those) == 0:
+        return numpy.array([], int)
+
+    # If there are no arguments after, we populate.
+    if len(these) == 0:
+        these = utils.pop(len(this), len(that), Version.Int.NONE)
+
+    # Inversely as well.
+    if len(those) == 0:
+        those = utils.pop(len(this), len(that), Version.Int.NONE)
+
+    # We create tuples.
     glued = tuple(zip(these, those))
 
+    # Otherwise we mark missing args after as major.
     conds = [[this != that for this, that in glued], True]
     takes = [
         utils.pre(len(this), len(that), Version.Int.MAJOR),
         utils.pre(len(this), len(that), Version.Int.NONE),
         ]
 
+    # And we mark new args after as minor.
     return numpy.array([
         *numpy.select(conds, takes),
         *utils.rep(len(this), len(that), Version.Int.MINOR),
         ])
 
 
-# @deal.pure
-def diff_defs(this: DataclassLike, that: DataclassLike) -> numpy.ndarray:
+@deal.pure
+def diff_defs(this: Signature, that: Signature) -> numpy.ndarray:
+    """Check if two signatures have a different default values.
+
+    Args:
+        this: A signature.
+        that: Another signature.
+
+    Examples:
+        >>> from pysemver.domain import Argument
+
+        >>> argument = Argument("count", default = "0")
+        >>> this = Signature("greet", "file.py", (argument,))
+        >>> that = Signature("greet", "file.py", (argument,))
+
+        >>> diff_args(this, that)
+        array([0])
+
+        >>> this = Signature("greet", "file.py")
+
+        >>> diff_args(this, that)
+        array([3])
+
+        >>> diff_args(that, this)
+        array([2])
+
+        >>> that = Signature("greet", "file.py")
+
+        >>> diff_args(this, that)
+        array([]...)
+
+        >>> diff_args(that, this)
+        array([]...)
+
+    .. versionadded:: 1.0.0
+
+    """
+
     major = utils.pop(len(this), len(that), Version.Int.MAJOR)
     minor = utils.pop(len(this), len(that), Version.Int.MINOR)
     nones = utils.pop(len(this), len(that), Version.Int.NONE)
@@ -169,10 +253,19 @@ def diff_defs(this: DataclassLike, that: DataclassLike) -> numpy.ndarray:
     these = numpy.array([a.default is None for a in this.arguments], int)
     those = numpy.array([a.default is None for a in that.arguments], int)
 
-    glued = tuple(zip(
-        [*these, *[utils.rep(len(this), len(that), Version.Int.NONE), []][len(these) > len(those)]],
-        [*those, *[utils.rep(len(this), len(that), Version.Int.NONE), []][len(those) > len(these)]],
-        ))
+    # If no arguments, we continue…
+    if len(these) == 0 and len(those) == 0:
+        return numpy.array([], int)
+
+    # If there are no arguments after, we populate.
+    if len(these) == 0:
+        these = utils.pop(len(this), len(that), Version.Int.NONE)
+
+    # Inversely as well.
+    if len(those) == 0:
+        those = utils.pop(len(this), len(that), Version.Int.NONE)
+
+    glued = tuple(zip(these, those))
 
     conds = [
         [this > that for this, that in glued],

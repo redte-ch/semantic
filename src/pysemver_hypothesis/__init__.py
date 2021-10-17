@@ -53,8 +53,8 @@ def signatures(signature: Type[object]) -> st.SearchStrategy[object]:
 
     return st.builds(
         signature,
-        name = st.text(),
-        file = st.text(),
+        name = st.text(min_size = 1),
+        file = st.text(min_size = 1),
         )
 
 
