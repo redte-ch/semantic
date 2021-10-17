@@ -94,7 +94,9 @@ class ParseFiles:
         self.signatures = None
 
     def __call__(self, *, what: What) -> ParseFiles:
-        # We try recover the revision (``this`` or ``that``). Fails otherwise.
+        """We try recover the revision (``this`` or ``that``)."""
+
+        # Fails otherwise.
         self.current: str = self.__getattribute__(what)
 
         # And we return ourselves.

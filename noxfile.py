@@ -3,6 +3,8 @@
 # Licensed under the EUPL-1.2-or-later
 # For details: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 
+"""Nox config file."""
+
 from typing import Any, Pattern
 
 import pathlib
@@ -32,6 +34,8 @@ ids = tuple(
 
 
 class SessionCache:
+    """Class to save/restore poetry settings."""
+
     sesh_name: str
     sesh_cache: str
     pattern: Pattern = re.compile(r"\(|\)|\/|\=|\'|\"|\,|\s")
@@ -62,6 +66,8 @@ class SessionCache:
 
 @nox_poetry.session(python = python_versions[-1:])
 def coverage(session) -> None:
+    """Run coverage session."""
+
     session.run("make", "install", external = True, silent = True)
     session.install("coverage[toml]", silent = True)
     session.install("codecov", silent = True)
@@ -72,6 +78,8 @@ def coverage(session) -> None:
 
 @nox_poetry.session(python = python_versions[-1:])
 def docs(session):
+    """Build/test docs."""
+
     session.run("make", "install", external = True, silent = True)
     session.install("interrogate", silent = True)
     session.install("sphinx", silent = True)
@@ -86,6 +94,8 @@ def docs(session):
 @nox_poetry.session
 @nox.parametrize("python", python_versions, ids = python_versions)
 def lint(session):
+    """Lint files."""
+
     session.run("make", "install", external = True, silent = True)
     session.install("wemake-python-styleguide", silent = True)
     session.install(".", silent = True)
@@ -95,6 +105,8 @@ def lint(session):
 @nox_poetry.session
 @nox.parametrize("python, numpy", matrix, ids = ids)
 def type(session, numpy):
+    """Type-hint code."""
+
     session.run("make", "install", external = True, silent = True)
 
     with SessionCache(session.name, session.cache_dir):
@@ -110,6 +122,8 @@ def type(session, numpy):
 @nox_poetry.session
 @nox.parametrize("python, numpy", matrix, ids = ids)
 def test(session, numpy):
+    """Run tests."""
+
     session.run("make", "install", external = True, silent = True)
 
     with SessionCache(session.name, session.cache_dir):

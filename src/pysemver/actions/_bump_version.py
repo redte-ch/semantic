@@ -58,6 +58,8 @@ class BumpVersion:
     @deal.pure
     # @typic.al(strict = True)
     def __call__(self, bump: int) -> None:
+        """Bumps the required version."""
+
         index = max(self.required.value, Version.Int(bump).value)
         self.required = Version.Int(index)
 

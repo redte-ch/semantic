@@ -87,6 +87,8 @@ class CheckDeprecated(ast.NodeVisitor):
 
     # @deal.pure
     def __call__(self) -> None:
+        """Check fro deprecated features."""
+
         self.logs.init()
 
         # We use ``count`` to link each ``node`` with the corresponding
