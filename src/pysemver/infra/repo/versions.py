@@ -12,15 +12,12 @@
 
 from __future__ import annotations
 
-from typing import Sequence
-
 import deal
 import pkg_resources
+from git import Repo
 
-from ._base import run
 
-
-# @deal.pure
+@deal.pure
 def this() -> str:
     """Retrives the actual version.
 
@@ -37,8 +34,6 @@ def this() -> str:
 
     """
 
-    # TODO: This needs to go to a config, or something.
-
     return (
         pkg_resources
         .get_distribution("pysemver")
@@ -46,23 +41,27 @@ def this() -> str:
         )
 
 
-# @deal.pure
-def last() -> str:
+@deal.pure
+def last(repo: str = "") -> str:
     """Retrives the last tagged version.
 
     Returns:
         str: Representing the version.
 
     Examples:
-        >>> version = last()
-        >>> major, minor, patch, *rest = version.split(".")
-        >>> major.isdecimal()
-        True
+        >>> from pathlib import Path
+
+        >>> repo = Path("./tests/fixtures").resolve()
+        >>> last(repo)
+        '9.0.0'
 
     .. versionadded:: 1.0.0
 
     """
 
-    cmd: Sequence[str]
-    cmd = ["git", "describe", "--tags", "--abbrev=0", "--first-parent"]
-    return run(cmd).split()[0]
+    return (
+        Repo(repo)
+        .git
+        .describe("--tags", "--abbrev=0", "--first-parent")
+        .split()[0]
+        )

@@ -14,11 +14,13 @@ from __future__ import annotations
 from typing import Sequence
 
 import deal
+from git import Repo
+from git.exc import GitCommandError
 
-from ._base import run
 
-
-@deal.has("stdin")
+@deal.pre(lambda _: len(_.revision) > 0 and len(_.file) > 0)
+@deal.raises(TypeError, ValueError)
+@deal.has()
 def show(revision: str, file: str, repo: str = "") -> str:
     """Retrives the content of a file in a revision.
 
@@ -36,16 +38,23 @@ def show(revision: str, file: str, repo: str = "") -> str:
         >>> repo = Path("./tests/fixtures").resolve()
         >>> source = show("1.0.0", "func.py", str(repo))
         >>> source
-        'def function(a, *, b, c, d):\\n    ...\\n'
+        'def function(a, *, b, c, d):\\n    ...'
 
     """
 
-    cmd: Sequence[str]
-    cmd = ["git", "-C", repo, "show", f"{revision}:{file}"]
-    return run(cmd)
+    try:
+        return (
+            Repo(repo)
+            .git
+            .show(f"{revision}:{file}")
+            )
+    except GitCommandError as error:
+        raise TypeError(error) from error
 
 
-@deal.has("stdin")
+@deal.pre(lambda _: len(_.revision) > 0)
+@deal.raises(TypeError, ValueError)
+@deal.has()
 def tree(revision: str, repo: str = "") -> Sequence[str]:
     """Retrives the list of tracked files in a revision.
 
@@ -66,13 +75,20 @@ def tree(revision: str, repo: str = "") -> Sequence[str]:
     .. versionadded:: 1.0.0
 
     """
+    try:
+        return (
+            Repo(repo)
+            .git
+            .ls_tree("-r", "--name-only", revision)
+            .split()
+            )
+    except GitCommandError as error:
+        raise TypeError(error) from error
 
-    cmd: Sequence[str]
-    cmd = ["git", "-C", repo, "ls-tree", "-r", "--name-only", revision]
-    return run(cmd).split()
 
-
-@deal.has("stdin")
+@deal.pre(lambda _: len(_.this) > 0 and len(_.that) > 0)
+@deal.raises(TypeError, ValueError)
+@deal.has()
 def diff(this: str, that: str, repo: str = "") -> Sequence[str]:
     """Retrives the list of changed files between two revisions.
 
@@ -94,6 +110,12 @@ def diff(this: str, that: str, repo: str = "") -> Sequence[str]:
 
     """
 
-    cmd: Sequence[str]
-    cmd = ["git", "-C", repo, "diff", "--name-only", f"{that}..{this}"]
-    return run(cmd).split()
+    try:
+        return (
+            Repo(repo)
+            .git
+            .diff("--name-only", f"{that}..{this}")
+            .split()
+            )
+    except GitCommandError as error:
+        raise TypeError(error) from error
