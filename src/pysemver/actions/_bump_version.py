@@ -69,7 +69,7 @@ class BumpVersion:
             False: Otherwise.
 
         Examples:
-            >>> bumper = Bumper()
+            >>> bumper = BumpVersion()
             >>> bumper.is_acceptable()
             True
 

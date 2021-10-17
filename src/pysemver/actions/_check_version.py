@@ -11,7 +11,6 @@ from typing import Optional, Sequence, Set, TypeVar
 import deal
 import typic
 
-from .. import infra
 from ..domain import Exit, Signature
 from ..types import What
 from ._bump_version import BumpVersion
@@ -41,7 +40,7 @@ class CheckVersion:
     exit: Exit
     parser: ParseFiles
     ignore: Sequence[str]
-    bump_version: Bumper
+    bump_version: BumpVersion
 
     # @typic.al(strict = True)
     def __init__(
@@ -53,7 +52,7 @@ class CheckVersion:
         self.ignore = ignore
         self.exit = Exit.OK
         self.parser = parser
-        self.bump_version = Bumper()
+        self.bump_version = BumpVersion()
 
     # @deal.pure
     def __call__(self) -> None:
@@ -89,7 +88,7 @@ class CheckVersion:
         return parser.signatures
 
     # @deal.pure
-    def _check_files(self: T, bump_version: Bumper, files: Set[str]) -> T:
+    def _check_files(self: T, bump_version: BumpVersion, files: Set[str]) -> T:
         """Requires a bump if there's a diff in files."""
 
         what: int = 1
@@ -115,7 +114,7 @@ class CheckVersion:
     # @deal.pure
     def _check_funcs(
             self: T,
-            bump_version: Bumper,
+            bump_version: BumpVersion,
             what: str,
             *files: Set[Signature],
             ) -> T:
@@ -131,7 +130,7 @@ class CheckVersion:
         for count, this in enumerate(diff):
             name: str
             that: Optional[Signature]
-            checker: FuncChecker
+            checker: CheckSignature
 
             self.logs.push(count, total)
 
@@ -158,7 +157,7 @@ class CheckVersion:
                 continue
 
             # Now we do a ``small-print`` comparison between signatures.
-            f = FuncChecker(this, that)
+            f = CheckSignature(this, that)
 
             if f.score() == bump_version.what(what).value:
                 bump_version(what)
@@ -173,7 +172,7 @@ class CheckVersion:
         return self
 
     # @deal.pure
-    def _check_version_acceptable(self: T, bump_version: Bumper) -> T:
+    def _check_version_acceptable(self: T, bump_version: BumpVersion) -> T:
         """Requires a bump if there current version is not acceptable."""
 
         self.logs.info(

@@ -19,29 +19,29 @@ def checker():
 
     checker = CheckVersion(logs, ignore = [])
     checker.parser = type(checker.parser)(this = "0.2.0", that = "0.2.0")
-    checker.bumper.this = "0.2.0"
-    checker.bumper.that = "0.2.0"
+    checker.bump_version.this = "0.2.0"
+    checker.bump_version.that = "0.2.0"
     return checker
 
 
 @pytest.fixture
 def info(mocker, checker):
-    return mocker.spy(checker.bar, "info")
+    return mocker.spy(logs, "info")
 
 
 @pytest.fixture
 def warn(mocker, checker):
-    return mocker.spy(checker.bar, "warn")
+    return mocker.spy(logs, "warn")
 
 
 @pytest.fixture
 def fail(mocker, checker):
-    return mocker.spy(checker.bar, "fail")
+    return mocker.spy(logs, "fail")
 
 
 @pytest.fixture
 def okay(mocker, checker):
-    return mocker.spy(checker.bar, "okay")
+    return mocker.spy(logs, "okay")
 
 
 @pytest.fixture

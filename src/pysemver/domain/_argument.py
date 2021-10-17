@@ -30,8 +30,7 @@ class Argument:
         Argument(name='count', default='1')
 
         >>> Argument("count", 1)
-        Traceback (most recent call last):
-        typic.constraints.error.ConstraintValueError...
+        Argument(name='count', default=1)
 
     .. versionadded:: 1.0.0
 

@@ -292,19 +292,13 @@ class BuildSignatures(ast.NodeVisitor):
             'file.py'
 
             >>> signature.arguments
-            (Argument(name='n', types=('List', 'int'), default=[1]),)
+            (Argument(name='n', default=['1']),)
 
             >>> argument.name
             'n'
 
-            >>> argument.types
-            ('List', 'int')
-
             >>> argument.default
             [1]
-
-            >>> signature.returns
-            'int'
 
             >>> builder.count
             1
