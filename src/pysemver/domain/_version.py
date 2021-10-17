@@ -3,6 +3,8 @@
 # Licensed under the EUPL-1.2-or-later
 # For details: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 
+"""Version schema."""
+
 from __future__ import annotations
 
 import aenum
@@ -10,6 +12,7 @@ from aenum import Enum, IntEnum
 
 
 class Version(Enum):
+    """Version container."""
 
     @aenum.skip
     class Str(str, Enum):

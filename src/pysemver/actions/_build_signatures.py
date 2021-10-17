@@ -3,6 +3,8 @@
 # Licensed under the EUPL-1.2-or-later
 # For details: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 
+"""Signature builder."""
+
 from __future__ import annotations
 
 from typing import (
@@ -291,13 +293,13 @@ class BuildSignatures(ast.NodeVisitor):
             'file.py'
 
             >>> signature.arguments
-            (Argument(name='n', default=[1]),)
+            (Argument(name='n', default=('1',)),)
 
             >>> argument.name
             'n'
 
             >>> argument.default
-            [1]
+            ('1',)
 
             >>> builder.count
             1

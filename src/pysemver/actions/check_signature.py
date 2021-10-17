@@ -312,6 +312,8 @@ class CheckSignature:
     reason: Optional[str] = None
 
     def score(self) -> int:
+        """Calculates the score, that is the required version bump."""
+
         hash_score = max(diff_hash(self.this, self.that))
         args_score = max(diff_args(self.this, self.that))
         name_score = max(diff_name(self.this, self.that))

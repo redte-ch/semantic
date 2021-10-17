@@ -104,7 +104,7 @@ def diff(this: str, that: str, repo: str = "") -> Tuple[str, ...]:
 
         >>> repo = Path("./tests/fixtures").resolve()
         >>> diff("2.0.0", "1.0.0", str(repo))
-        ['func.py']
+        ('func.py',)
 
     .. versionadded:: 1.0.0
 
