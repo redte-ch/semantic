@@ -8,7 +8,7 @@
 from __future__ import annotations
 
 from types import ModuleType
-from typing import Optional, Tuple, Set, TypeVar
+from typing import Optional, Set, Tuple, TypeVar
 
 import deal
 import typic

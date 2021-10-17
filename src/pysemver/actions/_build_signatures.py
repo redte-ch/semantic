@@ -208,7 +208,10 @@ def _is_unique(seq: Tuple[Signature, ...], name: str) -> bool:
 
 
 @deal.pure
-def _where(seq: Tuple[Signature, ...], name: str) -> Generator[bool, None, None]:
+def _where(
+        seq: Tuple[Signature, ...],
+        name: str,
+        ) -> Generator[bool, None, None]:
     """Iterates over signatures to find the names named ``name``.
 
     Examples:

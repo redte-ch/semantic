@@ -17,7 +17,7 @@ from pysemver.infra import logs
 def checker():
     """A version checker."""
 
-    checker = CheckVersion(logs, ignore = [])
+    checker = CheckVersion(logs, ignore = ("README.md",))
     checker.parser = type(checker.parser)(this = "0.2.0", that = "0.2.0")
     checker.bump_version.this = "0.2.0"
     checker.bump_version.that = "0.2.0"
@@ -128,8 +128,8 @@ def test_files_when_diff_only_parse_changed(info, warn, fail, checker):
     warn.assert_called_with("+ pysemver._func_checker.function => 2\n")
     assert warn.call_count == 2
 
-    checker.parser.diff = []
-    checker.bar.called = []
+    checker.parser.diff = ()
+    checker.logs.called = ()
     checker()
     assert warn.call_count == 2
 
@@ -166,9 +166,15 @@ def test_funcs_when_added(info, warn, fail, calls, checker):
         sys.exit(checker.exit.value)
 
     info.assert_called_with("Version bump required: MINOR!\n")
-    assert len(list(map(lambda c: c.startswith("+"), calls()))) == 1
-    assert len(list(map(lambda c: c.startswith("-"), calls()))) == 0
+
+    added = list(map(lambda c: "+" in c, calls()))
+    assert len(list(utils.compact(added))) == 1
+
+    removed = list(map(lambda c: "-" in c, calls()))
+    assert len(list(utils.compact(removed))) == 0
+
     fail.assert_called()
+
     assert exit.value.code != os.EX_OK
 
 
@@ -182,9 +188,15 @@ def test_funcs_when_removed(info, warn, fail, calls, checker):
         sys.exit(checker.exit.value)
 
     info.assert_called_with("Version bump required: MAJOR!\n")
-    assert calls() << cytoolz.select(r"\+") >> len == 0
-    assert calls() << cytoolz.select(r"\-") >> len == 1
+
+    added = list(map(lambda c: "+" in c, calls()))
+    assert len(list(utils.compact(added))) == 0
+
+    removed = list(map(lambda c: "-" in c, calls()))
+    assert len(list(utils.compact(removed))) == 1
+
     fail.assert_called()
+
     assert exit.value.code != os.EX_OK
 
 
