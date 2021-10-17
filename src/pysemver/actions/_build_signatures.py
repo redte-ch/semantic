@@ -103,7 +103,7 @@ def _build_argument(
         ) -> Sequence[Argument]:
     """Builds an argument."""
 
-    types: Optional[Tuple[ArgType, ...]]
+    types: Optional[Tuple[str, ...]]
     default: Optional[str]
     argument: Argument
 
@@ -119,27 +119,52 @@ def _build_argument(
     return (*acc, argument)
 
 
-def _build_argtypes(node: ast.arg) -> Optional[Tuple[ArgType, ...]]:
-    """Builds the types of an argument."""
+def _build_argtypes(node: ast.arg) -> Optional[Tuple[str, ...]]:
+    """Builds the types of an argument.
 
-    # We try to build types from the type annotation of the node.
-    types = _build(node.annotation, to_type)
+    Examples:
+        >>> argtype = ast.Constant(value = "int")
+        >>> node = ast.arg(annotation = argtype)
+        >>> _build_argtypes(node)
+        'int'
 
-    # We do always return a tuple of types, or None.
-    if types is not None and not isinstance(types, tuple):
-        return types,
+        >>> node = ast.arg()
+        >>> _build_argtypes(node)
+        None
 
-    return types
+    .. versionadded:: 1.0.0
+
+    """
+
+    return _build(node.annotation, to_type)
 
 
-# @deal.pure
-# @typic.al(strict = True)
 def _build_arg_default(
         n_acc: int,
         n_arg: int,
         defaults: Sequence[Any],
         ) -> Optional[str]:
-    """Builds the default value of an argument."""
+    """Builds the default value of an argument.
+
+    Examples:
+        >>> n_acc = 1
+        >>> n_arg = 2
+        >>> defaults = []
+        >>> _build_arg_default(n_acc, n_arg, defaults)
+        None
+
+        >>> defaults = [1]
+        >>> _build_arg_default(n_acc, n_arg, defaults)
+        '1'
+
+        >>> n_acc = 2
+        >>> _build_arg_default(n_acc, n_arg, defaults)
+        Traceback (most recent call last):
+        IndexError: list index out of range
+
+    .. versionadded:: 1.0.0
+
+    """
 
     n_def: int = len(defaults)
     index: int
