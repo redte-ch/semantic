@@ -346,11 +346,11 @@ class BuildSignatures(ast.NodeVisitor):
         name = _build_unique_name(path, node, iter(Suffix), self.signatures)
 
         # We build all positional arguments.
-        args = node.args.args
+        args = tuple(node.args.args)
         posargs = functools.reduce(_build_posarg(node), args, ())
 
         # We build all keyword arguments.
-        kwds = node.args.kwonlyargs
+        kwds = tuple(node.args.kwonlyargs)
         keyargs = functools.reduce(_build_keyarg(node), kwds, ())
 
         # We build the signature.

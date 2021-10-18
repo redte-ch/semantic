@@ -7,6 +7,8 @@
 
 from __future__ import annotations
 
+from typing import Tuple
+
 import ast
 
 import classes
@@ -115,17 +117,17 @@ def _from_ast_str(instance: ast.Str) -> str:
 
 
 @to_value.instance(ast.List)
-def _from_ast_list(instance: ast.List) -> str:
+def _from_ast_list(instance: ast.List) -> Tuple[object, ...]:
     return tuple(to_value(el) for el in instance.elts)
 
 
 @to_value.instance(ast.Tuple)
-def _from_ast_tuple(instance: ast.Tuple) -> str:
+def _from_ast_tuple(instance: ast.Tuple) -> Tuple[object, ...]:
     return tuple(to_value(el) for el in instance.elts)
 
 
 @to_value.instance(int)
-def _from_type(instance: int) -> int:
+def _from_type(instance: int) -> str:
     return str(instance)
 
 
