@@ -5,8 +5,9 @@
 
 """Deprecation checker."""
 
-from types import ModuleType
-from typing import Sequence, Tuple
+from __future__ import annotations
+
+from typing import Any, Sequence, Tuple
 
 import ast
 import pathlib
@@ -52,7 +53,7 @@ class CheckDeprecated(ast.NodeVisitor):
 
     """
 
-    logs: ModuleType
+    logs: Any
     count: int
     exit: Exit
     files: Sequence[str]
@@ -63,9 +64,9 @@ class CheckDeprecated(ast.NodeVisitor):
 
     def __init__(
             self,
-            logs: ModuleType,
-            files: Sequence[str] = _files,
-            ignore: Sequence[str] = [],
+            logs: Any,
+            files: Tuple[str, ...] = _files,
+            ignore: Tuple[str, ...] = (),
             version: str = _version,
             ) -> None:
         self.logs = logs

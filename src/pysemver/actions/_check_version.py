@@ -7,8 +7,7 @@
 
 from __future__ import annotations
 
-from types import ModuleType
-from typing import Optional, Set, Tuple, TypeVar
+from typing import Any, Optional, Set, Tuple, TypeVar
 
 import typic
 
@@ -37,7 +36,7 @@ class CheckVersion:
 
     """
 
-    logs: ModuleType
+    logs: Any
     exit: Version.Int
     parser: ParseFiles
     ignore: Tuple[str, ...]
@@ -45,7 +44,7 @@ class CheckVersion:
 
     def __init__(
             self,
-            logs: ModuleType,
+            logs: Any,
             ignore: Tuple[str, ...],
             parser: ParseFiles = PARSER) -> None:
         self.logs = logs
