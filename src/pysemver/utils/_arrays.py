@@ -40,6 +40,9 @@ def add(this: int, that: int) -> int:
         this: An upper/lower bound value.
         that: Another upper/lower bound value.
 
+    Returns:
+        int: The value.
+
     Examples:
         >>> add(1, 2)
         1
@@ -67,6 +70,9 @@ def pre(this: int, that: int, what: int) -> numpy.ndarray:
         that: Another upper/lower bound value.
         what: What to pre-populate the array with.
 
+    Returns:
+        numpy.ndarray: The pre-populated array.
+
     Examples:
         >>> pre(10, 5, 1)
         array([1, 1, 1, 1, 1])
@@ -87,6 +93,9 @@ def rep(this: int, that: int, what: int) -> numpy.ndarray:
         this: An upper/lower bound value.
         that: Another upper/lower bound value.
         what: What to repeat over the array with.
+
+    Returns:
+        numpy.ndarray: The repeated array.
 
     Examples:
         >>> rep(10, 5, 1)
@@ -109,6 +118,9 @@ def pop(this: int, that: int, what: int) -> numpy.ndarray:
         that: Another upper/lower bound value.
         what: What to populate the array with.
 
+    Returns:
+        numpy.ndarray: The populated array.
+
     Examples:
         >>> pop(10, 5, 1)
         array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
@@ -129,6 +141,9 @@ def fill(this: int, that: int, what: int) -> numpy.ndarray:
         this: An upper/lower bound value.
         that: Another upper/lower bound value.
         what: What to fill the array with.
+
+    Returns:
+        numpy.ndarray: The filled array.
 
     Examples:
         >>> fill(1, 2, 3)

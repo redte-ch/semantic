@@ -105,6 +105,9 @@ def _build_argument(
         args: A tuple of argument nodes.
         defaults: A tuple of default value nodes.
 
+    Returns:
+        A tuple with the arguments.
+
     Examples:
         >>> acc = []
         >>> node = ast.arg(arg = "arg")
@@ -137,6 +140,10 @@ def _build_arg_default(
         n_acc: The index of the function argument we're working with.
         n_arg: The total number of a function's arguments.
         defaults: The tuple of a function's default values.
+
+    Returns:
+        A default argument value, or None.
+
 
     Examples:
         >>> n_acc = 1
@@ -193,6 +200,10 @@ def _is_unique(seq: Tuple[Signature, ...], name: str) -> bool:
         seq: A sequence of signatures.
         name: The name of a specific function.
 
+    Returns:
+        bool: Is it?
+
+
     Examples:
         >>> signature = Signature("name", "file.py")
         >>> seq = [signature]
@@ -222,6 +233,8 @@ def _where(
         seq: A sequence of signatures.
         name: The name of a specific function.
 
+    Returns:
+        A generator to find a signature by name.
 
     Examples:
         >>> signature = Signature("name", "file.py")
