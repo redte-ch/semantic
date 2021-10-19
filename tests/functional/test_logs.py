@@ -7,7 +7,7 @@ import re
 
 import pytest
 
-from pysemver import infra
+from mantic import infra
 
 _colors = re.compile(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])")
 

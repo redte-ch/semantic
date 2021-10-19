@@ -36,7 +36,7 @@ def this() -> str:
 
     return (
         pkg_resources
-        .get_distribution("pysemver")
+        .get_distribution("mantic")
         .version
         )
 

@@ -14,7 +14,7 @@ from __future__ import annotations
 import classes
 import deal
 
-from pysemver import utils
+from mantic import utils
 
 from ..types import (
     OptionsAlias,

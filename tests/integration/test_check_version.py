@@ -8,9 +8,9 @@ import sys
 
 import pytest
 
-from pysemver import utils
-from pysemver.actions import CheckVersion
-from pysemver.infra import logs
+from mantic import utils
+from mantic.actions import CheckVersion
+from mantic.infra import logs
 
 
 @pytest.fixture

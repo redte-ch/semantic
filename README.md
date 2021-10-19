@@ -1,10 +1,10 @@
-[![Test](https://github.com/maukoquiroga/pysemver/workflows/test/badge.svg)](https://github.com/maukoquiroga/pysemver/actions?workflow=test)
-[![Type](https://github.com/maukoquiroga/pysemver/workflows/type/badge.svg)](https://github.com/maukoquiroga/pysemver/actions?workflow=type)
-[![Lint](https://github.com/maukoquiroga/pysemver/workflows/lint/badge.svg)](https://github.com/maukoquiroga/pysemver/actions?workflow=lint)
-[![Docs](https://github.com/maukoquiroga/pysemver/workflows/docs/badge.svg)](https://github.com/maukoquiroga/pysemver/actions?workflow=docs)
-[![Docs](https://readthedocs.org/projects/pysemver/badge/)](https://pysemver.readthedocs.io/)
-[![PyPI](https://img.shields.io/pypi/v/pysemver.svg)](https://pypi.org/project/pysemver/)
-[![Coverage](https://codecov.io/gh/maukoquiroga/pysemver/branch/master/graph/badge.svg)](https://codecov.io/gh/maukoquiroga/pysemver)
+[![Test](https://github.com/maukoquiroga/mantic/workflows/test/badge.svg)](https://github.com/maukoquiroga/mantic/actions?workflow=test)
+[![Type](https://github.com/maukoquiroga/mantic/workflows/type/badge.svg)](https://github.com/maukoquiroga/mantic/actions?workflow=type)
+[![Lint](https://github.com/maukoquiroga/mantic/workflows/lint/badge.svg)](https://github.com/maukoquiroga/mantic/actions?workflow=lint)
+[![Docs](https://github.com/maukoquiroga/mantic/workflows/docs/badge.svg)](https://github.com/maukoquiroga/mantic/actions?workflow=docs)
+[![Docs](https://readthedocs.org/projects/mantic/badge/)](https://mantic.readthedocs.io/)
+[![PyPI](https://img.shields.io/pypi/v/mantic.svg)](https://pypi.org/project/mantic/)
+[![Coverage](https://codecov.io/gh/maukoquiroga/mantic/branch/master/graph/badge.svg)](https://codecov.io/gh/maukoquiroga/mantic)
 
 # PySemver
 
@@ -12,13 +12,13 @@ Command-line tools to facilitate semantic versioning!
 
 ## Demo
 
-![pysemver](https://user-images.githubusercontent.com/329236/137640522-1673fc7e-8d88-4418-b10a-29e1e4a1408a.gif)
+![mantic](https://user-images.githubusercontent.com/329236/137640522-1673fc7e-8d88-4418-b10a-29e1e4a1408a.gif)
 
 ## Installation
 
 ```
-git clone https://github.com/maukoquiroga/pysemver
-cd pysemver
+git clone https://github.com/maukoquiroga/mantic
+cd mantic
 make install
 poetry install
 ```
@@ -26,9 +26,9 @@ poetry install
 ## Usage
 
 ```
-poetry run pysemver
-poetry run pysemver --help check-version
-poetry run pysemver check-version
+poetry run mantic
+poetry run mantic --help check-version
+poetry run mantic check-version
 ```
 
 ## License

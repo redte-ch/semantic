@@ -310,10 +310,10 @@ class BuildSignatures(ast.NodeVisitor):
             >>> argument = next(iter(signature.arguments))
 
             >>> builder.signatures
-            (Signature(name='pysemver.file.function', file='file.py', a...
+            (Signature(name='mantic.file.function', file='file.py', a...
 
             >>> signature.name
-            'pysemver.file.function'
+            'mantic.file.function'
 
             >>> signature.file
             'file.py'

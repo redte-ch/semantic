@@ -15,7 +15,7 @@ from typing import Any, cast, Optional, Set, Tuple, TypeVar
 
 import typic
 
-from pysemver.domain import Signature, VersionInt, VersionStr
+from mantic.domain import Signature, VersionInt, VersionStr
 
 from ..types import What
 from ._bump_version import BumpVersion

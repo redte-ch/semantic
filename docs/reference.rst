@@ -6,8 +6,8 @@ Reference
     :backlinks: none
 
 
-pysemver
+mantic
 --------
 
-.. automodule:: pysemver
+.. automodule:: mantic
     :members:

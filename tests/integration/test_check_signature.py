@@ -8,8 +8,8 @@ import inspect
 import pytest
 from numpy.testing import assert_equal
 
-from pysemver.actions import BuildSignatures
-from pysemver.actions.check_signature import (
+from mantic.actions import BuildSignatures
+from mantic.actions.check_signature import (
     CheckSignature,
     diff_args,
     diff_defs,

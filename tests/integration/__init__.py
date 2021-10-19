@@ -5,7 +5,7 @@
 
 """Integration tests (grey box).
 
-Testing the interaction of the different pysemver's modules.
+Testing the interaction of the different mantic's modules.
 
 .. versionadded:: 1.0.0
 

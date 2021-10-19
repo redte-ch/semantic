@@ -5,7 +5,7 @@
 
 """Unit tests (white box).
 
-Testing pysemver modules in isolation.
+Testing mantic modules in isolation.
 
 .. versionadded:: 1.0.0
 

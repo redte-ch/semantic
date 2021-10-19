@@ -9,10 +9,10 @@ Library					Process
 Suite Teardown			Terminate All Processes	kill=True
 
 *** Keywords ***
-Run PySemVer
+Run Mantic
 	${result} =			Run Process
-	...					poetry		run		pysemver
-	...					alias=pysemver
+	...					poetry		run		mantic
+	...					alias=mantic
 	...					env:COLUMNS=200
 	...					stdout=.robot/stdout.txt
 	[Return]			${result}
@@ -23,9 +23,9 @@ Exit OK
 
 *** Test Cases ***
 Prints the home screen to the user.
-	${result} =			Run PySemVer
-	Wait For Process	pysemver
-	Should Contain		${result.stdout}	Usage: pysemver [--help] <command> …
+	${result} =			Run Mantic
+	Wait For Process	mantic
+	Should Contain		${result.stdout}	Usage: mantic [--help] <command> …
 	Should Contain		${result.stdout}	check-deprecated
     Should Contain		${result.stdout}	check-version
     Exit OK				${result.rc}

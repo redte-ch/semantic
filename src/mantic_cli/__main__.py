@@ -18,7 +18,7 @@ import inspect
 import typic
 from invoke import Program
 
-import pysemver_cli
+import mantic_cli
 
 from .tasks import Tasks
 from .views import help_view, home_view, to_options
@@ -37,7 +37,7 @@ class Main(Program):
     def __init__(self) -> None:
         super().__init__(
             namespace = _tasks,
-            version = pysemver_cli.__version__,
+            version = mantic_cli.__version__,
             )
 
     def print_help(self) -> None:

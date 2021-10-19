@@ -18,7 +18,7 @@ TODO
 
 .. code-block:: console
 
-   $ pip install pysemver
+   $ pip install mantic
 
 
 Usage
@@ -28,4 +28,4 @@ TODO
 
 .. code-block:: console
 
-   $ Usage: pysemver <command> [--help] …
+   $ Usage: mantic <command> [--help] …

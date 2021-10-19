@@ -65,9 +65,9 @@ test-%: compile clean
 
 release:
 	@nox -k "not coverage"
-	@poetry run pip uninstall pysemver -y -q
+	@poetry run pip uninstall mantic -y -q
 	@poetry install -q
-	@poetry run pysemver check-version \
+	@poetry run mantic check-version \
 		&& exit_code=$${?} \
 		|| exit_code=$${?} \
 		&& version=( "" "patch" "minor" "major" ) \

@@ -20,8 +20,8 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 
-import pysemver_hypothesis as st
-from pysemver import __name__, utils
+import mantic_hypothesis as st
+from mantic import __name__, utils
 
 from .. import __version__
 from ._base import columns, rows
@@ -100,7 +100,7 @@ def _main(content: Table) -> Panel:
         >>> content = _content(())
         >>> main = _main(content)
         >>> main.title
-        ...pysemver...
+        ...mantic...
 
     .. versionadded:: 1.0.0
 
@@ -159,7 +159,7 @@ def _usage() -> Text:
 
     Examples:
         >>> _usage()
-        <text 'Usage: pysemver [--help] <command> …' ...>
+        <text 'Usage: mantic [--help] <command> …' ...>
 
     .. versionadded:: 1.0.0
 

@@ -15,8 +15,8 @@ import deal
 from rich.layout import Layout
 from rich.panel import Panel
 
-import pysemver_hypothesis as st
-from pysemver import utils
+import mantic_hypothesis as st
+from mantic import utils
 
 st.register(Layout, st.layouts)
 st.register(Panel, st.panels)

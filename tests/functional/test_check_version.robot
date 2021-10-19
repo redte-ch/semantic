@@ -10,12 +10,12 @@ Library					Process
 Suite Teardown			Terminate All Processes	kill=True
 
 *** Keywords ***
-Run PySemVer
+Run Mantic
 	[Arguments]			@{args}
 	${result} =			Run Process
-	...					poetry		run		pysemver
+	...					poetry		run		mantic
 	... 				@{args}
-	...					alias=pysemver
+	...					alias=mantic
 	...					env:COLUMNS=200
 	...					stdout=.robot/stdout.txt
 	[Return]			${result}
@@ -27,9 +27,9 @@ Exit OK
 
 *** Test Cases ***
 Prints the help screen to the user.
-	${result} =			Run PySemVer		--help  check-version
-	Wait For Process	pysemver
-	Should Contain		${result.stdout}	Usage: pysemver check-version [--options] …
+	${result} =			Run Mantic		--help  check-version
+	Wait For Process	mantic
+	Should Contain		${result.stdout}	Usage: mantic check-version [--options] …
 	Should Contain		${result.stdout}	Check if the actual version is valid.
 	Should Contain		${result.stdout}	-i, --ignore
 	Should Contain		${result.stdout}	Paths to ignore
@@ -37,6 +37,6 @@ Prints the help screen to the user.
 	Exit OK				${result.rc}
 
 Checks for required version bump.
-	${result} =			Run PySemVer		check-version
-	Wait For Process	pysemver
+	${result} =			Run Mantic		check-version
+	Wait For Process	mantic
 	Exit OK				${result.rc}

@@ -6,7 +6,7 @@
 """Sphinx configuration."""
 
 author = "Mauko Quiroga <mauko@pm.me>"
-project = "pysemver"
+project = "mantic"
 copyleft = f"(ɔ) 2021 {author}"
 extensions = (
     "sphinx.ext.autodoc",

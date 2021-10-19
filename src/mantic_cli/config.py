@@ -10,7 +10,7 @@ file.
 
 For example::
 
-    [tool.pysemver]
+    [tool.mantic]
     exclude = [".editorconfig", ".gitignore", "tests"]
 
 .. versionadded:: 1.0.0
@@ -37,7 +37,7 @@ def build_config(config: Type[Config]) -> Config:
 
     from_toml: MutableMapping[str, Any] = toml.load("pyproject.toml")
 
-    return config.transmute(from_toml["tool"]["pysemver"])
+    return config.transmute(from_toml["tool"]["mantic"])
 
 
 config = build_config(Config)

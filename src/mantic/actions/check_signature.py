@@ -19,8 +19,8 @@ import deal
 import numpy
 import typic
 
-from pysemver import utils
-from pysemver.domain import Signature, VersionInt
+from mantic import utils
+from mantic.domain import Signature, VersionInt
 
 limit = 2e5
 """Just a random size/length sentinel."""
@@ -38,7 +38,7 @@ def diff_hash(this: Signature, that: Signature) -> numpy.ndarray:
         numpy.ndarray: An array with the values.
 
     Examples:
-        >>> from pysemver.domain import Argument
+        >>> from mantic.domain import Argument
 
         >>> argument = Argument("count", default = "0")
         >>> this = Signature("greet", "file.py", (argument,))
@@ -79,7 +79,7 @@ def diff_args(this: Signature, that: Signature) -> numpy.ndarray:
         numpy.ndarray: An array with the values.
 
     Examples:
-        >>> from pysemver.domain import Argument
+        >>> from mantic.domain import Argument
 
         >>> argument = Argument("count", default = "0")
         >>> this = Signature("greet", "file.py", (argument,))
@@ -142,7 +142,7 @@ def diff_name(this: Signature, that: Signature) -> numpy.ndarray:
         numpy.ndarray: An array with the values.
 
     Examples:
-        >>> from pysemver.domain import Argument
+        >>> from mantic.domain import Argument
 
         >>> argument = Argument("count")
         >>> this = Signature("greet", "file.py", (argument,))
@@ -233,7 +233,7 @@ def diff_defs(this: Signature, that: Signature) -> numpy.ndarray:
         numpy.ndarray: An array with the values.
 
     Examples:
-        >>> from pysemver.domain import Argument
+        >>> from mantic.domain import Argument
 
         >>> argument = Argument("count", default = "0")
         >>> this = Signature("greet", "file.py", (argument,))
@@ -302,7 +302,7 @@ class CheckSignature:
         that: Another signature.
 
     Examples
-        >>> from pysemver.domain import Argument
+        >>> from mantic.domain import Argument
 
         >>> argument = Argument("count")
         >>> this = Signature("greet", "file.py", (argument,))

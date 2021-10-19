@@ -9,8 +9,8 @@ import tempfile
 
 import pytest
 
-from pysemver.actions import CheckDeprecated
-from pysemver.infra import logs
+from mantic.actions import CheckDeprecated
+from mantic.infra import logs
 
 
 class Module:

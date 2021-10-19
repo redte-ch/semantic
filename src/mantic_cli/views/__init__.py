@@ -3,7 +3,7 @@
 # Licensed under the EUPL-1.2-or-later
 # For details: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 
-"""Views, or interface, of pysemver.
+"""Views, or interface, of mantic.
 
 Loosely based on the MVC thing, the idea is to have a clear separation of
 concerns between the presentation layer and the rest of the package. Views

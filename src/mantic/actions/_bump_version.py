@@ -16,7 +16,7 @@ import re
 import deal
 import typic
 
-from pysemver.infra import repo
+from mantic.infra import repo
 
 from ..domain import VersionInt
 

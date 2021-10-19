@@ -5,7 +5,7 @@
 
 """Functional tests (black box).
 
-Testing pysemver actually does what it is suposed to do.
+Testing mantic actually does what it is suposed to do.
 
 .. versionadded:: 1.0.0
 

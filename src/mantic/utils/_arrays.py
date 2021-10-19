@@ -14,7 +14,7 @@ from __future__ import annotations
 import deal
 import numpy
 
-import pysemver_hypothesis as st
+import mantic_hypothesis as st
 
 from ..domain import Signature
 
