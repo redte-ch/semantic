@@ -83,7 +83,7 @@ def _from_ast_attribute(instance: ast.Attribute) -> str:
 
 @to_value.instance(ast.Call)
 def _from_ast_call(instance: ast.Call) -> str:
-    return to_value(instance.func)
+    return to_value(instance.func)  # type: ignore
 
 
 @to_value.instance(ast.Constant)
@@ -108,22 +108,22 @@ def _from_ast_name_constant(instance: ast.NameConstant) -> str:
 
 @to_value.instance(ast.Num)
 def _from_ast_num(instance: ast.Num) -> str:
-    return to_value(instance.n)
+    return str(instance.n)
 
 
 @to_value.instance(ast.Str)
 def _from_ast_str(instance: ast.Str) -> str:
-    return to_value(instance.s)
+    return instance.s
 
 
 @to_value.instance(ast.List)
-def _from_ast_list(instance: ast.List) -> Tuple[object, ...]:
-    return tuple(to_value(el) for el in instance.elts)
+def _from_ast_list(instance: ast.List) -> Tuple[ast.Expr, ...]:
+    return tuple(to_value(el) for el in instance.elts)  # type: ignore
 
 
 @to_value.instance(ast.Tuple)
-def _from_ast_tuple(instance: ast.Tuple) -> Tuple[object, ...]:
-    return tuple(to_value(el) for el in instance.elts)
+def _from_ast_tuple(instance: ast.Tuple) -> Tuple[ast.Expr, ...]:
+    return tuple(to_value(el) for el in instance.elts)  # type: ignore
 
 
 @to_value.instance(int)
