@@ -64,7 +64,7 @@ test-%: compile clean
 	@poetry run interrogate src/$*
 
 release:
-# 	@nox -k "not coverage type"
+	@nox -k "not coverage"
 	@poetry run pip uninstall pysemver -y -q
 	@poetry install -q
 	@poetry run pysemver check-version \
