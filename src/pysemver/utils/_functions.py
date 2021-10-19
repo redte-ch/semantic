@@ -47,6 +47,10 @@ def cons(el: T, seq: Iterable[T]) -> Iterator[T]:
         el: An element.
         seq: Any sequence.
 
+    Returns:
+        An iterator with the values.
+
+
     Examples:
         >>> list(cons(1, (2, 3)))
         [1, 2, 3]
@@ -64,6 +68,9 @@ def dcons(seqs: Sequence[Tuple[T, Iterable[T]]]) -> Iterator[Tuple[T, ...]]:
 
     Args:
         seqs: Any sequences of sequences.
+
+    Returns:
+        An iterator with the values.
 
     Examples:
         >>> list(dcons([(1, [2, 3]), (4, [5, 6])]))
@@ -83,6 +90,9 @@ def dmap(func: Callable[[T], Any], seqs: Sequence[Sequence[T]]) -> Iterator[T]:
         func: Any callable.
         seqs: Any sequence of sequences.
 
+    Returns:
+        An iterator with the values.
+
     Examples:
         >>> list(dmap(float.__add__, [(.1, .2), (.3, .4)]))
         [0.3..., 0.7]
@@ -100,6 +110,9 @@ def first(seq: Sequence[T]) -> Optional[T]:
 
     Args:
         seq: Any sequence.
+
+    Returns:
+        The first value, or None.
 
     Examples:
         >>> first([1, 2, 3])
@@ -122,6 +135,9 @@ def compact(seq: Iterable[T]) -> Iterator[T]:
     Args:
         seq: Any sequence.
 
+    Returns:
+        An iterator with the values.
+
     Examples:
         >>> list(compact(["1", 0, "a", None, {}]))
         ['1', 'a']
@@ -141,6 +157,9 @@ def flatten(seqs: Sequence[Sequence[T]]) -> Iterator[T]:
 
     Args:
         seqs: Any sequence of sequences.
+
+    Returns:
+        An iterator with the values.
 
     Examples:
         >>> list(flatten([(1, 2), (3, 4)]))

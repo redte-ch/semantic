@@ -72,8 +72,9 @@ class BumpVersion:
         """Determines if the current version is acceptable or not.
 
         Returns:
-            True: When it is acceptable.
-            False: Otherwise.
+            bool:
+            True when it is acceptable.
+            False otherwise.
 
         Examples:
             >>> bumper = BumpVersion()
