@@ -20,7 +20,7 @@ from git.exc import GitCommandError
 
 @deal.pre(lambda _: len(_.revision) > 0 and len(_.file) > 0)
 @deal.raises(TypeError, ValueError)
-@deal.has()
+@deal.has("io")
 def show(revision: str, file: str, repo: str = "") -> str:
     """Retrives the content of a file in a revision.
 
@@ -60,7 +60,7 @@ def show(revision: str, file: str, repo: str = "") -> str:
 
 @deal.pre(lambda _: len(_.revision) > 0)
 @deal.raises(TypeError, ValueError)
-@deal.has()
+@deal.has("io")
 def tree(revision: str, repo: str = "") -> Tuple[str, ...]:
     """Retrives the list of tracked files in a revision.
 
@@ -98,7 +98,7 @@ def tree(revision: str, repo: str = "") -> Tuple[str, ...]:
 
 @deal.pre(lambda _: len(_.this) > 0 and len(_.that) > 0)
 @deal.raises(TypeError, ValueError)
-@deal.has()
+@deal.has("io")
 def diff(this: str, that: str, repo: str = "") -> Tuple[str, ...]:
     """Retrives the list of changed files between two revisions.
 
