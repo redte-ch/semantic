@@ -12,13 +12,6 @@ from pysemver import infra
 _colors = re.compile(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])")
 
 
-# @pytest.fixture
-# def logs():
-#     """A progress logs."""
-
-#     return Bar()
-
-
 @pytest.fixture
 def capture(capsys):
     """Capture prints."""

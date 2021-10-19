@@ -164,14 +164,6 @@ def _build_arg_default(
 def _build(node: Optional[ast.expr]) -> Any:
     """Generic builder."""
 
-    # Finally, if we have a dict, we have to both traverse recursively
-    # while building tuples for each key-value pair.
-    # if isinstance(node, ast.Dict):
-    #     return tuple(
-    #         (_build(key, builder), _build(value, builder))
-    #         for key, value in tuple(zip(node.keys, node.values))
-    #         )
-
     if node is None:
         return None
 
