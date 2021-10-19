@@ -15,8 +15,8 @@ import deal
 import numpy
 import typic
 
-from .. import utils
-from ..domain import Signature, Version
+from pysemver import utils
+from pysemver.domain import Signature, VersionInt
 
 limit = 2e5
 """Just a random size/length sentinel."""
@@ -55,8 +55,8 @@ def diff_hash(this: Signature, that: Signature) -> numpy.ndarray:
 
     these = utils.fill(len(this), len(that), abs(hash(this)))
     those = utils.fill(len(this), len(that), abs(hash(that)))
-    patch = utils.pop(len(this), len(that), Version.Int.PATCH)
-    nones = utils.pop(len(this), len(that), Version.Int.NONE)
+    patch = utils.pop(len(this), len(that), VersionInt.PATCH)
+    nones = utils.pop(len(this), len(that), VersionInt.NONE)
     return numpy.where(these != those, patch, nones)
 
 
@@ -110,9 +110,9 @@ def diff_args(this: Signature, that: Signature) -> numpy.ndarray:
     these = utils.fill(len(this), len(that), len(this))
     those = utils.fill(len(this), len(that), len(that))
 
-    major = utils.pop(len(this), len(that), Version.Int.MAJOR)
-    minor = utils.pop(len(this), len(that), Version.Int.MINOR)
-    nones = utils.pop(len(this), len(that), Version.Int.NONE)
+    major = utils.pop(len(this), len(that), VersionInt.MAJOR)
+    minor = utils.pop(len(this), len(that), VersionInt.MINOR)
+    nones = utils.pop(len(this), len(that), VersionInt.NONE)
 
     conds = [these < those, these > those, True]
     takes = [major, minor, nones]
@@ -185,11 +185,11 @@ def diff_name(this: Signature, that: Signature) -> numpy.ndarray:
 
     # If there are no arguments after, we populate.
     if len(these) == 0:
-        these = utils.pop(len(this), len(that), Version.Int.NONE)
+        these = utils.pop(len(this), len(that), VersionInt.NONE)
 
     # Inversely as well.
     if len(those) == 0:
-        those = utils.pop(len(this), len(that), Version.Int.NONE)
+        those = utils.pop(len(this), len(that), VersionInt.NONE)
 
     # We create tuples.
     glued = tuple(zip(these, those))
@@ -197,14 +197,14 @@ def diff_name(this: Signature, that: Signature) -> numpy.ndarray:
     # Otherwise we mark missing args after as major.
     conds = [[this != that for this, that in glued], True]
     takes = [
-        utils.pre(len(this), len(that), Version.Int.MAJOR),
-        utils.pre(len(this), len(that), Version.Int.NONE),
+        utils.pre(len(this), len(that), VersionInt.MAJOR),
+        utils.pre(len(this), len(that), VersionInt.NONE),
         ]
 
     # And we mark new args after as minor.
     return numpy.array([
         *numpy.select(conds, takes),
-        *utils.rep(len(this), len(that), Version.Int.MINOR),
+        *utils.rep(len(this), len(that), VersionInt.MINOR),
         ])
 
 
@@ -246,9 +246,9 @@ def diff_defs(this: Signature, that: Signature) -> numpy.ndarray:
 
     """
 
-    major = utils.pop(len(this), len(that), Version.Int.MAJOR)
-    minor = utils.pop(len(this), len(that), Version.Int.MINOR)
-    nones = utils.pop(len(this), len(that), Version.Int.NONE)
+    major = utils.pop(len(this), len(that), VersionInt.MAJOR)
+    minor = utils.pop(len(this), len(that), VersionInt.MINOR)
+    nones = utils.pop(len(this), len(that), VersionInt.NONE)
 
     these = numpy.array([a.default is None for a in this.arguments], int)
     those = numpy.array([a.default is None for a in that.arguments], int)

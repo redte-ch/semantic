@@ -7,51 +7,46 @@
 
 from __future__ import annotations
 
-import aenum
-from aenum import Enum, IntEnum
+from enum import Enum, IntEnum
 
 
-class Version(Enum):
-    """Version container."""
+class VersionStr(str, Enum):
+    """An enum used to explain the required version.
 
-    @aenum.skip
-    class Str(str, Enum):
-        """An enum used to explain the required version.
+    Examples:
+        >>> [version.name for version in VersionStr]
+        ['NONE', 'PATCH', 'MINOR', 'MAJOR']
 
-        Examples:
-            >>> [version.name for version in Version.Str]
-            ['NONE', 'PATCH', 'MINOR', 'MAJOR']
+        >>> [version.value for version in VersionStr]
+        ['', '~', '+', '-']
 
-            >>> [version for version in Version.Str]
-            ['', '~', '+', '-']
+    """
 
-        """
+    NONE = ""
+    PATCH = "~"
+    MINOR = "+"
+    MAJOR = "-"
 
-        NONE = ""
-        PATCH = "~"
-        MINOR = "+"
-        MAJOR = "-"
 
-    @aenum.skip
-    class Int(IntEnum):
-        """An enum used to determine the required version.
+class VersionInt(IntEnum):
+    """An enum used to determine the required version.
 
-        Examples:
-            >>> [version.name for version in Version.Int]
-            ['NONE', 'PATCH', 'MINOR', 'MAJOR']
+    Examples:
+        >>> [version.name for version in VersionInt]
+        ['NONE', 'PATCH', 'MINOR', 'MAJOR']
 
-            >>> [version for version in Version.Int]
-            [0, 1, 2, 3]
+        >>> [version.value for version in VersionInt]
+        [0, 1, 2, 3]
 
-            >>> [str(version) for version in Version.Int]
-            ['', '~', '+', '-']
+        >>> [str(version) for version in VersionInt]
+        ['', '~', '+', '-']
 
-        """
+    """
 
-        NONE = 0
-        PATCH = 1
-        MINOR = 2
-        MAJOR = 3
+    NONE = 0
+    PATCH = 1
+    MINOR = 2
+    MAJOR = 3
 
-        def __str__(self) -> str:
-            return tuple(Version.Str)[self.value]
+    def __str__(self) -> str:
+        return tuple(VersionStr)[self.value]

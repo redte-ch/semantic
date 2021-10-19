@@ -12,8 +12,8 @@ import re
 import deal
 import typic
 
-from .. import infra
-from ..domain import Version
+from pysemver.infra import repo
+from ..domain import VersionInt
 
 
 @typic.klass(always = True, slots = True, strict = True)
@@ -45,22 +45,22 @@ class BumpVersion:
 
     this: str
     that: str
-    what: Type[Version.Int]
-    required: Version.Int
+    what: Type[VersionInt]
+    required: VersionInt
 
     @deal.pure
     def __init__(self) -> None:
-        self.this = infra.repo.versions.this()
-        self.that = infra.repo.versions.last()
-        self.what = Version.Int
-        self.required = Version.Int.NONE
+        self.this = repo.versions.this()
+        self.that = repo.versions.last()
+        self.what = VersionInt
+        self.required = VersionInt.NONE
 
     @deal.pure
     def __call__(self, bump: int) -> None:
         """Bumps the required version."""
 
-        index = max(self.required.value, Version.Int(bump).value)
-        self.required = Version.Int(index)
+        index = max(self.required.value, VersionInt(bump).value)
+        self.required = VersionInt(index)
 
     @deal.pure
     def is_acceptable(self) -> bool:
@@ -103,7 +103,7 @@ class BumpVersion:
         before_is_rel: bool
 
         # If there's no required bump, we just do not check.
-        if self.required == Version.Int.NONE:
+        if self.required == VersionInt.NONE:
             return True
 
         # We get the actual number and whether it is a release or not.

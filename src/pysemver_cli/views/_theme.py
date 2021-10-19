@@ -11,28 +11,24 @@
 
 from __future__ import annotations
 
-from aenum import Enum, skip
+from enum import Enum
 
 
-class Theme(Enum):
-    """CLI theme."""
+class ThemeCommon(str, Enum):
+    """Common theme for the whole cli."""
 
-    @skip
-    class Common(str, Enum):
-        """Common theme for the whole cli."""
+    FAIL = "red"
+    INFO = "cyan"
+    OKAY = "green"
+    TEXT = "white"
+    WARN = "yellow"
+    WORK = "magenta"
 
-        FAIL = "red"
-        INFO = "cyan"
-        OKAY = "green"
-        TEXT = "white"
-        WARN = "yellow"
-        WORK = "magenta"
 
-    @skip
-    class Console(str, Enum):
-        """Specific rendering theme for instruction screens."""
+class ThemeConsole(str, Enum):
+    """Specific rendering theme for instruction screens."""
 
-        BORDER = "cyan"
-        HEADER = "magenta"
-        ROW = "cyan"
-        TITLE = "bold green"
+    BORDER = "cyan"
+    HEADER = "magenta"
+    ROW = "cyan"
+    TITLE = "bold green"

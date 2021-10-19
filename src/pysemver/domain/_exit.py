@@ -7,7 +7,7 @@
 
 from __future__ import annotations
 
-from aenum import IntEnum
+from enum import IntEnum
 
 
 class Exit(IntEnum):

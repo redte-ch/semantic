@@ -11,7 +11,7 @@ from typing import Any, Optional, Set, Tuple, TypeVar
 
 import typic
 
-from ..domain import Signature, Version
+from pysemver.domain import Signature, VersionInt
 from ..types import What
 from ._bump_version import BumpVersion
 from ._parse_files import ParseFiles
@@ -37,7 +37,7 @@ class CheckVersion:
     """
 
     logs: Any
-    exit: Version.Int
+    exit: int
     parser: ParseFiles
     ignore: Tuple[str, ...]
     bump_version: BumpVersion
@@ -49,7 +49,7 @@ class CheckVersion:
             parser: ParseFiles = PARSER) -> None:
         self.logs = logs
         self.ignore = ignore
-        self.exit = Version.Int.NONE
+        self.exit = VersionInt.NONE
         self.parser = parser
         self.bump_version = BumpVersion()
 
@@ -173,7 +173,7 @@ class CheckVersion:
         self.logs.okay(f"Current version: {bump_version.this}")
 
         if bump_version.is_acceptable():
-            self.exit = Version.Int.NONE
+            self.exit = VersionInt.NONE
             return self
 
         self.logs.fail()

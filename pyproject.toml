@@ -19,7 +19,6 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "~3.7 || ~3.8 || ~3.9"
-aenum = "<4"
 classes = "<1"
 deal = "<5"
 GitPython = "<4"
