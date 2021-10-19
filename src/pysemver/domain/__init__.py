@@ -3,7 +3,11 @@
 # Licensed under the EUPL-1.2-or-later
 # For details: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 
-"""Domain models of :mod:`pysemver`."""
+"""Domain models of :mod:`pysemver`.
+
+.. versionadded:: 1.0.0
+
+"""
 
 from ._argument import Argument  # noqa: F401
 from ._exit import Exit  # noqa: F401

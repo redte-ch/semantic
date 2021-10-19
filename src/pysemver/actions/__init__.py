@@ -3,7 +3,11 @@
 # Licensed under the EUPL-1.2-or-later
 # For details: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 
-"""PySemver's command/queries."""
+"""PySemver's command/queries.
+
+.. versionadded:: 1.0.0
+
+"""
 
 from . import check_signature  # noqa: F401
 from ._build_signatures import BuildSignatures  # noqa: F401

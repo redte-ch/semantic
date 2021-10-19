@@ -3,11 +3,15 @@
 # Licensed under the EUPL-1.2-or-later
 # For details: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 
-"""Deprecation checker."""
+"""Deprecation checker.
+
+.. versionadded:: 1.0.0
+
+"""
 
 from __future__ import annotations
 
-from typing import Any, Iterable, Optional, Sequence, Tuple
+from typing import Any, Iterable, Sequence, Tuple
 
 import ast
 import pathlib
@@ -49,7 +53,7 @@ class CheckDeprecated(ast.NodeVisitor):
             The version to use for the expiration check. Defaults to the
             current version of :mod:`.openfisca_core`.
 
-    .. versionadded:: 36.0.0
+    .. versionadded:: 1.0.0
 
     """
 
@@ -126,7 +130,7 @@ class CheckDeprecated(ast.NodeVisitor):
             message:
                 The message we will print to the user.
 
-        .. versionadded:: 36.0.0
+        .. versionadded:: 1.0.0
 
         """
 

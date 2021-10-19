@@ -41,6 +41,8 @@ def show(revision: str, file: str, repo: str = "") -> str:
         >>> source
         'def function(a, *, b, c, d):\\n    ...'
 
+    .. versionadded:: 1.0.0
+
     """
 
     try:

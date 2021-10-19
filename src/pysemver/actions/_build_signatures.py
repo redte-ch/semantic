@@ -3,7 +3,11 @@
 # Licensed under the EUPL-1.2-or-later
 # For details: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 
-"""Signature builder."""
+"""Signature builder.
+
+.. versionadded:: 1.0.0
+
+"""
 
 from __future__ import annotations
 
@@ -95,6 +99,12 @@ def _build_argument(
         ) -> Tuple[Argument, ...]:
     """Builds an argument.
 
+    Args:
+        acc: An accumulated tuple of arguments (from reduce).
+        node: An argument node.
+        args: A tuple of argument nodes.
+        defaults: A tuple of default value nodes.
+
     Examples:
         >>> acc = []
         >>> node = ast.arg(arg = "arg")
@@ -122,6 +132,11 @@ def _build_arg_default(
         defaults: Tuple[Any, ...],
         ) -> Optional[str]:
     """Builds the default value of an argument.
+
+    Args:
+        n_acc: The index of the function argument we're working with.
+        n_arg: The total number of a function's arguments.
+        defaults: The tuple of a function's default values.
 
     Examples:
         >>> n_acc = 1
@@ -174,6 +189,10 @@ def _build(node: Optional[ast.expr]) -> Any:
 def _is_unique(seq: Tuple[Signature, ...], name: str) -> bool:
     """Check if a signature's name is unique or not.
 
+    Args:
+        seq: A sequence of signatures.
+        name: The name of a specific function.
+
     Examples:
         >>> signature = Signature("name", "file.py")
         >>> seq = [signature]
@@ -198,6 +217,11 @@ def _where(
         name: str,
         ) -> Generator[bool, None, None]:
     """Iterates over signatures to find the names named ``name``.
+
+    Args:
+        seq: A sequence of signatures.
+        name: The name of a specific function.
+
 
     Examples:
         >>> signature = Signature("name", "file.py")
@@ -229,7 +253,7 @@ class BuildSignatures(ast.NodeVisitor):
         >>> BuildSignatures(["file.py"])
         BuildSignatures(files=['file.py'], count=0, signatures=())
 
-    .. versionadded:: 36.1.0
+    .. versionadded:: 1.0.0
 
     """
 
@@ -249,7 +273,7 @@ class BuildSignatures(ast.NodeVisitor):
             >>> builder.total
             1
 
-        .. versionadded:: 36.1.0
+        .. versionadded:: 1.0.0
 
         """
 

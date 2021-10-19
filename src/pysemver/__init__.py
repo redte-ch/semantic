@@ -3,7 +3,11 @@
 # Licensed under the EUPL-1.2-or-later
 # For details: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 
-"""Command-line tools to facilitate semantic versioning."""
+"""Command-line tools to facilitate semantic versioning.
+
+.. versionadded:: 1.0.0
+
+"""
 
 from . import actions  # noqa: F401
 from . import domain  # noqa: F401

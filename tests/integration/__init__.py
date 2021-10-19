@@ -7,4 +7,6 @@
 
 Testing the interaction of the different pysemver's modules.
 
+.. versionadded:: 1.0.0
+
 """

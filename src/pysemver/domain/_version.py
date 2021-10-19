@@ -3,7 +3,11 @@
 # Licensed under the EUPL-1.2-or-later
 # For details: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 
-"""Version schema."""
+"""Version schema.
+
+.. versionadded:: 1.0.0
+
+"""
 
 from __future__ import annotations
 
@@ -19,6 +23,8 @@ class VersionStr(str, Enum):
 
         >>> [version.value for version in VersionStr]
         ['', '~', '+', '-']
+
+    .. versionadded:: 1.0.0
 
     """
 
@@ -43,6 +49,8 @@ class VersionInt(IntEnum):
 
         >>> [str(version) for version in VersionInt]
         ['', '~', '+', '-']
+
+    .. versionadded:: 1.0.0
 
     """
 

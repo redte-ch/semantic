@@ -7,4 +7,6 @@
 
 Testing pysemver actually does what it is suposed to do.
 
+.. versionadded:: 1.0.0
+
 """

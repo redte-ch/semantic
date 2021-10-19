@@ -3,7 +3,11 @@
 # Licensed under the EUPL-1.2-or-later
 # For details: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 
-"""Version bumber."""
+"""Version bumber.
+
+.. versionadded:: 1.0.0
+
+"""
 
 from typing import Sequence, Tuple, Type
 
@@ -40,7 +44,7 @@ class BumpVersion:
         >>> bumper.required
         <VersionInt.MAJOR: 3>
 
-    .. versionadded:: 36.1.0
+    .. versionadded:: 1.0.0
 
     """
 
@@ -94,7 +98,7 @@ class BumpVersion:
             >>> bumper.is_acceptable()
             True
 
-        .. versionadded:: 36.1.0
+        .. versionadded:: 1.0.0
 
         """
 

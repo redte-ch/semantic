@@ -3,7 +3,11 @@
 # Licensed under the EUPL-1.2-or-later
 # For details: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 
-"""Version checker."""
+"""Version checker.
+
+.. versionadded:: 1.0.0
+
+"""
 
 from __future__ import annotations
 
@@ -33,7 +37,7 @@ class CheckVersion:
         parser: A file parser.
         bump_version: A version bump_version.
 
-    .. versionadded:: 36.1.0
+    .. versionadded:: 1.0.0
 
     """
 

@@ -7,4 +7,6 @@
 
 Testing pysemver modules in isolation.
 
+.. versionadded:: 1.0.0
+
 """

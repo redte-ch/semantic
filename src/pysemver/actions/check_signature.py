@@ -3,7 +3,11 @@
 # Licensed under the EUPL-1.2-or-later
 # For details: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 
-"""Check for signature changes and version bump requirements."""
+"""Check for signature changes and version bump requirements.
+
+.. versionadded:: 1.0.0
+
+"""
 
 from __future__ import annotations
 
@@ -298,6 +302,8 @@ class CheckSignature:
 
         >>> service.score()
         0
+
+    .. versionadded:: 1.0.0
 
     """
 
