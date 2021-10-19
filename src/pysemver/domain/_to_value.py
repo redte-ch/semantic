@@ -66,13 +66,13 @@ def to_value(instance) -> str:
     """
 
 
-@to_value.instance(ast.expr)
-def _from_ast_expr(instance: ast.epxr) -> str:
+@to_value.instance(ast.Expr)
+def _from_ast_expr(instance: ast.Expr) -> str:
     return str(instance)
 
 
-@to_value.instance(ast.slice)
-def _from_ast_slice(instance: ast.slice) -> str:
+@to_value.instance(ast.Slice)
+def _from_ast_slice(instance: ast.Slice) -> str:
     return str(instance)
 
 

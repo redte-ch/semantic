@@ -161,7 +161,7 @@ def _build_arg_default(
 
 
 @deal.has()
-def _build(node: Optional[Union[ast.expr, ast.slice]]) -> Any:
+def _build(node: Optional[ast.expr]) -> Any:
     """Generic builder."""
 
     # Finally, if we have a dict, we have to both traverse recursively
@@ -175,12 +175,7 @@ def _build(node: Optional[Union[ast.expr, ast.slice]]) -> Any:
     if node is None:
         return None
 
-    try:
-        return to_value(node)
-    except NotImplementedError:
-        raise ValueError(f"{ast.dump(node)}")
-
-    raise TypeError(ast.dump(node))
+    return to_value(node)
 
 
 @deal.pure
