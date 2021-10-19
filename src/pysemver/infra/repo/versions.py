@@ -45,6 +45,9 @@ def this() -> str:
 def last(repo: str = "") -> str:
     """Retrives the last tagged version.
 
+    Args:
+        repo: The git repository path.
+
     Returns:
         str: Representing the version.
 

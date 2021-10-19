@@ -27,6 +27,7 @@ def show(revision: str, file: str, repo: str = "") -> str:
     Args:
         revision: A commit, a tag, and so on…
         file: The relative file path.
+        repo: The git repository path.
 
     Returns:
         str: The contents of the file.
@@ -60,6 +61,7 @@ def tree(revision: str, repo: str = "") -> Tuple[str, ...]:
 
     Args:
         revision: A commit, a tag, and so on…
+        repo: The git repository path.
 
     Returns:
         A sequence with the files' names.
@@ -95,6 +97,7 @@ def diff(this: str, that: str, repo: str = "") -> Tuple[str, ...]:
     Args:
         this: A commit, a tag, and so on…
         that: The same as ``that``, but in the past…
+        repo: The git repository path.
 
     Returns:
         A sequence with the files' names.
