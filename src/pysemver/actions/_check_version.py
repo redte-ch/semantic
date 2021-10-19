@@ -159,7 +159,9 @@ class CheckVersion:
                 bump_version(what.to_int())
                 self.logs.wipe()
                 self.logs.warn(
-                    f"{str(bump_version.what(what))} {name}: {f.reason}\n")
+                    f"{str(bump_version.what(what.to_int()))} "
+                    f"{name}: {f.reason}\n"
+                    )
                 self.exit = bump_version.required
                 continue
 
