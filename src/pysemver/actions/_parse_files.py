@@ -7,7 +7,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Generator, Optional, Set, Tuple
+from typing import Any, Generator, Optional, Set, Tuple, cast
 
 import textwrap
 
@@ -104,7 +104,7 @@ class ParseFiles:
         # We recover the python files corresponding to ``revison``.
         files: Set[str] = {
             file
-            for file in repo.files.tree(self.current)
+            for file in repo.files.tree(cast(str, self.current))
             if file.endswith(".py")
             }
 
@@ -118,7 +118,7 @@ class ParseFiles:
         for file in self.builder.files:
 
             # We recover the contents of ``file`` at ``revision``.
-            content: str = repo.files.show(self.current, file)
+            content: str = repo.files.show(cast(str, self.current), file)
 
             # We sanitize the source code.
             source: str = textwrap.dedent(content)

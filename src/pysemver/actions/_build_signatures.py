@@ -175,7 +175,7 @@ def _build(node: Optional[ast.expr]) -> Any:
     if node is None:
         return None
 
-    return to_value(node)
+    return to_value(node)  # type: ignore
 
 
 @deal.pure
