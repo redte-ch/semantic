@@ -78,7 +78,7 @@ def _from_ast_slice(instance: ast.slice) -> str:
 
 @to_value.instance(ast.Attribute)
 def _from_ast_attribute(instance: ast.Attribute) -> str:
-    return to_value(instance.attr)
+    return instance.attr
 
 
 @to_value.instance(ast.Call)
@@ -98,7 +98,7 @@ def _from_ast_ellipsis(instance: ast.Ellipsis) -> str:
 
 @to_value.instance(ast.Name)
 def _from_ast_name(instance: ast.Name) -> str:
-    return to_value(instance.id)
+    return instance.id
 
 
 @to_value.instance(ast.NameConstant)

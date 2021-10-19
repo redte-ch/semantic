@@ -53,8 +53,8 @@ def diff_hash(this: Signature, that: Signature) -> numpy.ndarray:
 
     """
 
-    these = utils.fill(len(this), len(that), this)
-    those = utils.fill(len(this), len(that), that)
+    these = utils.fill(len(this), len(that), abs(hash(this)))
+    those = utils.fill(len(this), len(that), abs(hash(that)))
     patch = utils.pop(len(this), len(that), Version.Int.PATCH)
     nones = utils.pop(len(this), len(that), Version.Int.NONE)
     return numpy.where(these != those, patch, nones)

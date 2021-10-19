@@ -16,7 +16,7 @@ from ..domain import Signature
 
 st.register(Signature, st.signatures)
 
-limit = 2e5
+limit = 2e20
 """Just a random size/length sentinel."""
 
 limit_bound = deal.chain(
@@ -92,7 +92,7 @@ def rep(this: int, that: int, what: int) -> numpy.ndarray:
 
     """
 
-    return numpy.repeat(what, max(add(this, that), add(that, this)))
+    return numpy.repeat(abs(what), max(add(this, that), add(that, this)))
 
 
 @limit_bound
@@ -116,9 +116,9 @@ def pop(this: int, that: int, what: int) -> numpy.ndarray:
     return numpy.array([*pre(this, that, what), *rep(this, that, what)])
 
 
-@deal.pre(lambda _: limit > _.this >= 0 and limit > _.that >= 0)
+@limit_bound
 @deal.pure
-def fill(this: int, that: int, what: Signature) -> numpy.ndarray:
+def fill(this: int, that: int, what: int) -> numpy.ndarray:
     """Fill a numpy array with anything.
 
     Args:
@@ -127,8 +127,8 @@ def fill(this: int, that: int, what: Signature) -> numpy.ndarray:
         what: What to fill the array with.
 
     Examples:
-        >>> fill(1, 2, "❤")
-        array(['❤', '❤'], dtype='<U1')
+        >>> fill(1, 2, 3)
+        array([3, 3])
 
     .. versionadded:: 1.0.0
 
