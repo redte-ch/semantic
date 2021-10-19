@@ -37,8 +37,8 @@ def check_version(_context, ignore):
     """Check if the actual version is valid."""
 
     if len(ignore) == 0:
-        ignore = tuple(config.ignore)
+        ignore = config.ignore
 
-    task = actions.CheckVersion(infra.logs, ignore)
+    task = actions.CheckVersion(infra.logs, tuple(ignore))
     task()
     sys.exit(task.exit.value)
