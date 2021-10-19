@@ -7,7 +7,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Generator, Optional, Set, Tuple, cast
+from typing import Any, cast, Generator, Optional, Set, Tuple
 
 import textwrap
 
@@ -129,6 +129,6 @@ class ParseFiles:
             # And we yield a counter to keep the user updated.
             yield self.builder.count, self.builder.total
 
-    def __exit__(self, *__: Any) -> None:
+    def __exit__(self, *args: Any) -> None:
         # We save the signatures for upstream recovery.
-        self.signatures = self.builder.signatures
+        self.signatures = cast(BuildSignatures, self.builder).signatures
