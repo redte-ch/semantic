@@ -27,6 +27,9 @@ class VersionStr(str, Enum):
     MINOR = "+"
     MAJOR = "-"
 
+    def to_int(self) -> int:
+        return VersionInt[self.name].value
+
 
 class VersionInt(IntEnum):
     """An enum used to determine the required version.
@@ -49,4 +52,4 @@ class VersionInt(IntEnum):
     MAJOR = 3
 
     def __str__(self) -> str:
-        return tuple(VersionStr)[self.value]
+        return VersionStr[self.name].value

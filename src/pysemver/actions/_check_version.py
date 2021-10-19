@@ -11,7 +11,8 @@ from typing import Any, Optional, Set, Tuple, TypeVar
 
 import typic
 
-from pysemver.domain import Signature, VersionInt
+from pysemver.domain import Signature, VersionInt, VersionStr
+
 from ..types import What
 from ._bump_version import BumpVersion
 from ._parse_files import ParseFiles
@@ -63,8 +64,8 @@ class CheckVersion:
         (
             self
             ._check_files(self.bump_version, diff)
-            ._check_funcs(self.bump_version, 2, this, that)
-            ._check_funcs(self.bump_version, 3, that, this)
+            ._check_funcs(self.bump_version, VersionStr.MINOR, this, that)
+            ._check_funcs(self.bump_version, VersionStr.MAJOR, that, this)
             ._check_version_acceptable(self.bump_version)
             .logs.then()
             )
@@ -109,7 +110,7 @@ class CheckVersion:
     def _check_funcs(
             self: T,
             bump_version: BumpVersion,
-            what: str,
+            what: VersionStr,
             *files: Set[Signature],
             ) -> T:
         """Requires a bump if there's a diff in functions."""
@@ -143,18 +144,19 @@ class CheckVersion:
             # If we can't find a base signature with the same name, we can just
             # assume the function was added/removed, so minor/major.
             if that is None:
-                bump_version(what)
+                bump_version(what.to_int())
                 self.logs.wipe()
                 self.logs.warn(
-                    f"{str(bump_version.what(what))} {name} => {what}\n")
+                    f"{str(bump_version.what(what.to_int()))} "
+                    f"{name} => {what.name}\n")
                 self.exit = bump_version.required
                 continue
 
             # Now we do a ``small-print`` comparison between signatures.
             f = CheckSignature(this, that)
 
-            if f.score() == bump_version.what(what).value:
-                bump_version(what)
+            if f.score() == bump_version.what(what.to_int()).value:
+                bump_version(what.to_int())
                 self.logs.wipe()
                 self.logs.warn(
                     f"{str(bump_version.what(what))} {name}: {f.reason}\n")

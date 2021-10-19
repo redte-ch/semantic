@@ -25,7 +25,7 @@ from pysemver import __name__, utils
 
 from .. import __version__
 from ._base import columns, rows
-from ._theme import Theme
+from ._theme import ThemeConsole
 
 st.register(Layout, st.layouts)
 st.register(Panel, st.panels)
@@ -120,7 +120,7 @@ def _main(command: str, content: Table) -> Panel:
 
     return Panel(
         content,
-        border_style = Theme.Console.BORDER,
+        border_style = ThemeConsole.BORDER,
         padding = 5,
         title = _usage(command),
         subtitle = __version__,
@@ -159,8 +159,8 @@ def _content(doc: str, options: Tuple[Tuple[str, ...], ...]) -> Table:
     table = Table(
         box = None,
         padding = (0, 5, 1, 10),
-        row_styles = [Theme.Console.ROW],
-        style = Theme.Console.HEADER,
+        row_styles = [ThemeConsole.ROW],
+        style = ThemeConsole.HEADER,
         title = f"{doc}\n\n\n",
         )
 
@@ -191,6 +191,6 @@ def _usage(command: str) -> Text:
 
     text = Text(f"Usage: {__name__} {command} [--options] …")
 
-    text.stylize(Theme.Console.TITLE)
+    text.stylize(ThemeConsole.TITLE)
 
     return text

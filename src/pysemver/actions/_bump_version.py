@@ -13,6 +13,7 @@ import deal
 import typic
 
 from pysemver.infra import repo
+
 from ..domain import VersionInt
 
 
@@ -30,14 +31,14 @@ class BumpVersion:
         >>> bumper = BumpVersion()
 
         >>> bumper.required
-        <Int.NONE: 0>
+        <VersionInt.NONE: 0>
 
         >>> bumper.what(3)
-        <Int.MAJOR: 3>
+        <VersionInt.MAJOR: 3>
 
         >>> bumper(3)
         >>> bumper.required
-        <Int.MAJOR: 3>
+        <VersionInt.MAJOR: 3>
 
     .. versionadded:: 36.1.0
 

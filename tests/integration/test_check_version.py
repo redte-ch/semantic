@@ -67,8 +67,8 @@ def test_check_version(info, okay, checker):
     info.assert_any_call(f"Parsing files from {checker.parser.this}…\n")
     info.assert_any_call(f"Parsing files from {checker.parser.that}…\n")
     info.assert_any_call("Checking for functional changes…\n")
-    info.assert_any_call("Checking for 2 functions…\n")
-    info.assert_any_call("Checking for 3 functions…\n")
+    info.assert_any_call("Checking for + functions…\n")
+    info.assert_any_call("Checking for - functions…\n")
     info.assert_any_call("Version bump required: NONE!\n")
     okay.assert_called_once_with(f"Current version: {checker.parser.this}")
     assert exit.value.code == os.EX_OK
@@ -125,7 +125,7 @@ def test_files_when_diff_only_parse_changed(info, warn, fail, checker):
 
     checker.parser = type(checker.parser)(this = "0.2.5", that = "0.2.6")
     checker()
-    warn.assert_called_with("+ pysemver._func_checker.function => 2\n")
+    warn.assert_called_with("+ pysemver._func_checker.function => MINOR\n")
     assert warn.call_count == 2
 
     checker.parser.diff = ()
@@ -210,10 +210,12 @@ def test_funcs_when_duplicates(info, warn, fail, checker):
         sys.exit(checker.exit.value)
 
     info.assert_called_with("Version bump required: MAJOR!\n")
-    warn.assert_any_call("- pysemver._func_checker.score(bis) => 3\n")
-    warn.assert_any_call("- pysemver._func_checker.score(ter) => 3\n")
-    warn.assert_any_call("- pysemver._func_checker.score(quater) => 3\n")
-    warn.assert_any_call("- pysemver._func_checker.score(quinquies) => 3\n")
-    warn.assert_any_call("- pysemver._func_checker.score(sexies) => 3\n")
+    warn.assert_any_call("- pysemver._func_checker.score(bis) => MAJOR\n")
+    warn.assert_any_call("- pysemver._func_checker.score(ter) => MAJOR\n")
+    warn.assert_any_call("- pysemver._func_checker.score(quater) => MAJOR\n")
+    warn.assert_any_call(
+        "- pysemver._func_checker.score(quinquies) => MAJOR\n",
+        )
+    warn.assert_any_call("- pysemver._func_checker.score(sexies) => MAJOR\n")
     fail.assert_called()
     assert exit.value.code != os.EX_OK
