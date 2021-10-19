@@ -7,7 +7,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Sequence, Tuple
+from typing import Any, Iterable, Optional, Sequence, Tuple
 
 import ast
 import pathlib
@@ -78,8 +78,13 @@ class CheckDeprecated(ast.NodeVisitor):
             if self._is_functional(file) and self._is_python(file)
             ]
 
-        self.nodes = tuple(utils.compact(
-            [self._node(file) for file in self.files]))
+        _nodes: Iterable[ast.Module] = (
+            self._node(file)
+            for file
+            in self.files
+            )
+
+        self.nodes = tuple(utils.compact(_nodes))
         self.total = len(self.nodes)
         self.version = version
 
@@ -158,11 +163,11 @@ class CheckDeprecated(ast.NodeVisitor):
                 continue
 
             # We cast each keyword to ``str``.
-            keywords = [
+            keywords = tuple(
                 kwd.value.s
                 for kwd in decorator.keywords
                 if isinstance(kwd.value, ast.Str)
-                ]
+                )
 
             # Finally we assign each keyword to a variable.
             since, expires = keywords
@@ -194,6 +199,8 @@ class CheckDeprecated(ast.NodeVisitor):
             with open(file) as f:
                 source = textwrap.dedent(f.read())
                 return ast.parse(source, file, "exec")
+
+        return ast.Module()
 
     def _is_functional(self, file: str) -> bool:
         """Checks if a given ``file`` is whitelisted as functional."""
