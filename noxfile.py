@@ -11,8 +11,8 @@ import pathlib
 import re
 import shutil
 
-import nox
-import nox_poetry
+import nox  # pytype: disable=import-error
+import nox_poetry  # pytype: disable=import-error
 
 nox.options.reuse_existing_virtualenvs = True
 doc_steps = ("dummy", "doctest", "linkcheck", "html", "changes")

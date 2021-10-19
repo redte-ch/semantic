@@ -7,7 +7,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Optional, Set, Tuple, TypeVar
+from typing import Any, Optional, Set, Tuple, TypeVar, cast
 
 import typic
 
@@ -82,7 +82,7 @@ class CheckVersion:
 
             self.logs.wipe()
 
-        return parser.signatures
+        return cast(Tuple[Signature, ...], parser.signatures)
 
     def _check_files(self: T, bump_version: BumpVersion, files: Set[str]) -> T:
         """Requires a bump if there's a diff in files."""

@@ -52,4 +52,4 @@ class VersionInt(IntEnum):
     MAJOR = 3
 
     def __str__(self) -> str:
-        return VersionStr[self.name].value
+        return VersionStr[self.name].value  # pytype: disable=missing-parameter

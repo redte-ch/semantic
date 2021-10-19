@@ -95,7 +95,9 @@ class ParseFiles:
         """We try recover the revision (``this`` or ``that``)."""
 
         # Fails otherwise.
-        self.current: str = self.__getattribute__(what)
+        # pytype: disable=attribute-error
+        self.current = self.__getattribute__(what)
+        # pytype: enable=attribute-error
 
         # And we return ourselves.
         return self

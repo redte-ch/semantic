@@ -65,6 +65,8 @@ def to_value(instance) -> str:
 
     """
 
+    ...  # pytype: disable=bad-return-type
+
 
 @to_value.instance(ast.Expr)
 def _from_ast_expr(instance: ast.Expr) -> str:
