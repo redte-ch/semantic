@@ -182,6 +182,7 @@ def _build_arg_default(
     return _build(defaults[index])
 
 
+@deal.raises(NotImplementedError)
 @deal.has()
 def _build(node: Optional[ast.expr]) -> Any:
     """Generic builder."""

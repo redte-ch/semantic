@@ -20,13 +20,16 @@ from ..domain import Signature
 
 st.register(Signature, st.signatures)
 
-limit = 2e20
+size_limit = 2e5
+"""Just a random size/length sentinel."""
+
+what_limit = 2e20
 """Just a random size/length sentinel."""
 
 limit_bound = deal.chain(
-    deal.pre(lambda _: limit > _.this >= 0),
-    deal.pre(lambda _: limit > _.that >= 0),
-    deal.pre(lambda _: limit > _.what >= 0),
+    deal.pre(lambda _: size_limit > _.this >= 0),
+    deal.pre(lambda _: size_limit > _.that >= 0),
+    deal.pre(lambda _: what_limit > _.what >= 0),
     )
 """Bind these values to some arbitrary limit."""
 
