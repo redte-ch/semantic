@@ -34,6 +34,8 @@ class VersionStr(str, Enum):
     MAJOR = "-"
 
     def to_int(self) -> int:
+        """Cast an enum to int."""
+
         return VersionInt[self.name].value
 
 
