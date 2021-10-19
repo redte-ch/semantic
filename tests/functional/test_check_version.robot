@@ -5,6 +5,7 @@
 
 *** Settings ***
 Documentation			Tests for the semantic version check.
+Library					Collections
 Library					Process
 Suite Teardown			Terminate All Processes	kill=True
 
@@ -20,8 +21,9 @@ Run PySemVer
 	[Return]			${result}
 
 Exit OK
-	[Arguments]								${exit_code}
-	Should Be Equal As Integers				${exit_code}	0
+	@{exit_codes}					Create List			${0}	${1}	${2}	${3}
+	[Arguments]						${exit_code}
+	List Should Contain Value		${exit_codes}		${exit_code}
 
 *** Test Cases ***
 Prints the help screen to the user.
