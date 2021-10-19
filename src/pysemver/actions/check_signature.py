@@ -34,6 +34,9 @@ def diff_hash(this: Signature, that: Signature) -> numpy.ndarray:
         this: A signature.
         that: Another signature.
 
+    Returns:
+        numpy.ndarray: An array with the values.
+
     Examples:
         >>> from pysemver.domain import Argument
 
@@ -71,6 +74,9 @@ def diff_args(this: Signature, that: Signature) -> numpy.ndarray:
     Args:
         this: A signature.
         that: Another signature.
+
+    Returns:
+        numpy.ndarray: An array with the values.
 
     Examples:
         >>> from pysemver.domain import Argument
@@ -131,6 +137,9 @@ def diff_name(this: Signature, that: Signature) -> numpy.ndarray:
     Args:
         this: A signature.
         that: Another signature.
+
+    Returns:
+        numpy.ndarray: An array with the values.
 
     Examples:
         >>> from pysemver.domain import Argument
@@ -219,6 +228,9 @@ def diff_defs(this: Signature, that: Signature) -> numpy.ndarray:
     Args:
         this: A signature.
         that: Another signature.
+
+    Returns:
+        numpy.ndarray: An array with the values.
 
     Examples:
         >>> from pysemver.domain import Argument

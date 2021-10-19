@@ -32,6 +32,9 @@ def show(revision: str, file: str, repo: str = "") -> str:
     Returns:
         str: The contents of the file.
 
+    Raises:
+        TypeError: When arguments are invalid.
+
     Examples:
         >>> import os
         >>> from pathlib import Path
@@ -68,6 +71,9 @@ def tree(revision: str, repo: str = "") -> Tuple[str, ...]:
     Returns:
         A sequence with the files' names.
 
+    Raises:
+        TypeError: When arguments are invalid.
+
     Examples:
         >>> import os
         >>> from pathlib import Path
@@ -103,6 +109,9 @@ def diff(this: str, that: str, repo: str = "") -> Tuple[str, ...]:
 
     Returns:
         A sequence with the files' names.
+
+    Raises:
+        TypeError: When arguments are invalid.
 
     Examples:
         >>> from pathlib import Path
