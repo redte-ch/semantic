@@ -4,7 +4,7 @@
 [![Docs](https://github.com/maukoquiroga/mantic/workflows/docs/badge.svg)](https://github.com/maukoquiroga/mantic/actions?workflow=docs)
 [![Docs](https://readthedocs.org/projects/mantic/badge/)](https://mantic.readthedocs.io/)
 [![PyPI](https://img.shields.io/pypi/v/mantic.svg)](https://pypi.org/project/mantic/)
-[![Coverage](https://codecov.io/gh/maukoquiroga/mantic/branch/master/graph/badge.svg)](https://codecov.io/gh/maukoquiroga/mantic)
+[![Coverage](https://codecov.io/gh/maukoquiroga/mantic/branch/main/graph/badge.svg)](https://codecov.io/gh/maukoquiroga/mantic)
 
 # Mantic
 
