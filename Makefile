@@ -64,7 +64,6 @@ test-%: compile clean
 	@poetry run interrogate src/$*
 
 release:
-	@nox -k "not coverage"
 	@poetry run pip uninstall mantic -y -q
 	@poetry install -q
 	@poetry run mantic check-version \
