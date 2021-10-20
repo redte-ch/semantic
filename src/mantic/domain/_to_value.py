@@ -97,8 +97,13 @@ def _from_ast_constant(instance: ast.Constant) -> str:
     return to_value(instance.value)
 
 
-@to_value.instance(type(Ellipsis))
+@to_value.instance(ast.Ellipsis)
 def _from_ast_ellipsis(instance: ast.Ellipsis) -> str:
+    return "..."
+
+
+@to_value.instance(type(Ellipsis))
+def _from_ellipsis(instance: type(Ellipsis)) -> str:
     return "..."
 
 
