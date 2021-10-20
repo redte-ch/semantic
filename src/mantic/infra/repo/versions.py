@@ -55,8 +55,8 @@ def last(repo: str = "") -> str:
         >>> from pathlib import Path
 
         >>> repo = Path("./tests/fixtures").resolve()
-        >>> last(repo)
-        '9.0.0'
+        >>> last(str(repo))
+        '10.0.0'
 
     .. versionadded:: 1.0.0
 
