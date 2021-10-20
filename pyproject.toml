@@ -45,7 +45,10 @@ pytest-mock = "<4"
 pytest-randomly = "<4"
 pytest-sugar = "<1"
 pytest-xdist = {extras = ["psutil"], version = "<3"}
-pytype = "^2021.10.4"
+pytype = [
+    {platform = "linux", version = "^2021.10.4"},
+    {platform = "darwin", version = "^2021.10.4"},
+]
 pyupgrade = "<3"
 robotframework = "<5"
 Sphinx = "<5"
