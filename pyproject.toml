@@ -65,6 +65,7 @@ source = ["src", "*/site-packages"]
 
 [tool.coverage.run]
 branch = true
+disable_warnings = ["module-not-imported", "no-data-collected"]
 source = ["mantic"]
 
 [tool.coverage.report]

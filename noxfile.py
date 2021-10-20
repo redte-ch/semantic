@@ -17,7 +17,7 @@ import nox_poetry  # pytype: disable=import-error
 nox.options.reuse_existing_virtualenvs = True
 doc_steps = ("dummy", "doctest", "linkcheck", "html", "changes")
 doc_build = ("-anqTW", "docs", "docs/_build")
-rel_build = ("docs/conf.py", "src")
+rel_build = ("docs/conf.py", "noxfile.py", "src")
 python_versions = ("3.7.9", "3.8.10", "3.9.7")
 numpy_versions = ("1.17.5", "1.18.5", "1.19.5", "1.20.3", "1.21.2")
 exclude = (("3.9.7", "1.18.5"),)
@@ -75,6 +75,7 @@ def coverage(session) -> None:
     session.install("codecov", silent = True)
     session.install("coverage[toml]", silent = True)
     session.install("pytest", silent = True)
+    session.install("pytest-cov", silent = True)
     session.install("pytest-mock", silent = True)
     session.install("pytest-randomly", silent = True)
     session.install("pytest-sugar", silent = True)
@@ -83,7 +84,7 @@ def coverage(session) -> None:
     session.install("typeguard", silent = True)
     session.install("xdoctest", silent = True)
     session.install(".", silent = True)
-    session.run("pytest", *(*rel_build, "tests"), env = env)
+    session.run("pytest", "--cov", env = env)
     session.run("robot", "--outputdir", ".robot", "tests/functional")
     session.run("coverage", "xml", "--fail-under=0")
     session.run("codecov", *session.posargs)
@@ -112,7 +113,7 @@ def lint(session):
     session.run("make", "install", external = True, silent = True)
     session.install("wemake-python-styleguide", silent = True)
     session.install(".", silent = True)
-    session.run("flake8", *(*rel_build, "noxfile.py", "tests"))
+    session.run("flake8", *(*rel_build, "tests"))
 
 
 @nox_poetry.session
@@ -128,8 +129,8 @@ def type(session, numpy):
     session.install("mypy", silent = True)
     session.install("pytype", silent = True)
     session.install(".", silent = True)
-    session.run("mypy", *(*rel_build, "noxfile.py"))
-    session.run("pytype", *(*rel_build, "noxfile.py"))
+    session.run("mypy", *rel_build)
+    session.run("pytype", *rel_build)
 
 
 @nox_poetry.session
@@ -147,6 +148,7 @@ def test(session, numpy):
 
     session.install("coverage[toml]", silent = True)
     session.install("pytest", silent = True)
+    session.install("pytest-cov", silent = True)
     session.install("pytest-mock", silent = True)
     session.install("pytest-randomly", silent = True)
     session.install("pytest-sugar", silent = True)
@@ -155,5 +157,5 @@ def test(session, numpy):
     session.install("typeguard", silent = True)
     session.install("xdoctest", silent = True)
     session.install(".", silent = True)
-    session.run("pytest", *(*rel_build, "tests"), env = env)
+    session.run("pytest", "--cov", env = env)
     session.run("robot", "--outputdir", ".robot", "tests/functional")
