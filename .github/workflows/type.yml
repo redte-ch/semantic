@@ -13,7 +13,6 @@ jobs:
           - python: 3.9.7
             numpy: 1.18.5
 
-
     runs-on: ubuntu-latest
 
     name: type-${{ matrix.python }}-${{ matrix.numpy }}
