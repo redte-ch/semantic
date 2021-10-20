@@ -103,7 +103,7 @@ def _from_ast_ellipsis(instance: ast.Ellipsis) -> str:
 
 
 @to_value.instance(type(Ellipsis))
-def _from_ellipsis(instance: type(Ellipsis)) -> str:
+def _from_ellipsis(instance: ast.Ellipsis) -> str:
     return "..."
 
 
