@@ -3,13 +3,13 @@
 # Licensed under the EUPL-1.2-or-later
 # For details: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 
-import os
 import sys
 
 import pytest
 
 from mantic import utils
 from mantic.actions import CheckVersion
+from mantic.domain import Exit
 from mantic.infra import logs
 
 
@@ -71,7 +71,7 @@ def test_check_version(info, okay, checker):
     info.assert_any_call("Checking for - functions…\n")
     info.assert_any_call("Version bump required: NONE!\n")
     okay.assert_called_once_with(f"Current version: {checker.parser.this}")
-    assert exit.value.code == os.EX_OK
+    assert exit.value.code == Exit.OK
 
 
 def test_files_when_no_diff(info, warn, fail, okay, checker):
@@ -86,7 +86,7 @@ def test_files_when_no_diff(info, warn, fail, okay, checker):
     warn.assert_not_called()
     fail.assert_not_called()
     okay.assert_called()
-    assert exit.value.code == os.EX_OK
+    assert exit.value.code == Exit.OK
 
 
 def test_files_when_diff_is_not_functional(info, warn, fail, okay, checker):
@@ -102,7 +102,7 @@ def test_files_when_diff_is_not_functional(info, warn, fail, okay, checker):
     warn.assert_not_called()
     fail.assert_not_called()
     okay.assert_called()
-    assert exit.value.code == os.EX_OK
+    assert exit.value.code == Exit.OK
 
 
 def test_files_when_diff_is_functional(info, warn, fail, checker):
@@ -117,7 +117,7 @@ def test_files_when_diff_is_functional(info, warn, fail, checker):
     info.assert_called_with("Version bump required: PATCH!\n")
     warn.assert_called_once_with("~ file.py\n")
     fail.assert_called()
-    assert exit.value.code != os.EX_OK
+    assert exit.value.code != Exit.OK
 
 
 def test_files_when_diff_only_parse_changed(info, warn, fail, checker):
@@ -138,7 +138,7 @@ def test_files_when_diff_only_parse_changed(info, warn, fail, checker):
 
     info.assert_called_with("Version bump required: MINOR!\n")
     fail.assert_called()
-    assert exit.value.code != os.EX_OK
+    assert exit.value.code != Exit.OK
 
 
 def test_funcs_when_no_diff(info, warn, fail, okay, checker):
@@ -153,7 +153,7 @@ def test_funcs_when_no_diff(info, warn, fail, okay, checker):
     warn.assert_not_called()
     fail.assert_not_called()
     okay.assert_called()
-    assert exit.value.code == os.EX_OK
+    assert exit.value.code == Exit.OK
 
 
 def test_funcs_when_added(info, warn, fail, calls, checker):
@@ -175,7 +175,7 @@ def test_funcs_when_added(info, warn, fail, calls, checker):
 
     fail.assert_called()
 
-    assert exit.value.code != os.EX_OK
+    assert exit.value.code != Exit.OK
 
 
 def test_funcs_when_removed(info, warn, fail, calls, checker):
@@ -197,7 +197,7 @@ def test_funcs_when_removed(info, warn, fail, calls, checker):
 
     fail.assert_called()
 
-    assert exit.value.code != os.EX_OK
+    assert exit.value.code != Exit.OK
 
 
 def test_funcs_when_duplicates(info, warn, fail, checker):
@@ -218,4 +218,4 @@ def test_funcs_when_duplicates(info, warn, fail, checker):
         )
     warn.assert_any_call("- pysemver._func_checker.score(sexies) => MAJOR\n")
     fail.assert_called()
-    assert exit.value.code != os.EX_OK
+    assert exit.value.code != Exit.OK

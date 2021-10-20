@@ -3,13 +3,13 @@
 # Licensed under the EUPL-1.2-or-later
 # For details: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 
-import os
 import sys
 import tempfile
 
 import pytest
 
 from mantic.actions import CheckDeprecated
+from mantic.domain import Exit
 from mantic.infra import logs
 
 
@@ -65,7 +65,7 @@ def test_check_deprecated(warn):
 
     warn.assert_called()
     assert f"{name}.function:{lineno}" in warn.call_args_list[0][0][0]
-    assert exit.value.code == os.EX_OK
+    assert exit.value.code == Exit.OK
 
 
 @pytest.mark.skip
@@ -82,4 +82,4 @@ def test_find_deprecated_when_expired(fail):
         sys.exit(checker.exit.value)
 
     fail.assert_called()
-    assert exit.value.code != os.EX_OK
+    assert exit.value.code != Exit.OK
