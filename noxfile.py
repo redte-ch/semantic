@@ -72,7 +72,7 @@ def coverage(session) -> None:
     env = {"COLUMNS": "200"}
 
     session.run("make", "install", external = True, silent = True)
-    session.install("covecov", silent = True)
+    session.install("codecov", silent = True)
     session.install("coverage[toml]", silent = True)
     session.install("pytest", silent = True)
     session.install("pytest-mock", silent = True)
