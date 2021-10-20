@@ -31,7 +31,7 @@ class Config:
     ignore: Sequence[str]
 
 
-@deal.has("stdin")
+@deal.has("import")
 def build_config(config: Type[Config]) -> Config:
     """Builds the configuration."""
 
