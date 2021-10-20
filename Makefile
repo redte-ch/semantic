@@ -14,10 +14,10 @@ all: format bind lint type test ;
 	@${MAKE} test-$*
 
 install:
-	@pip install --upgrade pip wheel setuptools
-	@pip install --upgrade nox-poetry
-	@pip install --upgrade poetry
-	@pip install --upgrade nox
+	@python -m pip install --upgrade pip wheel setuptools
+	@python -m pip install --upgrade nox-poetry
+	@python -m pip install --upgrade poetry
+	@python -m pip install --upgrade nox
 
 compile: src
 	@poetry run python -m compileall -q $?
