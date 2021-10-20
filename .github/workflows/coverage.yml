@@ -31,6 +31,6 @@ jobs:
         run: make install
 
       - name: Upload coverage
-        run: nox -s "test(3.9.7/1.21.2)" coverage-3.9.7
+        run: nox -s coverage
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

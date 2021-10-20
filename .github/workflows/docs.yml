@@ -24,4 +24,4 @@ jobs:
         run: make install
 
       - name: Run doc tasks
-        run: nox -s "docs-3.9.7"
+        run: nox -s docs

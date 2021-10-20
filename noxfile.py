@@ -64,19 +64,29 @@ class SessionCache:
         self.back_toml.unlink()
 
 
-@nox_poetry.session(python = python_versions[-1:])
+@nox_poetry.session(python = "3.9.7")
 def coverage(session) -> None:
     """Run coverage session."""
 
+    # Otherwise the stdout would be cropped.
+    env = {"COLUMNS": "200"}
+
     session.run("make", "install", external = True, silent = True)
+    session.install("covecov", silent = True)
     session.install("coverage[toml]", silent = True)
-    session.install("codecov", silent = True)
+    session.install("pytest", silent = True)
+    session.install("pytest-mock", silent = True)
+    session.install("robotframework", silent = True)
+    session.install("typeguard", silent = True)
+    session.install("xdoctest", silent = True)
     session.install(".", silent = True)
+    session.run("pytest", *(*rel_build, "tests"), env = env)
+    session.run("robot", "--outputdir", ".robot", "tests/functional")
     session.run("coverage", "xml", "--fail-under=0")
     session.run("codecov", *session.posargs)
 
 
-@nox_poetry.session(python = python_versions[-1:])
+@nox_poetry.session(python = "3.9.7")
 def docs(session):
     """Build/test docs."""
 
