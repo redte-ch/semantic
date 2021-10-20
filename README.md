@@ -17,18 +17,15 @@ Command-line tools to facilitate se-mantic versioning!
 ## Installation
 
 ```
-git clone https://github.com/maukoquiroga/mantic
-cd mantic
-make install
-poetry install
+pip install mantic
 ```
 
 ## Usage
 
 ```
-poetry run mantic
-poetry run mantic --help check-version
-poetry run mantic check-version
+mantic --help
+mantic --help check-version
+mantic check-version
 ```
 
 ## License
