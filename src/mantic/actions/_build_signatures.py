@@ -317,7 +317,7 @@ class BuildSignatures(ast.NodeVisitor):
             (Signature(name='...file.function', file='file.py', a...
 
             >>> signature.name
-            'mantic.file.function'
+            '...file.function'
 
             >>> signature.file
             'file.py'
