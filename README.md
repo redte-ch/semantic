@@ -6,9 +6,9 @@
 [![PyPI](https://img.shields.io/pypi/v/mantic.svg)](https://pypi.org/project/mantic/)
 [![Coverage](https://codecov.io/gh/maukoquiroga/mantic/branch/master/graph/badge.svg)](https://codecov.io/gh/maukoquiroga/mantic)
 
-# PySemver
+# Mantic
 
-Command-line tools to facilitate semantic versioning!
+Command-line tools to facilitate se-mantic versioning!
 
 ## Demo
 
