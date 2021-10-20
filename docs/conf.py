@@ -8,9 +8,9 @@
 author = "Mauko Quiroga <mauko@pm.me>"
 project = "mantic"
 copyleft = f"(ɔ) 2021 {author}"
-extensions = (
+extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.doctest",
     "sphinx.ext.napoleon",
     "sphinx_autodoc_typehints",
-    )
+    ]
