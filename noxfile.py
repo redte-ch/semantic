@@ -124,6 +124,9 @@ def type(session, numpy):
 def test(session, numpy):
     """Run tests."""
 
+    # Otherwise the stdout would be cropped.
+    env = {"COLUMNS": "200"}
+
     session.run("make", "install", external = True, silent = True)
 
     with SessionCache(session.name, session.cache_dir):
@@ -136,5 +139,5 @@ def test(session, numpy):
     session.install("typeguard", silent = True)
     session.install("xdoctest", silent = True)
     session.install(".", silent = True)
-    session.run("pytest", *(*rel_build, "tests"))
+    session.run("pytest", *(*rel_build, "tests"), env = env)
     session.run("robot", "--outputdir", ".robot", "tests/functional")
