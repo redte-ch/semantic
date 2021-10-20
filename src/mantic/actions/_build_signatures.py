@@ -47,7 +47,11 @@ def _build_unique_name(
 
     # We build the module name with the name of the parent path, a
     # folder, and the name of the file, without the extension.
-    module = f"{path.parts[-2]}.{path.stem}"
+    if len(path.parts) > 1:
+        module = f"{path.parts[-2]}.{path.stem}"
+
+    else:
+        module = path.stem
 
     # We compose the name with the name of the module.
     name = f"{module}.{node.name}"
