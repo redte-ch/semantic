@@ -15,7 +15,7 @@ import nox  # pytype: disable=import-error
 import nox_poetry  # pytype: disable=import-error
 
 nox.options.reuse_existing_virtualenvs = True
-doc_steps = ("dummy", "doctest", "linkcheck", "html", "changes")
+doc_steps = ("dummy", "doctest", "linkcheck")
 doc_build = ("-anqTW", "docs", "docs/_build")
 rel_build = ("docs/conf.py", "noxfile.py", "src")
 python_versions = ("3.7.9", "3.8.10", "3.9.7")
