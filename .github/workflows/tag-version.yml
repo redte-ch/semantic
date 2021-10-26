@@ -1,0 +1,24 @@
+name: Tag Version
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  draft_release:
+    runs-on: ubuntu-latest
+
+    name: tag
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Install dependencies
+        run: make install
+
+      - name: Tag version
+        run: make tag-version

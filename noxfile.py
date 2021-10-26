@@ -65,6 +65,15 @@ class SessionCache:
 
 
 @nox_poetry.session(python = "3.9.7")
+def check_version(session):
+    """Check if current version is acceptable."""
+
+    session.run("make", "install", external = True, silent = True)
+    session.install(".", silent = True)
+    session.run("mantic", "check-version")
+
+
+@nox_poetry.session(python = "3.9.7")
 def coverage(session) -> None:
     """Run coverage session."""
 
