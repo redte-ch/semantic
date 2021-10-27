@@ -63,16 +63,20 @@ test-%: compile clean
 	@poetry run pytest src/$*
 	@poetry run interrogate src/$*
 
-release:
+tag-version:
+	@poetry version --short | xargs -I \{\} git tag \{\}
+	@git push --tags
+
+bump-version:
 	@poetry run pip uninstall mantic -y -q
 	@poetry install -q
 	@poetry run mantic check-version \
-		&& exit_code=$${?} \
-		|| exit_code=$${?} \
-		&& version=( "" "patch" "minor" "major" ) \
-		&& poetry version $${version[$${exit_code}]} -q \
-		&& poetry install -q \
-		&& git add -A \
-		&& poetry version --short | xargs -I \{\} git commit -m "Bump version to {}" \
-		&& poetry version --short | xargs -I \{\} git tag \{\} \
-		&& git push --tags
+	|| { \
+		exit_code=$${?} ; \
+		version=( "" "patch" "minor" "major" ) ; \
+		poetry version $${version[$${exit_code}]} -q ; \
+		poetry install -q ; \
+		git add -A ; \
+		poetry version --short | xargs -I \{\} git commit -m "Bump version to {}" ; \
+		git push origin $(shell git branch --show-current) ; \
+	}

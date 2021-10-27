@@ -15,7 +15,7 @@ import nox  # pytype: disable=import-error
 import nox_poetry  # pytype: disable=import-error
 
 nox.options.reuse_existing_virtualenvs = True
-doc_steps = ("dummy", "doctest", "linkcheck", "html", "changes")
+doc_steps = ("dummy", "doctest", "linkcheck")
 doc_build = ("-anqTW", "docs", "docs/_build")
 rel_build = ("docs/conf.py", "noxfile.py", "src")
 python_versions = ("3.7.9", "3.8.10", "3.9.7")
@@ -62,6 +62,15 @@ class SessionCache:
         shutil.copyfile(self.back_toml, self.base_toml)
         self.back_lock.unlink()
         self.back_toml.unlink()
+
+
+@nox_poetry.session(python = "3.9.7")
+def check_version(session):
+    """Check if current version is acceptable."""
+
+    session.run("make", "install", external = True, silent = True)
+    session.install(".", silent = True)
+    session.run("mantic", "check-version")
 
 
 @nox_poetry.session(python = "3.9.7")
