@@ -6,18 +6,23 @@
 """Configuration options.
 
 For now, configuration options will be read from any valid ``pyproject.toml``
-file.
+or ``setup.cfg`` file.
 
 For example::
 
     [tool.mantic]
     exclude = [".editorconfig", ".gitignore", "tests"]
 
+.. versionchanged:: 1.2.0
+
 .. versionadded:: 1.0.0
 
 """
 
 from typing import Any, MutableMapping, Sequence, Type
+
+from configparser import ConfigParser
+from pathlib import Path
 
 import deal
 import toml
@@ -35,9 +40,19 @@ class Config:
 def build_config(config: Type[Config]) -> Config:
     """Builds the configuration."""
 
-    from_toml: MutableMapping[str, Any] = toml.load("pyproject.toml")
+    from_file: MutableMapping[str, Any]
 
-    return config.transmute(from_toml["tool"]["mantic"])
+    if Path("pyproject.toml").exists():
+        from_file = toml.load("pyproject.toml")
+        return config.transmute(from_file["tool"]["mantic"])
+
+    if Path("setup.cfg").exists():
+        parser = ConfigParser()
+        parser.read("setup.cfg")
+        from_file = {"ignore": parser["tool:mantic"]["ignore"].split()}
+        return config.transmute(from_file)
+
+    raise NotImplementedError
 
 
 config = build_config(Config)
