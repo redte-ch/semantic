@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "mantic"
-version = "1.1.5"
+version = "2.0.0"
 description = "Command-line tools to facilitate se-mantic versioning."
 license = "EUPL-1.2-or-later"
 authors = ["Mauko Quiroga <mauko@pm.me>"]
@@ -23,6 +23,7 @@ classes = "<1"
 deal = "<5"
 GitPython = "<4"
 invoke = "<2"
+nptyping = "<2"
 numpy = ">=1.7, <1.22"
 returns = "<1"
 rich = "<11"
@@ -116,9 +117,10 @@ group_by_package = true
 include_trailing_comma = true
 known_first_party = ["mantic", "mantic_cli", "mantic_hypothesis"]
 known_typing = [
-    "types",
     "mypy",
     "mypy_extensions",
+    "nptyping",
+    "types",
     "types",
     "typing",
     "typing_extensions",
